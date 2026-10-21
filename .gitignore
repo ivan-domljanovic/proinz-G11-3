@@ -83,3 +83,7 @@ out
 
 # pnpm
 .pnpm-store
+
+
+# mac
+.DS_Store
