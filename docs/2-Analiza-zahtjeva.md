@@ -15,7 +15,23 @@ Primjeri koriste temu projekta CrisisMap. Neki namjerno sadrže korisne nedostat
 
 | ID | Opis | Prioritet | Izvor | Kriteriji prihvaćanja |
 | --- | --- | --- | --- | --- |
-| F-001 | [Funkcijski zahtjev/ponašanje sustava] | [Visok/Srednji/Nizak] | [Odobreni zadatak / zahtjev dionika / povratna informacija] | [Opažljivi rezultat] |
+| F-001 | Korisnik se prijavljuje putem Googlea (OpenID Connect / OAuth 2.0). | Visok | Projektni zadatak | Nakon uspješne prijave korisnik vidi svoje ime; odustajanje od prijave ostavlja radnje za prijavljene korisnike nedostupnima. |
+| F-002 | Korisnik pregledava izlete (naziv, opis, kategorija, trajanje, cijena, lokacija, mjesto polaska, slobodna mjesta) i njihove termine. | Visok | Projektni zadatak | Za svaki izlet prikazani su svi navedeni podaci i svi termini s brojem slobodnih mjesta. |
+| F-003 | Korisnik pretražuje izlete prema terminu, lokaciji, vrsti aktivnosti, trajanju, cijeni i broju sudionika. | Visok | Projektni zadatak | Rezultati odgovaraju zadanim kriterijima; ako ih nema, prikazuje se poruka. |
+| F-004 | Korisnik rezervira termin izleta za jednu ili više osoba i bira dodatne usluge (prijevoz, najam opreme). | Visok | Projektni zadatak | Rezervacija za odabrani termin, broj osoba i usluge se sprema i vidljiva je korisniku. |
+| F-005 | Sustav onemogućava rezervaciju koja premašuje broj slobodnih mjesta termina. | Visok | Projektni zadatak | Rezervacija za više osoba nego što ima slobodnih mjesta odbija se uz poruku; za popunjen termin nije moguća. |
+| F-006 | Korisnik prati status rezervacije (zahtjev, potvrđena, otkazana, realizirana) i pregledava njezine podatke. | Srednji | Projektni zadatak | Korisnik vidi svoje rezervacije sa statusom; za potvrđenu vidi izlet, termin, broj osoba, usluge i cijenu. |
+| F-007 | Sustav šalje potvrdu rezervacije e-poštom. | Srednji | Projektni zadatak | Nakon potvrde rezervacije na e-adresu korisnika stiže poruka s podacima rezervacije. |
+| F-008 | Korisnik tijekom izleta na mobitelu vidi svoj položaj i točke interesa na karti te informacije o točki kad joj se približi. | Srednji | Projektni zadatak | Karta prikazuje položaj korisnika i točke interesa; u blizini točke prikazuju se naziv, opis, značaj i zanimljivosti. |
+| F-009 | Administrator dodaje, mijenja i briše izlete (naziv, opis, kategorija, trajanje, lokacija, mjesto polaska, cijena, maksimalan broj sudionika, potreban broj vodiča). | Visok | Projektni zadatak | Administrator može unijeti novi izlet sa svim podacima te izmijeniti ili obrisati postojeći; promjena je vidljiva korisnicima. |
+| F-010 | Administrator definira termine, cijene, kapacitete i dodatne usluge izleta. | Visok | Projektni zadatak | Za izlet se mogu zadati jedan ili više termina s kapacitetom i cijenom te popis dodatnih usluga koje korisnik vidi pri rezervaciji. |
+| F-011 | Administrator upravlja rezervacijama. | Srednji | Projektni zadatak | Administrator vidi sve rezervacije i može promijeniti njihov status; korisnik vidi novi status. |
+| F-012 | Organizator objavljuje, mijenja i briše vlastite ponude izleta. | Srednji | Projektni zadatak | Organizator vidi samo svoje izlete i može ih objaviti, izmijeniti i obrisati; tuđe izlete ne može mijenjati. |
+| F-013 | Organizator dodjeljuje vodiče izletima. | Srednji | Projektni zadatak | Organizator za izlet odabire vodiče do potrebnog broja; dodijeljeni vodiči vidljivi su uz izlet. |
+| F-014 | Organizator vodi evidenciju raspoloživosti potrebnih resursa (vodiči, prijevoz, oprema). | Srednji | Projektni zadatak | Za svaki resurs vidljivo je je li u određenom terminu slobodan ili zauzet. |
+| F-015 | Administrator i organizator definiraju točke interesa izleta (naziv, kratak opis, značaj, zanimljivosti, lokacija). | Srednji | Projektni zadatak | Za izlet se može unijeti točka interesa s koordinatama i opisom; prikazuje se korisniku na karti tijekom izleta. |
+| F-016 | Voditelj turističke agencije pregledava statistiku: broj rezervacija, popunjenost izleta, ostvareni prihod te najtraženije aktivnosti i dodatne usluge. | Srednji | Projektni zadatak | Prikazani su svi navedeni podaci za izlete agencije. |
+| F-017 | Voditelj turističke agencije izvozi odabrane podatke i izvještaje u standardnom formatu (npr. CSV). | Srednji | Projektni zadatak | Odabrani podaci mogu se preuzeti kao datoteka koja se otvara u uobičajenim alatima za obradu podataka. |
 |  |  |  |  |  |
 
 <details>
@@ -53,7 +69,10 @@ Za složenu interakciju kratak scenarij *Given / When / Then* može pojasniti kr
 
 | ID | Opis | Prioritet | Izvor | Način provjere |
 | --- | --- | --- | --- | --- |
-| NF-01 | [Konkretan zahtjev (npr. odziv, sigurnost, pristupačnost)] | Visok / Srednji / Nizak | [Sigurnost / Uputa / SLA] | [Mjerenje / Testni scenarij / Pregled] |
+| NF-01 | Sustav razlikuje uloge (korisnik, organizator, administrator, voditelj agencije) i svakoj dopušta samo njezine radnje. | Visok | Projektni zadatak | Testni scenarij: korisnik ne može izvršiti administratorske radnje. |
+| NF-02 | Sustav podržava istodobni rad više korisnika. | Visok | Projektni zadatak | Testni scenarij: dvije istodobne rezervacije zadnjeg slobodnog mjesta, uspije samo jedna. |
+| NF-03 | Sučelje je responzivno (računalo, tablet, mobitel). | Visok | Projektni zadatak | Pregled sučelja na sva tri tipa uređaja. |
+| NF-04 | Aplikacija je javno dostupna na internetu. | Visok | Projektni zadatak | Pregled: aplikacija se otvara na javnoj adresi izvan lokalne mreže. |
 |  |  |  |  |  |
 
 <details>
@@ -87,6 +106,12 @@ Relevantna svojstva mogu se odnositi na uporabljivost, pristupačnost, sigurnost
 
 | ID uloge ili aktera | Odnos prema sustavu | Relevantni zahtjevi |
 | --- | --- | --- |
+| A-01 Korisnik | Pregledava i pretražuje izlete, rezervira ih i koristi aplikaciju kao vodič tijekom izleta. | F-001 do F-008 |
+| A-02 Organizator | Objavljuje i uređuje vlastite izlete, dodjeljuje vodiče, vodi evidenciju resursa i definira točke interesa. | F-012 do F-015 |
+| A-03 Administrator | Upravlja svim izletima, terminima, cijenama, kapacitetima, dodatnim uslugama, rezervacijama i točkama interesa. | F-009 do F-011, F-015 |
+| A-04 Voditelj turističke agencije | Pregledava statistiku poslovanja i izvozi izvještaje. | F-016, F-017 |
+| A-05 Pružatelj identiteta (Google) | Vanjski sustav koji provodi prijavu korisnika. | F-001 |
+| A-06 Vanjske usluge (karta, e-pošta) | Vanjski sustavi za prikaz karte i slanje potvrda. | F-007, F-008 |
 |  |  |  |
 
 <details>
@@ -114,8 +139,13 @@ Relevantna svojstva mogu se odnositi na uporabljivost, pristupačnost, sigurnost
 
 | ID | Tip | Opis ograničenja ili pretpostavke | Izvor | Inženjerska posljedica / Provjera |
 | --- | --- | --- | --- | --- |
-| C-01 | Ograničenje | [Fiksni tehnički ili procesni uvjet] | [Zadatak / Pravila] | [Utjecaj na arhitekturu i oblikovanje] |
-| AS-01 | Pretpostavka | [Očekivani uvjet, npr. o podacima ili okolini] | [Procjena tima] | [Kako i kada će se provjeriti valjanost] |
+| C-01 | Ograničenje | Prijava mora ići putem vanjskog pružatelja identiteta (OpenID Connect / OAuth 2.0). | Projektni zadatak | Autentifikaciju oblikovati oko odabranog pružatelja; provjeriti prijavljene i neprijavljene zahtjeve. |
+| AS-01 | Pretpostavka | Neprijavljen korisnik smije pregledavati i pretraživati izlete; prijava se traži tek za rezervaciju. | Procjena tima | Potvrditi |
+| AS-02 | Pretpostavka | Korisnik smije sam otkazati vlastitu rezervaciju. | Procjena tima | Potvrditi, ako da, dodati u F-006. |
+| AS-03 | Pretpostavka | Rezervacija iz statusa „zahtjev” u „potvrđena” prelazi automatski, bez odobrenja organizatora ili administratora. | Procjena tima | Potvrditi, inače dodati zahtjev za potvrđivanje rezervacije. |
+| AS-04 | Pretpostavka | Dovoljna je trenutačna GPS lokacija korisnika u pregledniku, bez praćenja lokacije na poslužitelju. | Procjena tima | Potvrditi, utječe na arhitekturu i bazu. |
+| AS-05 | Pretpostavka | Vodič je podatak uz izlet (dodjeljuje ga organizator), a ne zasebna korisnička uloga s vlastitim funkcijama. | Procjena tima | Potvrditi, ako treba, dodati ulogu i zahtjeve za vodiča. |
+| AS-06 | Pretpostavka | Prijava je putem Googlea, a ulogu organizatora, administratora ili voditelja agencije korisniku dodjeljuje administrator u sustavu. | Procjena tima | Potvrditi, utječe na model podataka i prijavu. |
 |  |  |  |  |  |
 <details>
 <summary><strong>Ograničenja nasuprot pretpostavkama</strong></summary>
