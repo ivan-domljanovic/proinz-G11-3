@@ -1,0 +1,56 @@
+@startuml 3-1-sustav-UC
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Korisnik\n(A-01)" as K
+actor "Organizator\n(A-02)" as O
+actor "Administrator\n(A-03)" as A
+actor "Voditelj turističke\nagencije (A-04)" as V
+
+actor "Google\n(A-05)" as G <<sustav>>
+actor "Vanjske usluge\n(karta, e-pošta)\n(A-06)" as VU <<sustav>>
+
+rectangle "Aplikacija za upravljanje izletima" {
+  usecase "UC-001\nPrijava u sustav" as UC1
+  usecase "UC-002\nPretraživanje i\npregled izleta" as UC2
+  usecase "UC-003\nRezervacija izleta" as UC3
+  usecase "UC-004\nPregled i otkazivanje\nrezervacije" as UC4
+  usecase "UC-005\nKorištenje\ndigitalnog vodiča" as UC5
+  usecase "UC-006\nUpravljanje izletima" as UC6
+  usecase "UC-007\nUpravljanje terminima\ni dodatnim uslugama" as UC7
+  usecase "UC-008\nUpravljanje\nrezervacijama" as UC8
+  usecase "UC-009\nDodjela vodiča i\nevidencija resursa" as UC9
+  usecase "UC-010\nDefiniranje\ntočaka interesa" as UC10
+  usecase "UC-011\nPregled statistike\ni izvoz" as UC11
+}
+
+' Korisnik
+K --> UC1
+K --> UC2
+K --> UC3
+K --> UC4
+K --> UC5
+
+' Organizator
+O --> UC1
+O --> UC6
+O --> UC9
+O --> UC10
+
+' Administrator
+A --> UC1
+A --> UC6
+A --> UC7
+A --> UC8
+A --> UC10
+
+' Voditelj agencije
+V --> UC1
+V --> UC11
+
+' Sekundarni akteri (vanjski sustavi)
+UC1 --> G
+UC3 --> VU
+UC5 --> VU
+UC10 --> VU
+@enduml
