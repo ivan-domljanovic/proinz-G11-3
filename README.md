@@ -109,15 +109,15 @@ Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 
 ## Članovi tima
 
-| Član     | Glavna uloga ili doprinos |
-| -------- | ------------------------- |
-| Ivan     | voditelj                  |
-| Deni     | frontend                  |
-| Lucija   | ???                       |
-| Anita    | ???                       |
-| Mate     | ???                       |
-| Matej    | backend                   |
-| Tomislav | backend                   |
+| Član     | Glavna uloga ili doprinos                 |
+| -------- | ----------------------------------------- |
+| Ivan     | voditelj                                  |
+| Deni     | frontend                                  |
+| Lucija   | ???                                       |
+| Anita    | dokumentacija (zahtjevi, obrasci uporabe) |
+| Mate     | ???                                       |
+| Matej    | backend                                   |
+| Tomislav | backend                                   |
 
 Uloge se tijekom projekta mogu mijenjati. Repozitorij i dogovoreni alat za praćenje zadataka (engl. task tracker) služe kao dodatni dokazi timskog rada.
 
