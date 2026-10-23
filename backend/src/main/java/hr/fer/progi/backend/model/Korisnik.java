@@ -11,14 +11,16 @@ import java.util.Set;
 public class Korisnik {
     @Id
     private Long id;
+
     private String ime;
     private String email;
+    private String avatarUrl;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Uloga.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "korisnik_uloga")
     private Set<Uloga> uloge;
 
-    @OneToMany(mappedBy = "korisnik", orphanRemoval = true)
+    @OneToMany(mappedBy = "korisnik")
     private Set<Rezervacija> rezervacije;
 }

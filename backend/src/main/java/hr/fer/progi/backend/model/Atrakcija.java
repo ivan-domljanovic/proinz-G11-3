@@ -8,6 +8,7 @@ public class Atrakcija {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String naziv;
     private String opis;
     private Double latitude;
