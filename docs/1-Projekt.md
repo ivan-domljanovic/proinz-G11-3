@@ -6,14 +6,14 @@ Turističke agencije i organizatori izleta nude velik broj aktivnosti koje se od
 
 Cilj projekta je razviti web aplikaciju u kojoj turisti na jednom mjestu mogu pretraživati i rezervirati izlete, a agencija upravljati ponudom, terminima, kapacitetima, vodičima i dodatnim uslugama. Tijekom izleta aplikacija na mobitelu radi kao digitalni vodič: prema GPS lokaciji korisniku prikazuje informacije o mjestima u blizini.
 
-Očekivana korist: turist na jednom mjestu rezervira izlet i dobije potvrdu e-poštom; organizator uvijek vidi popunjenost i ne može se dogoditi da se rezervira više mjesta nego što ih ima; voditelj agencije vidi broj rezervacija, prihod i najtraženije izlete.
+**Očekivana korist**: turist na jednom mjestu rezervira izlet i dobije potvrdu e-poštom; organizator uvijek vidi popunjenost i ne može se dogoditi da se rezervira više mjesta nego što ih ima; voditelj agencije vidi broj rezervacija, prihod i najtraženije izlete.
 
 ## 1.2 Ciljani korisnici i dionici
 
 | Skupina korisnika ili dionika               | Potreba ili interes relevantan za ovaj projekt                                                                                                                                                                |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Neprijavljeni posjetitelj                   | Pregledati i pretražiti ponudu izleta prema terminu, lokaciji, vrsti aktivnosti, trajanju, cijeni i broju sudionika.                                                                                          |
-| Turist (prijavljeni korisnik)               | Rezervirati izlet za određeni broj osoba, odabrati dodatne usluge, pratiti status rezervacije, pregledati podatke o rezervaciji i dobiti potvrdu e-poštom. Tijekom izleta koristiti digitalni vodič s kartom. |
+| Korisnik (prijavljeni)                      | Rezervirati izlet za određeni broj osoba, odabrati dodatne usluge, pratiti status rezervacije, pregledati podatke o rezervaciji i dobiti potvrdu e-poštom. Tijekom izleta koristiti digitalni vodič s kartom. |
 | Administrator                               | Dodavati i mijenjati izlete, termine, cijene, kapacitete, dodatne usluge i točke interesa te upravljati rezervacijama.                                                                                        |
 | Organizator                                 | Dodjeljivati vodiče izletima i pratiti raspoloživost resursa (prijevoz, oprema).                                                                                                                              |
 | Voditelj turističke agencije                | Pregledati statistiku (broj rezervacija, popunjenost, prihod, najtraženije aktivnosti i usluge) i izvesti izvještaje.                                                                                         |
