@@ -19,7 +19,7 @@ public class Rezervacija {
 
     private Integer brojMjesta;
 
-    private LocalDateTime datumRezervacije;
+    private LocalDateTime vrijemeRezervacije;
 
     @ManyToMany
     private List<DodatnaUsluga> dodatneUsluge;
