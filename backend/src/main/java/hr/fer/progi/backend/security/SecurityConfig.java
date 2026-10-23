@@ -1,6 +1,5 @@
 package hr.fer.progi.backend.security;
 
-import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,15 +14,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/login").permitAll()
-        .requestMatchers(
-                HttpMethod.GET,
-                "/api/izleti",
-                "/api/izleti/**"
-        ).permitAll()
-        .anyRequest().authenticated()
-)
+                .authorizeHttpRequests(auth ->
+                        auth
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/api/izleti", "/api/izleti/**").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout
                         .invalidateHttpSession(true)
