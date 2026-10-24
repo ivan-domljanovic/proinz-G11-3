@@ -1,0 +1,36 @@
+package hr.fer.progi.backend.service;
+
+import hr.fer.progi.backend.dto.RezervacijaRequest;
+import hr.fer.progi.backend.enums.Status;
+import hr.fer.progi.backend.model.DodatnaUsluga;
+import hr.fer.progi.backend.model.Rezervacija;
+import hr.fer.progi.backend.repository.RezervacijaRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+@Service
+@RequiredArgsConstructor
+public class RezervacijaServiceImpl implements RezervacijaService {
+    private final DodatneUslugeService dodatneUslugeService;
+    private final KorisnikService korisnikService;
+    private final TerminService terminService;
+    private final RezervacijaRepository rezervacijaRepository;
+
+    @Override
+    public Rezervacija rezerviraj(RezervacijaRequest request) {
+        var termin = terminService.dohvatiTermin(request.terminId());
+        if (request.brojMjesta() > terminService.dohvatiBrojSlobodnihMjesta(termin)) {
+            throw new IllegalStateException("Nema dovoljno slobodnih mjesta za odabrani termin.");
+        }
+        var dodatneUsluge = new ArrayList<DodatnaUsluga>();
+        for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
+            dodatneUsluge.add(dodatneUslugeService.dohvatiDodatnuUslugu(dodatnaUslugaId));
+        }
+        var korisnik = korisnikService.dohvatiKorisnika(request.korisnikId());
+        var rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(), dodatneUsluge, korisnik, termin);
+        return rezervacijaRepository.save(rezervacija);
+    }
+}

@@ -9,11 +9,6 @@ public record IzletDetailResponse(
         String kategorijaAktivnosti,
         Integer trajanjeMinuta,
         String lokacija,
-        String mjestoPolaska,
-        Double cijena,
-        Integer kapacitet,
-        Integer potrebanBrojVodica,
-
         List<TerminResponse> termini,
         List<AtrakcijaResponse> atrakcije,
         List<DodatnaUslugaResponse> dodatneUsluge
