@@ -1,11 +1,19 @@
 package hr.fer.progi.backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "resursi")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Resurs {
 
     @Id
@@ -19,43 +27,8 @@ public class Resurs {
     @OneToMany(mappedBy = "resurs")
     private List<TerminResurs> termini;
 
-    public Resurs() {
-    }
-
     public Resurs(String naziv, Integer kolicina) {
         this.naziv = naziv;
         this.kolicina = kolicina;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNaziv() {
-        return naziv;
-    }
-
-    public void setNaziv(String naziv) {
-        this.naziv = naziv;
-    }
-
-    public Integer getKolicina() {
-        return kolicina;
-    }
-
-    public void setKolicina(Integer kolicina) {
-        this.kolicina = kolicina;
-    }
-
-    public List<TerminResurs> getTermini() {
-        return termini;
-    }
-
-    public void setTermini(List<TerminResurs> termini) {
-        this.termini = termini;
     }
 }

@@ -1,9 +1,17 @@
 package hr.fer.progi.backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "dodatne_usluge")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DodatnaUsluga {
 
     @Id
@@ -16,44 +24,10 @@ public class DodatnaUsluga {
 
     private Double cijena;
 
-    public DodatnaUsluga() {
-    }
 
     public DodatnaUsluga(String naziv, String opis, Double cijena) {
         this.naziv = naziv;
         this.opis = opis;
-        this.cijena = cijena;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNaziv() {
-        return naziv;
-    }
-
-    public void setNaziv(String naziv) {
-        this.naziv = naziv;
-    }
-
-    public String getOpis() {
-        return opis;
-    }
-
-    public void setOpis(String opis) {
-        this.opis = opis;
-    }
-
-    public Double getCijena() {
-        return cijena;
-    }
-
-    public void setCijena(Double cijena) {
         this.cijena = cijena;
     }
 }
