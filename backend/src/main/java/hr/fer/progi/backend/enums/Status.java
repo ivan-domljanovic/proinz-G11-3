@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Status {
+    ZAHTJEV("Zahtjev"),
     POTVRDENO("Potvrđeno"),
     REALIZIRANO("Realizirano"),
     OTKAZANO("Otkazano");

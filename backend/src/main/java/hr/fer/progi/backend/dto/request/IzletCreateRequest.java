@@ -1,4 +1,4 @@
-package hr.fer.progi.backend.dto;
+package hr.fer.progi.backend.dto.request;
 
 public record IzletCreateRequest(String naziv, String opis,
                                  String kategorijaAktivnosti,

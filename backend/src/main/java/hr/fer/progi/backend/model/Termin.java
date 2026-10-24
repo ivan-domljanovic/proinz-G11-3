@@ -25,6 +25,14 @@ public class Termin {
 
     private LocalDateTime datumVrijeme;
 
+    private Integer kapacitet;
+
+    private String mjestoPolaska;
+
+    private Double cijena;
+
+    private Integer potrebanBrojVodica;
+
     @ManyToOne
     @JoinColumn(name = "izlet_id", nullable = false)
     private Izlet izlet;
@@ -43,8 +51,9 @@ public class Termin {
     @OneToMany(mappedBy = "termin")
     private List<TerminResurs> resursi;
 
-    public Termin(LocalDateTime datumVrijeme, Izlet izlet, Set<Korisnik> vodici) {
+    public Termin(LocalDateTime datumVrijeme, Integer kapacitet, Izlet izlet, Set<Korisnik> vodici) {
         this.datumVrijeme = datumVrijeme;
+        this.kapacitet = kapacitet;
         this.izlet = izlet;
         this.vodici = vodici;
     }

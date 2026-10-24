@@ -1,6 +1,6 @@
 package hr.fer.progi.backend.mapper;
 
-import hr.fer.progi.backend.dto.IzletDetailResponse;
+import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.model.Izlet;
 import org.mapstruct.Mapper;
 

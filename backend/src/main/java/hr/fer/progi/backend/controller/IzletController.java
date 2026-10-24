@@ -1,8 +1,8 @@
 package hr.fer.progi.backend.controller;
 
-import hr.fer.progi.backend.dto.IzletCreateRequest;
-import hr.fer.progi.backend.dto.IzletDetailResponse;
-import hr.fer.progi.backend.dto.TerminResponse;
+import hr.fer.progi.backend.dto.request.IzletCreateRequest;
+import hr.fer.progi.backend.dto.response.IzletDetailResponse;
+import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.service.IzletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

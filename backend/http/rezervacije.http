@@ -1,0 +1,11 @@
+POST http://localhost:8080/api/rezervacije
+Content-Type: application/json
+
+{
+  "korisnikId": 1001,
+  "terminId": 1,
+  "brojMjesta": 3,
+  "dodatneUslugeId": [
+    1
+  ]
+}
