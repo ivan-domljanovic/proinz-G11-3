@@ -41,8 +41,7 @@ public class IzletServiceImpl implements IzletService {
         var dodatneUsluge = dodatnaUslugaRepository.findAllById(List.of(request.dodatneUsluge()));
 
         var izlet = new Izlet(request.naziv(), request.opis(), request.kategorijaAktivnosti(),
-                request.trajanjeMinuta(), request.lokacija(), request.mjestoPolaska(),
-                request.cijena(), request.kapacitet(), request.potrebanBrojVodica(), atrakcije,
+                request.trajanjeMinuta(), request.lokacija(), atrakcije,
                 dodatneUsluge);
 
         var izletDb = izletRepository.save(izlet);

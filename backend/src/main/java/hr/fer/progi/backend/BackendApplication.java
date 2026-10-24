@@ -121,10 +121,6 @@ public class BackendApplication {
                     "PLANINARENJE",
                     300,
                     "Medvednica",
-                    "Šestine, Zagreb",
-                    25.0,
-                    20,
-                    1,
                     List.of(sljeme, medvedgrad),
                     List.of(rucak)
             );
@@ -136,10 +132,6 @@ public class BackendApplication {
                     "PRIRODA",
                     600,
                     "Plitvička jezera",
-                    "Autobusni kolodvor Zagreb",
-                    60.0,
-                    30,
-                    1,
                     List.of(plitvice),
                     List.of(rucak, prijevoz)
             );
@@ -151,6 +143,10 @@ public class BackendApplication {
             medvednicaTermin.setDatumVrijeme(
                     sada.toLocalDate().plusDays(7).atTime(9, 0)
             );
+            medvednicaTermin.setKapacitet(20);
+            medvednicaTermin.setPotrebanBrojVodica(1);
+            medvednicaTermin.setMjestoPolaska("Autobusni kolodvor Zagreb");
+            medvednicaTermin.setCijena(50.0);
             medvednicaTermin.setIzlet(medvednicaIzlet);
             medvednicaTermin.setVodici(Set.of(vodic));
             medvednicaTermin = terminRepository.save(medvednicaTermin);
@@ -159,6 +155,10 @@ public class BackendApplication {
             plitviceTermin.setDatumVrijeme(
                     sada.toLocalDate().plusDays(14).atTime(7, 0)
             );
+            plitviceTermin.setKapacitet(30);
+            plitviceTermin.setPotrebanBrojVodica(1);
+            plitviceTermin.setMjestoPolaska("Autobusni kolodvor Zagreb");
+            plitviceTermin.setCijena(80.0);
             plitviceTermin.setIzlet(plitviceIzlet);
             plitviceTermin.setVodici(Set.of(vodic));
             plitviceTermin = terminRepository.save(plitviceTermin);
@@ -167,6 +167,10 @@ public class BackendApplication {
             prosliTermin.setDatumVrijeme(
                     sada.toLocalDate().minusDays(7).atTime(9, 0)
             );
+            prosliTermin.setKapacitet(20);
+            prosliTermin.setPotrebanBrojVodica(1);
+            prosliTermin.setMjestoPolaska("Lisinski");
+            prosliTermin.setCijena(50.0);
             prosliTermin.setIzlet(medvednicaIzlet);
             prosliTermin.setVodici(Set.of(vodic));
             prosliTermin = terminRepository.save(prosliTermin);
