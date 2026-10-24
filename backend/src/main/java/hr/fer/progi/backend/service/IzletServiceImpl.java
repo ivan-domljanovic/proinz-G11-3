@@ -1,12 +1,17 @@
 package hr.fer.progi.backend.service;
 
+import hr.fer.progi.backend.dto.IzletCreateRequest;
 import hr.fer.progi.backend.dto.IzletDetailResponse;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 
 import hr.fer.progi.backend.mapper.IzletMapper;
+import hr.fer.progi.backend.model.Izlet;
+import hr.fer.progi.backend.repository.AtrakcijaRepository;
+import hr.fer.progi.backend.repository.DodatnaUslugaRepository;
 import hr.fer.progi.backend.repository.IzletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +21,8 @@ public class IzletServiceImpl implements IzletService {
 
     private final IzletRepository izletRepository;
     private final IzletMapper izletMapper;
+    private final AtrakcijaRepository atrakcijaRepository;
+    private final DodatnaUslugaRepository dodatnaUslugaRepository;
 
     public IzletDetailResponse dohvatiIzlet(Long id) {
         var izlet = izletRepository.findById(id).orElseThrow(
@@ -25,5 +32,20 @@ public class IzletServiceImpl implements IzletService {
 
     public List<IzletDetailResponse> dohvatiSveIzlete() {
         return izletRepository.findAll().stream().map(izletMapper::toResponse).toList();
+    }
+
+    @Transactional
+    public IzletDetailResponse kreirajIzlet(IzletCreateRequest request) {
+        var atrakcije = atrakcijaRepository.findAllById(List.of(request.atrakcije()));
+        var dodatneUsluge = dodatnaUslugaRepository.findAllById(List.of(request.dodatneUsluge()));
+
+        var izlet = new Izlet(request.naziv(), request.opis(), request.kategorijaAktivnosti(),
+                request.trajanjeMinuta(), request.lokacija(), request.mjestoPolaska(),
+                request.cijena(), request.kapacitet(), request.potrebanBrojVodica(), atrakcije,
+                dodatneUsluge);
+
+        var izletDb = izletRepository.save(izlet);
+
+        return izletMapper.toResponse(izletDb);
     }
 }
