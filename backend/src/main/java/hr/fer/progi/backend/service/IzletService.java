@@ -2,13 +2,13 @@ package hr.fer.progi.backend.service;
 
 import hr.fer.progi.backend.dto.IzletDetailResponse;
 
+import java.util.List;
+
 public interface IzletService {
 
     IzletDetailResponse dohvatiIzlet(Long id);
 
-    default void dohvatiSveIzlete() {
-        throw new RuntimeException("Potrebno implementirat");
-    }
+    List<IzletDetailResponse> dohvatiSveIzlete();
 
     default void kreirajIzlet() {
         throw new RuntimeException("Potrebno implementirat");

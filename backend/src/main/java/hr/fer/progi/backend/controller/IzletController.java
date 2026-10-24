@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/izleti")
 public class IzletController {
@@ -17,6 +19,12 @@ public class IzletController {
 
     public IzletController(IzletService izletService) {
         this.izletService = izletService;
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<List<IzletDetailResponse>>> sviIzleti() {
+        var data = izletService.dohvatiSveIzlete();
+        return ResponseEntity.ok(ApiResponse.ok(data));
     }
 
     @GetMapping("/{id}")
