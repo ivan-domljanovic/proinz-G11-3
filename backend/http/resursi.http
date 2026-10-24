@@ -1,0 +1,26 @@
+###
+GET http://localhost:8080/api/resursi
+
+###
+GET http://localhost:8080/api/resursi/3
+
+###
+POST http://localhost:8080/api/resursi
+Content-Type: application/json
+
+{
+  "naziv": "Laptop",
+  "kolicina": 10
+}
+
+###
+PUT http://localhost:8080/api/resursi/3
+Content-Type: application/json
+
+{
+  "naziv": "Laptop marke XXX",
+  "kolicina": 8
+}
+
+###
+DELETE http://localhost:8080/api/resursi/3
