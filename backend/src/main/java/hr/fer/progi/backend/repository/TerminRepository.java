@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TerminRepository extends JpaRepository<Termin, Long> {
-    @Query("SELECT t.kapacitet - (SELECT SUM(r.brojMjesta) FROM Rezervacija r WHERE r.termin = :termin AND r.status != 'Otkazano') FROM Termin t WHERE t = :termin")
+    @Query("SELECT t.kapacitet - (SELECT SUM(r.brojMjesta) FROM Rezervacija r WHERE r.termin = :termin AND r.status != 'OTKAZANO') FROM Termin t WHERE t = :termin")
     Integer getNumberOfAvailableSpots(Termin termin);
 }
