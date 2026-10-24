@@ -1,12 +1,13 @@
-package hr.fer.progi.backend.service;
+package hr.fer.progi.backend.service.impl;
 
-import hr.fer.progi.backend.dto.ResursCreateRequest;
-import hr.fer.progi.backend.dto.ResursDetailsResponse;
-import hr.fer.progi.backend.dto.ResursUpdateRequest;
+import hr.fer.progi.backend.dto.request.ResursCreateRequest;
+import hr.fer.progi.backend.dto.response.ResursDetailsResponse;
+import hr.fer.progi.backend.dto.request.ResursUpdateRequest;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.mapper.ResursMapper;
 import hr.fer.progi.backend.model.Resurs;
 import hr.fer.progi.backend.repository.ResursRepository;
+import hr.fer.progi.backend.service.ResursService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

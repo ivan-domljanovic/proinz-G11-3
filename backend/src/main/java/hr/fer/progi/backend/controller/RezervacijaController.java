@@ -1,11 +1,12 @@
 package hr.fer.progi.backend.controller;
 
 
-import hr.fer.progi.backend.dto.RezervacijaRequest;
-import hr.fer.progi.backend.dto.RezervacijaResponse;
+import hr.fer.progi.backend.dto.request.RezervacijaRequest;
+import hr.fer.progi.backend.dto.response.RezervacijaResponse;
 import hr.fer.progi.backend.mapper.RezervacijaMapper;
 import hr.fer.progi.backend.service.RezervacijaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,6 @@ public class RezervacijaController {
             @RequestBody RezervacijaRequest request
     ) {
         var rezervacija = rezervacijaService.rezerviraj(request);
-        return ResponseEntity.ok(rezervacijaMapper.toResponse(rezervacija));
+        return ResponseEntity.status(HttpStatus.CREATED).body(rezervacijaMapper.toResponse(rezervacija));
     }
 }

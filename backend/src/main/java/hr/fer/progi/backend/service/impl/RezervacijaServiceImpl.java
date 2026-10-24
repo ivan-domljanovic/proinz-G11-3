@@ -1,10 +1,14 @@
-package hr.fer.progi.backend.service;
+package hr.fer.progi.backend.service.impl;
 
-import hr.fer.progi.backend.dto.RezervacijaRequest;
+import hr.fer.progi.backend.dto.request.RezervacijaRequest;
 import hr.fer.progi.backend.enums.Status;
 import hr.fer.progi.backend.model.DodatnaUsluga;
 import hr.fer.progi.backend.model.Rezervacija;
 import hr.fer.progi.backend.repository.RezervacijaRepository;
+import hr.fer.progi.backend.service.DodatneUslugeService;
+import hr.fer.progi.backend.service.KorisnikService;
+import hr.fer.progi.backend.service.RezervacijaService;
+import hr.fer.progi.backend.service.TerminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

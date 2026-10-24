@@ -1,7 +1,8 @@
-package hr.fer.progi.backend.service;
+package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.model.Termin;
 import hr.fer.progi.backend.repository.TerminRepository;
+import hr.fer.progi.backend.service.TerminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

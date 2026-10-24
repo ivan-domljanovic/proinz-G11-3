@@ -1,7 +1,8 @@
-package hr.fer.progi.backend.service;
+package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.model.DodatnaUsluga;
 import hr.fer.progi.backend.repository.DodatnaUslugaRepository;
+import hr.fer.progi.backend.service.DodatneUslugeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

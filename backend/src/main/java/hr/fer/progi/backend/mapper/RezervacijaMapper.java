@@ -1,6 +1,6 @@
 package hr.fer.progi.backend.mapper;
 
-import hr.fer.progi.backend.dto.RezervacijaResponse;
+import hr.fer.progi.backend.dto.response.RezervacijaResponse;
 import hr.fer.progi.backend.model.Rezervacija;
 import org.mapstruct.Mapper;
 

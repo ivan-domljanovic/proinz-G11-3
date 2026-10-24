@@ -6,6 +6,6 @@ Content-Type: application/json
   "terminId": 1,
   "brojMjesta": 3,
   "dodatneUslugeId": [
-    100
+    1
   ]
 }

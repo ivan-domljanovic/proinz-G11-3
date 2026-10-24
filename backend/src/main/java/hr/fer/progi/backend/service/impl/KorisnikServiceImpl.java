@@ -1,7 +1,8 @@
-package hr.fer.progi.backend.service;
+package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.model.Korisnik;
 import hr.fer.progi.backend.repository.KorisnikRepository;
+import hr.fer.progi.backend.service.KorisnikService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

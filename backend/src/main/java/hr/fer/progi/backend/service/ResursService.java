@@ -1,8 +1,8 @@
 package hr.fer.progi.backend.service;
 
-import hr.fer.progi.backend.dto.ResursCreateRequest;
-import hr.fer.progi.backend.dto.ResursDetailsResponse;
-import hr.fer.progi.backend.dto.ResursUpdateRequest;
+import hr.fer.progi.backend.dto.request.ResursCreateRequest;
+import hr.fer.progi.backend.dto.response.ResursDetailsResponse;
+import hr.fer.progi.backend.dto.request.ResursUpdateRequest;
 
 import java.util.List;
 

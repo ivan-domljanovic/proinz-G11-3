@@ -1,7 +1,7 @@
 package hr.fer.progi.backend.mapper;
 
 
-import hr.fer.progi.backend.dto.ResursDetailsResponse;
+import hr.fer.progi.backend.dto.response.ResursDetailsResponse;
 import hr.fer.progi.backend.model.Resurs;
 import org.mapstruct.Mapper;
 

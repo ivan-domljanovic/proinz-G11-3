@@ -1,6 +1,6 @@
 package hr.fer.progi.backend.mapper;
 
-import hr.fer.progi.backend.dto.KorisnikResponse;
+import hr.fer.progi.backend.dto.response.KorisnikResponse;
 import hr.fer.progi.backend.model.Korisnik;
 import org.mapstruct.Mapper;
 

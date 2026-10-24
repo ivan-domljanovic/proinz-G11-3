@@ -1,7 +1,7 @@
 package hr.fer.progi.backend.mapper;
 
-import hr.fer.progi.backend.dto.TerminResponse;
-import hr.fer.progi.backend.dto.TerminRezervacijaResponse;
+import hr.fer.progi.backend.dto.response.TerminResponse;
+import hr.fer.progi.backend.dto.response.TerminRezervacijaResponse;
 import hr.fer.progi.backend.mapper.helper.TerminMapperHelper;
 import hr.fer.progi.backend.model.Termin;
 import org.mapstruct.Mapper;

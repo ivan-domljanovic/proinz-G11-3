@@ -1,4 +1,4 @@
-package hr.fer.progi.backend.dto;
+package hr.fer.progi.backend.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;

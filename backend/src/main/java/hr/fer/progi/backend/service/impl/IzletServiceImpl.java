@@ -1,14 +1,15 @@
-package hr.fer.progi.backend.service;
+package hr.fer.progi.backend.service.impl;
 
-import hr.fer.progi.backend.dto.IzletCreateRequest;
-import hr.fer.progi.backend.dto.IzletDetailResponse;
-import hr.fer.progi.backend.dto.TerminResponse;
+import hr.fer.progi.backend.dto.request.IzletCreateRequest;
+import hr.fer.progi.backend.dto.response.IzletDetailResponse;
+import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.mapper.IzletMapper;
 import hr.fer.progi.backend.model.Izlet;
 import hr.fer.progi.backend.repository.AtrakcijaRepository;
 import hr.fer.progi.backend.repository.DodatnaUslugaRepository;
 import hr.fer.progi.backend.repository.IzletRepository;
+import hr.fer.progi.backend.service.IzletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
