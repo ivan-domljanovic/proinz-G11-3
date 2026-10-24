@@ -23,4 +23,62 @@ public class Korisnik {
 
     @OneToMany(mappedBy = "korisnik")
     private Set<Rezervacija> rezervacije;
+
+    public Korisnik() {
+    }
+
+    public Korisnik(String ime, String email, String avatarUrl, Set<Uloga> uloge) {
+        this.ime = ime;
+        this.email = email;
+        this.avatarUrl = avatarUrl;
+        this.uloge = uloge;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getIme() {
+        return ime;
+    }
+
+    public void setIme(String ime) {
+        this.ime = ime;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public Set<Uloga> getUloge() {
+        return uloge;
+    }
+
+    public void setUloge(Set<Uloga> uloge) {
+        this.uloge = uloge;
+    }
+
+    public Set<Rezervacija> getRezervacije() {
+        return rezervacije;
+    }
+
+    public void setRezervacije(Set<Rezervacija> rezervacije) {
+        this.rezervacije = rezervacije;
+    }
 }
