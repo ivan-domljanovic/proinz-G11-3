@@ -1,9 +1,17 @@
 package hr.fer.progi.backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "termin_resurs")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TerminResurs {
 
     @Id
@@ -19,4 +27,10 @@ public class TerminResurs {
     private Resurs resurs;
 
     private Integer kolicina;
+
+    public TerminResurs(Termin termin, Resurs resurs, Integer kolicina) {
+        this.termin = termin;
+        this.resurs = resurs;
+        this.kolicina = kolicina;
+    }
 }

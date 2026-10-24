@@ -1,6 +1,10 @@
 package hr.fer.progi.backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,6 +13,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "termini")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Termin {
 
     @Id
@@ -34,4 +42,10 @@ public class Termin {
 
     @OneToMany(mappedBy = "termin")
     private List<TerminResurs> resursi;
+
+    public Termin(LocalDateTime datumVrijeme, Izlet izlet, Set<Korisnik> vodici) {
+        this.datumVrijeme = datumVrijeme;
+        this.izlet = izlet;
+        this.vodici = vodici;
+    }
 }

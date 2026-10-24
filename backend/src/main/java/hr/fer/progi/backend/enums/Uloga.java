@@ -1,5 +1,8 @@
 package hr.fer.progi.backend.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Uloga {
     KORISNIK("Korisnik"),
     VODIC("Vodič"),
@@ -12,7 +15,4 @@ public enum Uloga {
         this.uloga = uloga;
     }
 
-    public String getUloga() {
-        return uloga;
-    }
 }

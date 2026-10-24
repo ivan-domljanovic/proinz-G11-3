@@ -1,5 +1,8 @@
 package hr.fer.progi.backend.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Status {
     POTVRDENO("Potvrđeno"),
     REALIZIRANO("Realizirano"),
@@ -11,7 +14,4 @@ public enum Status {
         this.opis = opis;
     }
 
-    public String getOpis() {
-        return opis;
-    }
 }
