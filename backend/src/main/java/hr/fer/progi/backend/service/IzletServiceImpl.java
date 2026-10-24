@@ -2,8 +2,8 @@ package hr.fer.progi.backend.service;
 
 import hr.fer.progi.backend.dto.IzletCreateRequest;
 import hr.fer.progi.backend.dto.IzletDetailResponse;
+import hr.fer.progi.backend.dto.TerminResponse;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
-
 import hr.fer.progi.backend.mapper.IzletMapper;
 import hr.fer.progi.backend.model.Izlet;
 import hr.fer.progi.backend.repository.AtrakcijaRepository;
@@ -36,6 +36,7 @@ public class IzletServiceImpl implements IzletService {
 
     @Transactional
     public IzletDetailResponse kreirajIzlet(IzletCreateRequest request) {
+//        todo: dodat validaciju
         var atrakcije = atrakcijaRepository.findAllById(List.of(request.atrakcije()));
         var dodatneUsluge = dodatnaUslugaRepository.findAllById(List.of(request.dodatneUsluge()));
 
@@ -47,5 +48,28 @@ public class IzletServiceImpl implements IzletService {
         var izletDb = izletRepository.save(izlet);
 
         return izletMapper.toResponse(izletDb);
+    }
+
+    @Transactional
+    public void obrisiIzlet(Long id) {
+//        todo: kaskada brisanja?? provjere?? obrisat dodjeljene termine itd...
+        if (!izletRepository.existsById(id))
+            throw new ResourceNotFoundException("Izlet s tim id ne postoji");
+        izletRepository.deleteById(id);
+    }
+
+    @Override
+    public IzletDetailResponse azurirajIzlet(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<TerminResponse> dohvatiTermineIzleta(Long id) {
+        return List.of();
+    }
+
+    @Override
+    public TerminResponse dodajTerminIzletu(Long id) {
+        return null;
     }
 }

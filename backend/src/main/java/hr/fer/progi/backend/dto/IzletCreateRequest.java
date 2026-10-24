@@ -10,4 +10,10 @@ public record IzletCreateRequest(String naziv, String opis,
                                  Integer potrebanBrojVodica,
                                  Long[] atrakcije,
                                  Long[] dodatneUsluge) {
+    public IzletCreateRequest {
+        atrakcije = atrakcije == null ? new Long[0] : atrakcije;
+        dodatneUsluge = dodatneUsluge == null
+                ? new Long[0]
+                : dodatneUsluge;
+    }
 }

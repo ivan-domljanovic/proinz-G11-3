@@ -11,13 +11,54 @@ POST http://localhost:8080/api/izleti
 Content-Type: application/json
 
 {
-    "naziv": "tomo",
-    "opis": "tomo",
-    "trajanje": 500,
-    "cijena": 49494.4,
-    "kapacitet": 5,
-    "potrebanBrojVodica": 5,
-    "kategorijaAktivnosti": "asggd",
-    "lokacija": "Popovaca",
-    "mjestoPolaska": "Kutina"
-  }
+  "naziv": "Neki novi izlet",
+  "opis": "Ovo je najnoviji izlet...",
+  "trajanjeMinuta": 1440,
+  "cijena": 649.9,
+  "kapacitet": 26,
+  "potrebanBrojVodica": 2,
+  "kategorijaAktivnosti": "something",
+  "lokacija": "Zagreb",
+  "mjestoPolaska": "Sesvete",
+  "atrakcije": [
+    1,
+    2
+  ],
+  "dodatneUsluge": [
+    1,
+    2
+  ]
+}
+
+> {%
+    client.test("Uspjesno kreira novi izlet #1", () => {
+        client.assert(response.status == 201, "Nije uspjesno kreiran")
+    })
+%}
+
+###
+
+POST http://localhost:8080/api/izleti
+Content-Type: application/json
+
+{
+  "naziv": "Neki drugi izlet",
+  "opis": "Ovo je najnoviji izlet...",
+  "trajanjeMinuta": 140,
+  "cijena": 63.9,
+  "kapacitet": 4,
+  "potrebanBrojVodica": 2,
+  "kategorijaAktivnosti": "something",
+  "lokacija": "Zagreb",
+  "mjestoPolaska": "Sesvete"
+}
+
+> {%
+    client.test("Uspjesno kreira novi izlet #2", () => {
+        client.assert(response.status == 201, "Nije uspjesno kreiran")
+    })
+%}
+
+###
+
+DELETE http://localhost:8080/api/izleti/2

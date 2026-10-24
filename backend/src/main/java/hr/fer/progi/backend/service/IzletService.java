@@ -2,6 +2,7 @@ package hr.fer.progi.backend.service;
 
 import hr.fer.progi.backend.dto.IzletCreateRequest;
 import hr.fer.progi.backend.dto.IzletDetailResponse;
+import hr.fer.progi.backend.dto.TerminResponse;
 
 import java.util.List;
 
@@ -13,35 +14,11 @@ public interface IzletService {
 
     IzletDetailResponse kreirajIzlet(IzletCreateRequest request);
 
-    default void azurirajIzlet(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
+    void obrisiIzlet(Long id);
 
-    default void obrisiIzlet(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
+    IzletDetailResponse azurirajIzlet(Long id);
 
-    default void dohvatiTermineIzleta(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
+    List<TerminResponse> dohvatiTermineIzleta(Long id);
 
-    default void dohvatiAtrakcijeIzleta(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
-
-    default void dohvatiUslugeIzleta(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
-
-    default void postaviTermineIzleta(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
-
-    default void postaviAtrakcijeIzleta(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
-
-    default void postaviDodatneUslugeIzleta(Long id) {
-        throw new RuntimeException("Potrebno implementirat");
-    }
+    TerminResponse dodajTerminIzletu(Long id);
 }
