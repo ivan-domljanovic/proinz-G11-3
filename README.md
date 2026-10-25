@@ -113,7 +113,7 @@ Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 | -------- | ----------------------------------------- |
 | Ivan     | voditelj                                  |
 | Deni     | frontend                                  |
-| Lucija   | ???                                       |
+| Lucija   | frontend                                  |
 | Anita    | dokumentacija (zahtjevi, obrasci uporabe) |
 | Mate     | ???                                       |
 | Matej    | backend                                   |
