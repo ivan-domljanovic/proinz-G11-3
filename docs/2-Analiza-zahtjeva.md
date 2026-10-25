@@ -137,15 +137,14 @@ Relevantna svojstva mogu se odnositi na uporabljivost, pristupačnost, sigurnost
 **Cilj:** Zabilježiti projektno specifične granice i pretpostavke koje utječu na zahtjeve ili oblikovanje, zajedno s njihovim izvorom i praktičnom posljedicom. Ovo je njihovo mjerodavno mjesto u dokumentaciji.
 
 | ID    | Tip          | Opis ograničenja ili pretpostavke                                                                                                   | Izvor             | Inženjerska posljedica / Provjera                                                                                                                                               |
-| ----- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| ----- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | C-01  | Ograničenje  | Prijava mora ići putem vanjskog pružatelja identiteta (OpenID Connect / OAuth 2.0).                                                 | Projektni zadatak | Autentifikaciju oblikovati oko odabranog pružatelja; provjeriti prijavljene i neprijavljene zahtjeve.                                                                           |
 | AS-01 | Pretpostavka | Neprijavljen korisnik smije pregledavati i pretraživati izlete; prijava se traži tek za rezervaciju.                                | Procjena tima     | Pregled i pretraga izleta dostupni su bez prijave, a rezervacija i sve ostale radnje traže prijavu. Provjera: neprijavljen korisnik vidi popis izleta, ali ne može rezervirati. |
 | AS-02 | Pretpostavka | Korisnik smije sam otkazati vlastitu rezervaciju.                                                                                   | Procjena tima     | Pri otkazivanju se mjesta vraćaju u termin (UC-004). Provjera: nakon otkazivanja broj slobodnih mjesta termina poveća se za broj osoba iz rezervacije.                          |
 | AS-03 | Pretpostavka | Rezervacija iz statusa „zahtjev” u „potvrđena” prelazi automatski, bez odobrenja organizatora ili administratora.                   | Procjena tima     | Potvrditi, inače dodati zahtjev za potvrđivanje rezervacije.                                                                                                                    |
 | AS-04 | Pretpostavka | Dovoljna je trenutačna GPS lokacija korisnika u pregledniku, bez praćenja lokacije na poslužitelju.                                 | Procjena tima     | Lokacija se ne šalje na poslužitelj niti sprema u bazu, što pojednostavljuje zaštitu osobnih podataka (GDPR). Provjera: u bazi ne postoje podaci o lokaciji korisnika.          |
 | AS-05 | Pretpostavka | Vodič je podatak uz izlet (dodjeljuje ga organizator), a ne zasebna korisnička uloga s vlastitim funkcijama.                        | Procjena tima     | Potvrditi, ako treba, dodati ulogu i zahtjeve za vodiča.                                                                                                                        |
-| AS-06 | Pretpostavka | Prijava je putem Googlea, a ulogu organizatora, administratora ili voditelja agencije korisniku dodjeljuje administrator u sustavu. | Procjena tima     | Pri prvoj prijavi korisnik automatski dobiva ulogu korisnika; ostale uloge dodaje administrator. Jedan korisnik može imati više uloga.                                          |     |
-|       |              |                                                                                                                                     |                   |                                                                                                                                                                                 |
+| AS-06 | Pretpostavka | Prijava je putem Googlea, a ulogu organizatora, administratora ili voditelja agencije korisniku dodjeljuje administrator u sustavu. | Procjena tima     | Pri prvoj prijavi korisnik automatski dobiva ulogu korisnika; ostale uloge dodaje administrator. Jedan korisnik može imati više uloga.                                          |
 
 <details>
 <summary><strong>Ograničenja nasuprot pretpostavkama</strong></summary>
@@ -169,9 +168,10 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 
 **Cilj:** Sačuvati razlog promjena koje mijenjaju dogovoreni opseg, prioritet ili kriterije prihvaćanja, uz istodobno održavanje prethodnih zahtjeva ažurnima.
 
-| Datum | ID zahtjeva | Promjena i razlog | Dogovoreno s / dokaz |
-| ----- | ----------- | ----------------- | -------------------- |
-|       |             |                   |                      |
+| Datum         | ID zahtjeva         | Promjena i razlog                                                                                                                                                                                              | Dogovoreno s / dokaz                                         |
+| ------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| 25. 10. 2026. | F-002, F-009, F-010 | Mjesto polaska, cijena, kapacitet i potreban broj vodiča zadaju se za svaki termin izleta, a ne jednom za cijeli izlet, jer isti izlet može imati termine s različitom cijenom, kapacitetom i mjestom polaska. | Backend tim; model `Termin` u repozitoriju                   |
+| 25. 10. 2026. | F-013, F-014        | Vodiči se dodjeljuju pojedinom terminu izleta. Resursi (prijevoz, oprema) vode se kao količina koja se dodjeljuje terminu (npr. 2 od 3 kombija), a ne samo kao slobodan ili zauzet.                            | Backend tim; modeli `Termin` i `TerminResurs` u repozitoriju |
 
 <details>
 <summary><strong>Primjer značajne promjene</strong></summary>
@@ -185,18 +185,36 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 **Razlog promjene:** Zapis navodi zahvaćene stavke i objašnjava razlog iz perspektive korisnika, a zatim upućuje na dokaz odluke. Nakon stvarne odluke ažurirajte trenutačne zahtjeve; stilska izmjena teksta ne zahtijeva zapis u dnevniku promjena. Trenutačni red zadataka držite u alatu za praćenje zadataka.
 
 </details>
-| 25. 10. 2026. | F-002, F-009, F-010 | Mjesto polaska, cijena, kapacitet i potreban broj vodiča zadaju se za svaki termin izleta, a ne jednom za cijeli izlet, jer isti izlet može imati termine s različitom cijenom, kapacitetom i mjestom polaska. | Backend tim; model `Termin` u repozitoriju |
-| 25. 10. 2026. | F-013, F-014 | Vodiči se dodjeljuju pojedinom terminu izleta. Resursi (prijevoz, oprema) vode se kao količina koja se dodjeljuje terminu (npr. 2 od 3 kombija), a ne samo kao slobodan ili zauzet. | Backend tim; modeli `Termin` i `TerminResurs` u repozitoriju |
+
 ---
 
 ## 2.6 Sljedivost zahtjeva
 
 **Cilj:** Osigurati dvosmjernu sljedivost — povezati zahtjeve s opisanim ponašanjem, dijelovima sustava koji ih ostvaruju te ispitivanjem ili drugom provjerom.
 
-| ID zahtjeva | Obrazac uporabe / modul | Arhitekturna realizacija                         | Ispitivanje ili provjera          |
-| ----------- | ----------------------- | ------------------------------------------------ | --------------------------------- |
-| F-001       | [UC-001]                | [Komponenta, modul ili drugo mjesto realizacije] | [ST-01, CT-01 ili druga provjera] |
-|             |                         |                                                  |                                   |
+| ID zahtjeva | Obrazac uporabe / modul                    | Arhitekturna realizacija                                                 | Ispitivanje ili provjera                            |
+| ----------- | ------------------------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------- |
+| F-001       | UC-001                                     | Modul Autentikacija (`SecurityConfig`, `AuthController`)                 | Na čekanju: ispitni slučajevi još nisu definirani   |
+| F-002       | UC-002                                     | Web-klijent; Modul Izleti (`IzletController`)                            | Na čekanju                                          |
+| F-003       | UC-002                                     | Web-klijent; Modul Izleti                                                | Na čekanju                                          |
+| F-004       | UC-003                                     | Modul Rezervacije (`RezervacijaController`, `RezervacijaService`)        | Na čekanju                                          |
+| F-005       | UC-003 (6a)                                | Modul Rezervacije: provjera slobodnih mjesta na poslužitelju             | Na čekanju                                          |
+| F-006       | UC-004                                     | Modul Rezervacije                                                        | Na čekanju                                          |
+| F-007       | UC-003 (korak 8)                           | Modul Obavijesti; vanjska usluga e-pošte                                 | Na čekanju                                          |
+| F-008       | UC-005                                     | Web-klijent (karta, lokacija preglednika); Modul Izleti (točke interesa) | Na čekanju                                          |
+| F-009       | UC-006                                     | Modul Izleti (`IzletController`, `IzletService`)                         | Na čekanju                                          |
+| F-010       | UC-007                                     | Modul Izleti (`TerminService`, `DodatneUslugeService`)                   | Na čekanju                                          |
+| F-011       | UC-008                                     | Modul Rezervacije                                                        | Na čekanju                                          |
+| F-012       | UC-006 (3c)                                | Modul Izleti; Modul Autentikacija (provjera vlasništva izleta)           | Na čekanju                                          |
+| F-013       | UC-009                                     | Modul Resursi                                                            | Na čekanju                                          |
+| F-014       | UC-009                                     | Modul Resursi (`ResursController`, `ResursService`)                      | Na čekanju                                          |
+| F-015       | UC-010                                     | Modul Izleti (točke interesa)                                            | Na čekanju                                          |
+| F-016       | UC-011                                     | Modul Statistika                                                         | Na čekanju                                          |
+| F-017       | UC-011                                     | Modul Statistika                                                         | Na čekanju                                          |
+| NF-01       | Svi obrasci uporabe s prijavljenim akterom | Modul Autentikacija (provjera uloge za svaki zaštićeni zahtjev)          | Na čekanju                                          |
+| NF-02       | UC-003 (6a)                                | Modul Rezervacije: provjera kapaciteta unutar transakcije                | Na čekanju                                          |
+| NF-03       | — (svojstvo cijelog sučelja)               | Web-klijent                                                              | Na čekanju: pregled na računalu, tabletu i mobitelu |
+| NF-04       | —                                          | Platforma za postavljanje (poglavlje 6)                                  | Na čekanju: provjera javne adrese                   |
 
 <details>
 <summary><strong>Sljedivost zahtjeva do obrazaca uporabe i ispitivanja</strong></summary>
@@ -211,38 +229,18 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 **Pokrivenost i dokazi:** CT-06 provjerava odabir primatelja za F-005, ali sam po sebi ne dokazuje da je obavijest stvarno dostavljena; ako projekt zahtijeva potpunu dostavu od početka do kraja, za taj dio treba postojati zasebna provjera. Svaki redak pokazuje gdje je zahtjev opisan kao ponašanje, gdje je ostvaren u sustavu i gdje se nalazi dokaz njegove provjere. Zahtjev ne mora imati zaseban obrazac uporabe ako ne opisuje korisničku interakciju; tada navedite relevantno ponašanje, arhitekturni element ili drugi prikladan način realizacije. U svojem projektu koristite stvarne nazive komponenata, modula i provjera iz dokumentacije i implementacije. Nedostajuću poveznicu ostavite praznom ili označite kao _na čekanju_ uz kratak razlog. Stvarni rezultati ispitivanja bilježe se uz ispitne slučajeve; ova tablica pokazuje gdje ih pronaći.
 
 </details>
-| F-001 | UC-001 | Modul Autentikacija (`SecurityConfig`, `AuthController`) | Na čekanju: ispitni slučajevi još nisu definirani |
-| F-002 | UC-002 | Web-klijent; Modul Izleti (`IzletController`) | Na čekanju |
-| F-003 | UC-002 | Web-klijent; Modul Izleti | Na čekanju |
-| F-004 | UC-003 | Modul Rezervacije (`RezervacijaController`, `RezervacijaService`) | Na čekanju |
-| F-005 | UC-003 (6a) | Modul Rezervacije: provjera slobodnih mjesta na poslužitelju | Na čekanju |
-| F-006 | UC-004 | Modul Rezervacije | Na čekanju |
-| F-007 | UC-003 (korak 8) | Modul Obavijesti; vanjska usluga e-pošte | Na čekanju |
-| F-008 | UC-005 | Web-klijent (karta, lokacija preglednika); Modul Izleti (točke interesa) | Na čekanju |
-| F-009 | UC-006 | Modul Izleti (`IzletController`, `IzletService`) | Na čekanju |
-| F-010 | UC-007 | Modul Izleti (`TerminService`, `DodatneUslugeService`) | Na čekanju |
-| F-011 | UC-008 | Modul Rezervacije | Na čekanju |
-| F-012 | UC-006 (3c) | Modul Izleti; Modul Autentikacija (provjera vlasništva izleta) | Na čekanju |
-| F-013 | UC-009 | Modul Resursi | Na čekanju |
-| F-014 | UC-009 | Modul Resursi (`ResursController`, `ResursService`) | Na čekanju |
-| F-015 | UC-010 | Modul Izleti (točke interesa) | Na čekanju |
-| F-016 | UC-011 | Modul Statistika | Na čekanju |
-| F-017 | UC-011 | Modul Statistika | Na čekanju |
-| NF-01 | Svi obrasci uporabe s prijavljenim akterom | Modul Autentikacija (provjera uloge za svaki zaštićeni zahtjev) | Na čekanju |
-| NF-02 | UC-003 (6a) | Modul Rezervacije: provjera kapaciteta unutar transakcije | Na čekanju |
-| NF-03 | — (svojstvo cijelog sučelja) | Web-klijent | Na čekanju: pregled na računalu, tabletu i mobitelu |
-| NF-04 | — | Platforma za postavljanje (poglavlje 6) | Na čekanju: provjera javne adrese |
+
 ---
 
 ## 2.7 Pregled zahtjeva
 
 **Cilj:** Zabilježiti važne povratne informacije o zahtjevima i odluke koje iz njih proizlaze na dvije formalne kontrolne točke projekta, u 7. i 14. tjednu.
 
-| Kontrolna točka | Povratna informacija ili nalaz | Odluka o zahtjevu ili opsegu |
-| --------------- | ------------------------------ | ---------------------------- |
-| Iteracija 1     | [Povratna informacija]         | [Odluka; vidi odjeljak 2.5]  |
-| Demo 2          | [Povratna informacija]         | [Odluka; vidi odjeljak 2.5]  |
-| Završni pregled | [Povratna informacija]         | [Odluka; vidi odjeljak 2.5]  |
+| Kontrolna točka | Povratna informacija ili nalaz            | Odluka o zahtjevu ili opsegu |
+| --------------- | ----------------------------------------- | ---------------------------- |
+| Iteracija 1     | Na čekanju (kontrolna točka u 7. tjednu)  | —                            |
+| Demo 2          | Na čekanju                                | —                            |
+| Završni pregled | Na čekanju (kontrolna točka u 14. tjednu) | —                            |
 
 <details>
 <summary><strong>Odluke o zahtjevima nakon pregleda</strong></summary>
