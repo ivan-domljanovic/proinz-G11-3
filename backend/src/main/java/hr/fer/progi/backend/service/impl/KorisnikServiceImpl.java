@@ -15,4 +15,9 @@ public class KorisnikServiceImpl implements KorisnikService {
     public Korisnik dohvatiKorisnika(Long id) {
         return korisnikRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji"));
     }
+
+    @Override
+    public Korisnik dohvatiKorisnika(String sub) {
+        return korisnikRepository.findBySub(sub).orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji"));
+    }
 }

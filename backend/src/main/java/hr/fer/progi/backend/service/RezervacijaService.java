@@ -4,5 +4,5 @@ import hr.fer.progi.backend.dto.request.RezervacijaRequest;
 import hr.fer.progi.backend.model.Rezervacija;
 
 public interface RezervacijaService {
-    Rezervacija rezerviraj(RezervacijaRequest request);
+    Rezervacija rezerviraj(RezervacijaRequest request, String sub);
 }

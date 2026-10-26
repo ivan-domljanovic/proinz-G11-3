@@ -22,6 +22,7 @@ public class Korisnik {
 
     private String ime;
     private String email;
+    private String sub;
     private String avatarUrl;
 
     @Enumerated(EnumType.STRING)

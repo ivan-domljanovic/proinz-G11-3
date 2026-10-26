@@ -50,6 +50,7 @@ public class BackendApplication {
             korisnik.setId(1001L);
             korisnik.setIme("Ana Anić");
             korisnik.setEmail("ana@example.com");
+            korisnik.setSub("116881078227036825705");
             korisnik.setUloge(Set.of(Uloga.KORISNIK));
             korisnik = korisnikRepository.save(korisnik);
 
@@ -57,6 +58,7 @@ public class BackendApplication {
             vodic.setId(1002L);
             vodic.setIme("Marko Marković");
             vodic.setEmail("marko@example.com");
+            vodic.setSub("958881078227206825123");
             vodic.setUloge(Set.of(Uloga.KORISNIK, Uloga.VODIC));
             vodic = korisnikRepository.save(vodic);
 
@@ -64,6 +66,7 @@ public class BackendApplication {
             administrator.setId(1003L);
             administrator.setIme("Iva Ivić");
             administrator.setEmail("iva@example.com");
+            administrator.setSub("746881062449336825123");
             administrator.setUloge(Set.of(
                     Uloga.KORISNIK,
                     Uloga.ORGANIZATOR,
