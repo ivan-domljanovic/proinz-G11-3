@@ -112,10 +112,10 @@ Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 | Član     | Glavna uloga ili doprinos                 |
 | -------- | ----------------------------------------- |
 | Ivan     | voditelj                                  |
+| Anita    | dokumentacija (zahtjevi, obrasci uporabe) |
 | Deni     | frontend                                  |
 | Lucija   | frontend                                  |
-| Anita    | dokumentacija (zahtjevi, obrasci uporabe) |
-| Mate     | ???                                       |
+| Mate     | frontend                                  |
 | Matej    | backend                                   |
 | Tomislav | backend                                   |
 
