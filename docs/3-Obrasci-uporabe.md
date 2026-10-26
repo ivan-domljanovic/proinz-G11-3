@@ -126,7 +126,7 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 | **Alternativni tokovi / Iznimke** | **3a — Karta nije dostupna:** akter ručno unosi koordinate (geografsku širinu i dužinu).<br>**4a — Lokacija nije zadana:** aplikacija javlja da lokacija nedostaje i ne sprema točku.                                                                                                                                                                                             |
 | **Posljedice (ishod)**            | Izlet ima novu točku interesa koju korisnici vide na karti tijekom izleta.                                                                                                                                                                                                                                                                                                        |
 
-### UC-011: Pregled statistike i izvoz
+### UC-011: Pregled statistike
 
 | Element specifikacije             | Opis                                                                                                                                                                                                                                                                                                                                                                           |
 | :-------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -137,6 +137,28 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 | **Alternativni tokovi / Iznimke** | **3a — Nema podataka:** za odabrano razdoblje nema rezervacija; aplikacija prikazuje poruku i ne nudi izvoz.                                                                                                                                                                                                                                                                   |
 | **Posljedice (ishod)**            | Podaci se ne mijenjaju. Voditelj ima pregled poslovanja za odabrano razdoblje. Prihod se računa iz cijena potvrđenih i realiziranih rezervacija jer plaćanje nije dio aplikacije. |
 
+### UC-012: Slanje potvrde e-poštom
+
+| Element specifikacije | Opis |
+| :-- | :-- |
+| **Primarni akter** | Nema izravnog aktera; uključen je u rezervaciju izleta (UC-003, korak 8). |
+| **Sekundarni akter** | Usluga e-pošte (A-06) |
+| **Povezani zahtjevi** | F-007 |
+| **Preduvjeti** | Rezervacija je spremljena i potvrđena (UC-003, korak 7). |
+| **Glavni uspješni tok** | 1. Aplikacija sastavlja poruku s podacima rezervacije: izlet, termin, broj osoba, dodatne usluge, ukupna cijena i status.<br>2. Aplikacija šalje poruku na e-adresu korisnika iz njegova Google računa preko usluge e-pošte.<br>3. Usluga e-pošte potvrđuje da je poruka poslana. |
+| **Alternativni tokovi / Iznimke** | **2a — Usluga e-pošte nije dostupna:** poruka se ne šalje; rezervacija ostaje spremljena i korisnik je vidi u svojim rezervacijama (UC-004). |
+| **Posljedice (ishod)** | Korisnik je primio poruku s podacima rezervacije na svoju e-adresu. |
+
+### UC-013: Izvoz u CSV
+
+| Element specifikacije | Opis |
+| :-- | :-- |
+| **Primarni akter** | Voditelj turističke agencije (A-04); proširuje pregled statistike (UC-011). |
+| **Povezani zahtjevi** | F-017 |
+| **Preduvjeti** | Voditelj pregledava statistiku za odabrano razdoblje (UC-011) i za to razdoblje postoje podaci. |
+| **Glavni uspješni tok** | 1. Voditelj odabire „Izvezi u CSV”.<br>2. Aplikacija stvara CSV datoteku s podacima prikazanima u statistici, npr. `statistika-2027-05.csv`.<br>3. Preglednik preuzima datoteku na računalo voditelja. |
+| **Alternativni tokovi / Iznimke** | **1a — Nema podataka:** za odabrano razdoblje nema rezervacija pa opcija izvoza nije ponuđena (UC-011, 3a). |
+| **Posljedice (ishod)** | Podaci se ne mijenjaju. Voditelj ima datoteku koja se može otvoriti u uobičajenim alatima za obradu podataka, npr. Excelu. |
 
 ## 3.3 Provjera dosljednosti obrazaca uporabe
 
@@ -152,7 +174,7 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 
 | Provjera | Rezultat |
 | --- | --- |
-| Zahtjev | Svih 11 obrazaca uporabe poziva se na postojeće zahtjeve iz odjeljka 2.1, a svaki funkcijski zahtjev F-001 do F-017 pokriven je barem jednim obrascem uporabe. |
+| Zahtjev | Svih 13 obrazaca uporabe poziva se na postojeće zahtjeve iz odjeljka 2.1, a svaki funkcijski zahtjev F-001 do F-017 pokriven je barem jednim obrascem uporabe. |
 | Akter | Akteri u obrascima uporabe i na dijagramu 3.1 odgovaraju akterima A-01 do A-06 iz odjeljka 2.3. |
 | Aplikacija | Poslužitelj trenutačno ostvaruje pregled i upravljanje izletima i terminima (UC-002, UC-006, UC-007), stvaranje rezervacije s provjerom slobodnih mjesta (UC-003) i upravljanje resursima (UC-009). Ostali obrasci uporabe opisuju trenutačno oblikovanje. |
 
