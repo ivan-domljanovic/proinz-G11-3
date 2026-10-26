@@ -1,19 +1,39 @@
 @startuml 3-1-sustav-UC
+title Aplikacija za upravljanje izletima - obrasci uporabe
 left to right direction
 skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EAF2FD
+  BorderColor #6FA8DC
+}
+skinparam shadowing false
+skinparam ArrowColor #333333
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #555555
+}
+skinparam actor<<external system>> {
+  BackgroundColor #FFF2CC
+  BorderColor #C9A227
+}
 
+' ===== Ljudski akteri =====
+actor "Posjetitelj\n(neprijavljeni)" as P
 actor "Korisnik\n(A-01)" as K
 actor "Organizator\n(A-02)" as O
 actor "Administrator\n(A-03)" as A
 actor "Voditelj turističke\nagencije (A-04)" as V
 
-actor "Google\n(A-05)" as G <<sustav>>
-actor "Vanjske usluge\n(karta, e-pošta)\n(A-06)" as VU <<sustav>>
+' ===== Vanjski sustavi =====
+actor "Google\n(A-05)" as G <<external system>>
+actor "Usluga e-pošte\n(A-06)" as E <<external system>>
+actor "Usluga karte\n(A-06)" as M <<external system>>
 
 rectangle "Aplikacija za upravljanje izletima" {
   usecase "UC-001\nPrijava u sustav" as UC1
   usecase "UC-002\nPretraživanje i\npregled izleta" as UC2
   usecase "UC-003\nRezervacija izleta" as UC3
+  usecase "UC-012\nSlanje potvrde\ne-poštom" as UC12
   usecase "UC-004\nPregled i otkazivanje\nrezervacije" as UC4
   usecase "UC-005\nKorištenje\ndigitalnog vodiča" as UC5
   usecase "UC-006\nUpravljanje izletima" as UC6
@@ -21,36 +41,38 @@ rectangle "Aplikacija za upravljanje izletima" {
   usecase "UC-008\nUpravljanje\nrezervacijama" as UC8
   usecase "UC-009\nDodjela vodiča i\nevidencija resursa" as UC9
   usecase "UC-010\nDefiniranje\ntočaka interesa" as UC10
-  usecase "UC-011\nPregled statistike\ni izvoz" as UC11
+  usecase "UC-011\nPregled statistike" as UC11
+  usecase "UC-013\nIzvoz u CSV" as UC13
 }
 
-' Korisnik
-K --> UC1
-K --> UC2
-K --> UC3
-K --> UC4
-K --> UC5
+' ===== Nasljeđivanje uloga =====
+K -|> P
+O -|> K
+A -|> K
+V -|> K
 
-' Organizator
-O --> UC1
-O --> UC6
-O --> UC9
-O --> UC10
+' ===== Veze aktera i obrazaca uporabe =====
+P -- UC2
+K -- UC1
+K -- UC3
+K -- UC4
+K -- UC5
+O -- UC6
+O -- UC9
+O -- UC10
+A -- UC6
+A -- UC7
+A -- UC8
+A -- UC10
+V -- UC11
 
-' Administrator
-A --> UC1
-A --> UC6
-A --> UC7
-A --> UC8
-A --> UC10
+' ===== include / extend =====
+UC3 ..> UC12 : <<include>>
+UC13 ..> UC11 : <<extend>>\n[voditelj odabere izvoz]
 
-' Voditelj agencije
-V --> UC1
-V --> UC11
-
-' Sekundarni akteri (vanjski sustavi)
-UC1 --> G
-UC3 --> VU
-UC5 --> VU
-UC10 --> VU
+' ===== Vanjski sustavi =====
+UC1 -- G
+UC12 -- E
+UC5 -- M
+UC10 -- M
 @enduml
