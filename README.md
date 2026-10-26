@@ -6,9 +6,9 @@ komentare s uputama i ogledne <details> blokove te prije predaje izbrišite ovu
 napomenu. Nemojte kopirati nastavni primjer kao rezultat svojeg projekta.
 -->
 
-# [Naziv aplikacije]
+# [Waypoint]
 
-[naziv aplikacije] je aplikacija namijenjena za pretraživanje, rezervaciju i organizaciju turističkih aktivnosti i izleta.
+Waypoint je aplikacija namijenjena za pretraživanje, rezervaciju i organizaciju turističkih aktivnosti i izleta.
 
 **Projekt na kolegiju:** Ovu je aplikaciju razvio studentski tim u sklopu kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu (FER).
 
