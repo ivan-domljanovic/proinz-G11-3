@@ -105,7 +105,7 @@ Relevantna svojstva mogu se odnositi na uporabljivost, pristupačnost, sigurnost
 
 | ID uloge ili aktera                  | Odnos prema sustavu                                                                                             | Relevantni zahtjevi   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------- | --------------------- |
-| A-01 Korisnik                        | Pregledava i pretražuje izlete, rezervira ih i koristi aplikaciju kao vodič tijekom izleta.                     | F-001 do F-008        |
+| A-01 Korisnik (uključuje neprijavljenog posjetitelja) | Neprijavljen pregledava i pretražuje izlete; prijavljen ih rezervira i koristi aplikaciju kao vodič tijekom izleta. | F-001 do F-008 |
 | A-02 Organizator                     | Objavljuje i uređuje vlastite izlete, dodjeljuje vodiče, vodi evidenciju resursa i definira točke interesa.     | F-012 do F-015        |
 | A-03 Administrator                   | Upravlja svim izletima, terminima, cijenama, kapacitetima, dodatnim uslugama, rezervacijama i točkama interesa. | F-009 do F-011, F-015 |
 | A-04 Voditelj turističke agencije    | Pregledava statistiku poslovanja i izvozi izvještaje.                                                           | F-016, F-017          |
@@ -200,7 +200,7 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 | F-004       | UC-003                                     | Modul Rezervacije (`RezervacijaController`, `RezervacijaService`)        | Na čekanju                                          |
 | F-005       | UC-003 (6a)                                | Modul Rezervacije: provjera slobodnih mjesta na poslužitelju             | Na čekanju                                          |
 | F-006       | UC-004                                     | Modul Rezervacije                                                        | Na čekanju                                          |
-| F-007       | UC-003 (korak 8)                           | Modul Obavijesti; vanjska usluga e-pošte                                 | Na čekanju                                          |
+| F-007       | UC-012 (uključen u UC-003)                 | Modul Obavijesti; vanjska usluga e-pošte                                 | Na čekanju                                          |                                                                
 | F-008       | UC-005                                     | Web-klijent (karta, lokacija preglednika); Modul Izleti (točke interesa) | Na čekanju                                          |
 | F-009       | UC-006                                     | Modul Izleti (`IzletController`, `IzletService`)                         | Na čekanju                                          |
 | F-010       | UC-007                                     | Modul Izleti (`TerminService`, `DodatneUslugeService`)                   | Na čekanju                                          |
@@ -210,7 +210,7 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 | F-014       | UC-009                                     | Modul Resursi (`ResursController`, `ResursService`)                      | Na čekanju                                          |
 | F-015       | UC-010                                     | Modul Izleti (točke interesa)                                            | Na čekanju                                          |
 | F-016       | UC-011                                     | Modul Statistika                                                         | Na čekanju                                          |
-| F-017       | UC-011                                     | Modul Statistika                                                         | Na čekanju                                          |
+| F-017       | UC-013 (proširuje UC-011)                  | Modul Statistika                                                         | Na čekanju                                          |
 | NF-01       | Svi obrasci uporabe s prijavljenim akterom | Modul Autentikacija (provjera uloge za svaki zaštićeni zahtjev)          | Na čekanju                                          |
 | NF-02       | UC-003 (6a)                                | Modul Rezervacije: provjera kapaciteta unutar transakcije                | Na čekanju                                          |
 | NF-03       | — (svojstvo cijelog sučelja)               | Web-klijent                                                              | Na čekanju: pregled na računalu, tabletu i mobitelu |
