@@ -301,7 +301,90 @@ h1 {
   color: #647268;
   font-size: 0.8rem;
 }
+.termini li.termin-stavka {
+  padding-block: 18px;
+}
 
+.termin-stavka time {
+  font-weight: 600;
+}
+
+.podaci-termina {
+  width: 100%;
+  margin: 8px 0 0;
+  gap: 12px;
+}
+
+.podaci-termina .cijena-termina {
+  color: #203b32;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.kartica > .termini {
+  margin-bottom: 0;
+}
+
+.malo-mjesta{
+  background-color: #fff0d6;
+  color: #9a4b00
+}
+.odabir-termina {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+  color: #52645b;
+  font-size: 0.8rem;
+}
+
+.odabir-termina select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #dce5df;
+  border-radius: 8px;
+  background: #f6f7f2;
+  color: #203b32;
+  font: inherit;
+  cursor: pointer;
+}
+
+.odabir-termina select {
+  appearance: none;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 44px 12px 16px;
+
+  font: inherit;
+  font-weight: 600;
+  color: #203b32;
+
+  background-color: #edf3e9;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23203b32' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+
+  border: 1px solid #d5dfcf;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.odabir-termina select:hover {
+  background-color: #e3ecdd;
+  border-color: #8aa180;
+}
+
+.odabir-termina select:focus-visible {
+  outline: 3px solid #b8cdb0;
+  outline-offset: 3px;
+  border-color: #52705c;
+}
+
+.odabir-termina option {
+  background: #fff;
+  color: #203b32;
+}
 @media (max-width: 1000px) {
   .popis-izleta {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -338,4 +421,24 @@ h1 {
   .kartica {
     padding: 22px;
   }
+}
+
+.gumb-vise-termina {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #203b32;
+  background: #edf3e9;
+  border: 1px solid #d5dfcf;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.gumb-vise-termina:hover {
+  background: #e3ecdd;
+  border-color: #8aa180;
 }

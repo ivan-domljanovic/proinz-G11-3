@@ -26,79 +26,154 @@ function prikaziTrajanje(minute) {
 }
 
 function KarticaIzleta({ izlet }) {
+  const [prikaziSveTermine, setPrikaziSveTermine] = useState(false);
+  const [prikazTermina, setPrikazTermina] = useState("nadolazeci")
+  const sada = Date.now();
+
+  const termini = (izlet.termini ?? []).filter((termin) =>{
+    if(!termin.datumVrijeme) return false;
+    const vrijeme = new Date(termin.datumVrijeme).getTime();
+
+    if(!Number.isFinite(vrijeme)) return false;
+
+    return prikazTermina === "nadolazeci"
+      ? vrijeme >= sada : vrijeme < sada;
+  })
+      .sort((a,b) => {
+        const vrijemeA = new Date(a.datumVrijeme) .getTime();
+        const vrijemeB = new Date(b.datumVrijeme).getTime();
+
+    return prikazTermina === "nadolazeci"
+      ? vrijemeA - vrijemeB : vrijemeB - vrijemeA;
+      });
+
+  const vidljiviTermini = prikaziSveTermine ? termini : termini.slice(0, 1);
+
   return (
-    <article className="kartica">
-      <div className="kartica-vrh">
+      <article className="kartica">
+        <div className="kartica-vrh">
         <span className="kategorija">
           {izlet.kategorijaAktivnosti}
         </span>
 
-        <span className="trajanje">
+          <span className="trajanje">
           {prikaziTrajanje(izlet.trajanjeMinuta)}
         </span>
-      </div>
-
-      <h2>{izlet.naziv}</h2>
-      <p className="opis">{izlet.opis}</p>
-
-      <dl className="podaci">
-        <div>
-          <dt>Lokacija</dt>
-          <dd>{izlet.lokacija}</dd>
         </div>
 
-        <div>
-          <dt>Mjesto polaska</dt>
-          <dd>{izlet.mjestoPolaska}</dd>
-        </div>
-      </dl>
+        <h2>{izlet.naziv}</h2>
+        <p className="opis">{izlet.opis}</p>
 
-      <div className="termini">
-        <h3>Termini izleta</h3>
+        <dl className="podaci">
+          <div>
+            <dt>Lokacija</dt>
+            <dd>{izlet.lokacija}</dd>
+          </div>
+        </dl>
 
-        {izlet.termini.length === 0 ? (
-          <p className="bez-termina">Trenutačno nema termina.</p>
-        ) : (
-          <ul>
-            {izlet.termini.map((termin) => {
-              const zavrsen =
-                new Date(termin.datumVrijeme).getTime() < Date.now();
+        <section className="termini" aria-label="Termini izleta">
+          <h3>Termini izleta</h3>
+          <label className="odabir-termina">
+            <span>Prikaži termine</span>
 
-              const oznaka = zavrsen
-                ? "Termin je prošao"
-                : termin.slobodnaMjesta > 0
-                  ? `${termin.slobodnaMjesta} slobodnih mjesta`
-                  : "Popunjeno";
+            <select
+                value={prikazTermina}
+                onChange={(event) => {
+                  setPrikazTermina(event.target.value);
+                  setPrikaziSveTermine(false);
+                }}
+            >
+              <option value="nadolazeci">Nadolazeći termini</option>
+              <option value="prosli">Prošli termini</option>
+            </select>
+          </label>
+          {termini.length === 0 ? (
+              <p className="bez-termina">
+                {prikazTermina === "nadolazeci"
+                    ? "Nema nadolazećih termina za ovaj izlet."
+                    : "Nema prošlih termina za ovaj izlet."}
+              </p>
+          ) : (
+              <ul>
+                {vidljiviTermini.map((termin) => {
+                  const datum = termin.datumVrijeme
+                      ? new Date(termin.datumVrijeme)
+                      : null;
 
-              const stil = zavrsen
-                ? "prosao"
-                : termin.slobodnaMjesta > 0
-                  ? "slobodno"
-                  : "popunjeno";
+                  const ispravanDatum =
+                      datum !== null && !Number.isNaN(datum.getTime());
 
-              return (
-                <li key={termin.id}>
-                  <time dateTime={termin.datumVrijeme}>
-                    {datumFormat.format(
-                      new Date(termin.datumVrijeme)
-                    )}
-                  </time>
+                  const prosao =
+                      ispravanDatum && datum.getTime() < Date.now();
 
-                  <span className={`status ${stil}`}>
+                  const slobodnaMjesta = termin.brojSlobodnihMjesta;
+                  const kapacitet = termin.kapacitet;
+                  let oznaka = "Dostupnost nije navedena";
+                  let stil = "prosao";
+
+                  if (prosao) {
+                    oznaka = "Termin je prošao";
+                  } else if (slobodnaMjesta != null) {
+                    if(slobodnaMjesta <= 0){
+                      oznaka = "Popunjeno";
+                      stil = "popunjeno"
+                    }else {
+                      oznaka = `${slobodnaMjesta} slobodnih mjesta`;
+                      stil = kapacitet > 0 && slobodnaMjesta / kapacitet < 0.3 ? "malo-mjesta":"slobodno"
+                    }
+
+                  }
+
+                  return (
+                      <li key={termin.id} className="termin-stavka">
+                        {ispravanDatum ? (
+                            <time dateTime={termin.datumVrijeme}>
+                              {datumFormat.format(datum)}
+                            </time>
+                        ) : (
+                            <span>Datum nije naveden</span>
+                        )}
+
+                        <span className={`status ${stil}`}>
                     {oznaka}
                   </span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </div>
 
-      <footer className="kartica-dno">
-        <span>Cijena po osobi</span>
-        <strong>{cijenaFormat.format(izlet.cijena)}</strong>
-      </footer>
-    </article>
+                        <dl className="podaci podaci-termina">
+                          <div>
+                            <dt>Mjesto polaska</dt>
+                            <dd>
+                              {termin.mjestoPolaska || "Nije navedeno"}
+                            </dd>
+                          </div>
+
+                          <div>
+                            <dt>Cijena po osobi</dt>
+                            <dd className="cijena-termina">
+                              {termin.cijena == null
+                                  ? "Nije navedena"
+                                  : cijenaFormat.format(termin.cijena)}
+                            </dd>
+                          </div>
+                        </dl>
+                      </li>
+                  );
+                })}
+              </ul>
+          )}
+          {termini.length > 1 && (
+            <button
+              type="button"
+              className="gumb-vise-termina"
+              aria-expanded={prikaziSveTermine}
+              onClick={() => setPrikaziSveTermine((prethodno) => !prethodno)}
+            >
+              {prikaziSveTermine
+                ? "Prikaži manje"
+                : `Prikaži još termina (${termini.length - 1})`}
+            </button>
+          )}
+        </section>
+      </article>
   );
 }
 
@@ -232,3 +307,7 @@ export default function App() {
     </>
   );
 }
+
+
+
+

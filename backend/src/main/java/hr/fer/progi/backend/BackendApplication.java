@@ -163,6 +163,68 @@ public class BackendApplication {
             plitviceTermin.setVodici(Set.of(vodic));
             plitviceTermin = terminRepository.save(plitviceTermin);
 
+//
+//            Izlet medvedgradIzlet = new Izlet(
+//                    "Povijesna šetnja Medvedgradom",
+//                    "Obilazak srednjovjekovne utvrde i upoznavanje povijesti Medvednice.",
+//                    "KULTURNI_OBILAZAK",
+//                    120,
+//                    "Medvednica",
+//                    List.of(medvedgrad),
+//                    List.of(rucak, prijevoz)
+//            );
+//            medvedgradIzlet = izletRepository.save(medvedgradIzlet);
+//
+//            Izlet sljemeIzlet = new Izlet(
+//                    "Vikend na Sljemenu",
+//                    "Rekreativna šetnja do vrha uz odmor i ručak.",
+//                    "PLANINARENJE",
+//                    240,
+//                    "Sljeme",
+//                    List.of(sljeme),
+//                    List.of(rucak)
+//            );
+//            sljemeIzlet = izletRepository.save(sljemeIzlet);
+
+            // Nadolazeći: za dva dana
+            Termin medvednicaUskoro = new Termin();
+            medvednicaUskoro.setIzlet(medvednicaIzlet);
+            medvednicaUskoro.setDatumVrijeme(
+                    LocalDateTime.now().plusDays(2).withHour(9).withMinute(0)
+                            .withSecond(0).withNano(0)
+            );
+            medvednicaUskoro.setKapacitet(20);
+            medvednicaUskoro.setMjestoPolaska("Autobusni kolodvor Zagreb");
+            medvednicaUskoro.setCijena(50.0);
+            medvednicaUskoro.setPotrebanBrojVodica(1);
+            terminRepository.save(medvednicaUskoro);
+
+// Nadolazeći: za tjedan dana
+            Termin medvednicaKasnije = new Termin();
+            medvednicaKasnije.setIzlet(medvednicaIzlet);
+            medvednicaKasnije.setDatumVrijeme(
+                    LocalDateTime.now().plusDays(7).withHour(8).withMinute(30)
+                            .withSecond(0).withNano(0)
+            );
+            medvednicaKasnije.setKapacitet(15);
+            medvednicaKasnije.setMjestoPolaska("Tunel Sljeme");
+            medvednicaKasnije.setCijena(45.0);
+            medvednicaKasnije.setPotrebanBrojVodica(1);
+            terminRepository.save(medvednicaKasnije);
+
+// Prošli: prije tri dana
+            Termin medvednicaProsli = new Termin();
+            medvednicaProsli.setIzlet(medvednicaIzlet);
+            medvednicaProsli.setDatumVrijeme(
+                    LocalDateTime.now().minusDays(3).withHour(9).withMinute(0)
+                            .withSecond(0).withNano(0)
+            );
+            medvednicaProsli.setKapacitet(20);
+            medvednicaProsli.setMjestoPolaska("Lisinski");
+            medvednicaProsli.setCijena(48.0);
+            medvednicaProsli.setPotrebanBrojVodica(1);
+            terminRepository.save(medvednicaProsli);
+
             Termin prosliTermin = new Termin();
             prosliTermin.setDatumVrijeme(
                     sada.toLocalDate().minusDays(7).atTime(9, 0)
