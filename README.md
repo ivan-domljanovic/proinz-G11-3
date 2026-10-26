@@ -25,6 +25,13 @@ Za potpuni opseg, zahtjeve, oblikovanje i dokaze ispitivanja pogledajte [docs](d
 
 <a id="deployment"></a>
 
+- Pregled i pretraživanje izleta prema terminu, lokaciji, vrsti aktivnosti, trajanju, cijeni i broju sudionika
+- Rezervacija termina za više osoba s dodatnim uslugama (prijevoz, najam opreme) i potvrda e-poštom
+- Automatska kontrola kapaciteta: termin se ne može prebukirati
+- Upravljanje izletima, terminima, vodičima i resursima za administratore i organizatore
+- Statistika poslovanja i izvoz u CSV za voditelja agencije
+- Digitalni vodič na mobitelu koji prema GPS lokaciji prikazuje informacije o mjestima u blizini
+
 ## Postavljanje (engl. deployment)
 
 <!-- UPUTA: Ovaj odjeljak opisuje već postavljenu aplikaciju koju se  može otvoriti i isprobati bez lokalnog pokretanja izvornog koda.
@@ -81,11 +88,13 @@ Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 
 <!--Navedite nekoliko tehnologija i vanjskih usluga koje bitno određuju kako vaša aplikacija radi. Za svaku navedite njezinu konkretnu ulogu i jedan razlog ili ograničenje važno za projekt. Alat za razvoj ili ispitivanje uključite samo ako je njegova uloga važna za razumijevanje načina na koji je projekt izrađen ili provjeren. Nemojte prepisivati popis ovisnosti (engl. dependencies), statistiku programskih jezika ni popis razvojnih okruženja i komunikacijskih alata. Tablicu provjerite prema stvarnom repozitoriju i pokrenutoj aplikaciji; potrebne verzije i konfiguraciju dokumentirajte u vodiču za instalaciju.-->
 
-| Tehnologija ili alat | Uloga u ovom projektu                                             | Razlog uporabe ili važno ograničenje                                                                                              |
-| -------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| React                | Prikazuje korisničko sučelje za organizatore i njihove korisnike. | Interaktivno sučelje bez ponovnog učitavanja cijele stranice.                                                                     |
-| PostgreSQL           | Pohranjuje sve podatke za korisnike, organizatore i aktivnosti.   | Potrebno je održati podatke sačuvane trajno; promjene sheme zahtijevaju migracije baze podataka (engl. database migrations).      |
-| Spring Boot          | Obrađuje sve zahtijeve i upravlja podatcima.                      | Centralno mjesto koje može upravljati sa svim aktivnostima i pratiti rezervacije novih; autentifikacija i autorizacija korisnika. |
+| Tehnologija ili alat | Uloga u ovom projektu | Razlog uporabe ili važno ograničenje |
+| --- | --- | --- |
+| React | Prikazuje korisničko sučelje za turiste, organizatore i administratore u pregledniku. | Jedan responzivan klijent radi na računalu, tabletu i mobitelu, pa nije potrebna zasebna mobilna aplikacija. |
+| Vite | Pokreće frontend tijekom razvoja i prosljeđuje zahtjeve prema `/api` na backend. | Brzo osvježavanje pri razvoju; u produkciji frontend i backend moraju biti dostupni na javnim adresama. |
+| Spring Boot | Obrađuje zahtjeve klijenta, provodi poslovna pravila (npr. provjeru slobodnih mjesta) i upravlja podacima. | Jedno središnje mjesto za pravila rezervacije i autorizaciju; kvar poslužitelja zaustavlja sve funkcije. |
+| PostgreSQL | Trajno pohranjuje korisnike, izlete, termine, rezervacije i resurse. | Podaci su usko povezani (izlet – termin – rezervacija). |
+| Google OAuth 2.0 / OpenID Connect | Prijava korisnika Google računom. | Aplikacija ne pohranjuje lozinke; korisnik bez Google računa ne može se prijaviti. |
 
 <!--
 <details>
@@ -112,7 +121,7 @@ Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 | Član     | Glavna uloga ili doprinos                 |
 | -------- | ----------------------------------------- |
 | Ivan     | voditelj                                  |
-| Anita    | dokumentacija (zahtjevi, obrasci uporabe) |
+| Anita    | dokumentacija |
 | Deni     | frontend                                  |
 | Lucija   | frontend                                  |
 | Mate     | frontend                                  |
