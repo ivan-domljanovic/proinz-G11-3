@@ -442,3 +442,43 @@ h1 {
   background: #e3ecdd;
   border-color: #8aa180;
 }
+
+/* ---------- zaglavlje ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+.glavni-izbornik {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+}
+
+.glavni-izbornik a {
+  color: #203b32;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.glavni-izbornik a:hover {
+  color: #b46b32;
+}
+
+.gumb-prijava {
+  padding: 10px 20px;
+  color: #fff;
+  background: #203b32;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.gumb-prijava:hover {
+  background: #2f5446;
+}
+
+@media (max-width: 640px) {
+  .glavni-izbornik {
+    display: none;
+  }
+}

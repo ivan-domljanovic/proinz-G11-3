@@ -14,22 +14,33 @@ const pocetniFilteri={
 };
 
 
-export default function PonudaIzleta(){
+export default function PonudaIzleta(){ 
 
-    const {izleti,ucitavanje,greska} = useIzleti();
+    const paket=useIzleti(); //podaci s backenda
+    const izleti=paket.izleti;
+    const ucitavanje=paket.ucitavanje;
+    const greska=paket.greska;
+    
+    const [odabraniIzlet, setOdabraniIzlet]=useState(null); //korisnik još nije ništa kliknuo -> null
 
-    const rezultati = izleti;
+    //trenutno su rez isto sto i izleti
+    //dodati da se mogu filtrirati kasnije pa da rez!=izleti
+    const rezultati=izleti; 
 
-    if(ucitavanje){
-        return <p className="poruka">Učitavanje izleta...</p>;
+    if (ucitavanje){
+        return <p className="poruka">
+            Učitavanje izleta...
+            </p>;
     }
 
-    if(greska){
-        return <p className="poruka greska">{greska}</p>;
+    if (greska){
+        return <p className="poruka greska">
+            {greska}
+            </p>;
     }
 
-    return(
-        <section className="ponuda">
+    return (
+        <section className="ponuda" id="izleti">
             <div className="naslov-ponude">
                 <div>
                     <p className="nadnaslov">ISTRAŽITE PONUDU</p>
@@ -39,24 +50,22 @@ export default function PonudaIzleta(){
                 Pronađeno: {rezultati.length} / {izleti.length}
               </span>
             </div>
-
-
-                <div className="popis-izleta">
-                    {rezultati.map((izlet) => (
-                        <div className="rezultat-izleta" key={izlet.id}>
-                            <KarticaIzleta izlet={izlet} />
-
-                            <button
-                                type="button"
-                                className="gumb-detalji"
-                                aria-label={`Prikaži detalje: ${izlet.naziv}`}
-                                onClick={() => setOdabraniIzlet(izlet)}
-                            >
-                                Pogledaj detalje
-                            </button>
-                        </div>
-                    ))}
-                </div>
+            
+            {rezultati.length === 0 ? (<p className="poruka">Nema izleta za prikaz.</p>) :
+            (<div className="popis-izleta">
+                {rezultati.map((izlet) => (
+                    <div className="rezultat-izleta" key={izlet.id}>
+                        <KarticaIzleta izlet={izlet} />
+                        <button
+                            type="button"
+                            className="gumb-detalji"
+                            aria-label={`Prikaži detalje: ${izlet.naziv}`}
+                            onClick={() => setOdabraniIzlet(izlet)}
+                        >Pogledaj detalje</button>
+                    </div>
+                ))}
+            </div>)
+            }
 
         </section>
     )
