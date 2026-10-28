@@ -41,7 +41,7 @@ public class IzletController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> obrisiIzlet(@PathVariable Long id) {
+    public ResponseEntity<Void> obrisiIzlet(@PathVariable Long id) {
         izletService.obrisiIzlet(id);
         return ResponseEntity.noContent().build();
     }

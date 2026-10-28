@@ -37,13 +37,13 @@ public class ResursController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ResursDetailsResponse> azurirajResurs(@PathVariable Long id, @Valid @RequestBody
-        ResursUpdateRequest request) {
+    ResursUpdateRequest request) {
         var data = resursService.azurirajResurs(id, request);
         return ResponseEntity.ok(data);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> obrisiResurs(@PathVariable Long id) {
+    public ResponseEntity<Void> obrisiResurs(@PathVariable Long id) {
         resursService.obrisiResurs(id);
         return ResponseEntity.noContent().build();
     }
