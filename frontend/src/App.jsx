@@ -5,6 +5,7 @@ import "./App.css";
 import PonudaIzleta from "./pages/PonudaIzleta"
 import { useState, useEffect } from "react";
 import KarticaPrijave from "./components/KarticaPrijave.jsx";
+import KorisnickiIzbornik from "./components/KorisnickiIzbornik.jsx";
 
 export default function App() {
   const { izleti, ucitavanje, greska } = useIzleti();
@@ -63,9 +64,10 @@ export default function App() {
           {ucitavanjeKorisnika ? (
             <span>Učitavanje...</span>
           ) : korisnik ? (
-            <span className="ime-korisnika">
-              {korisnik.name}
-            </span>
+            <KorisnickiIzbornik
+              korisnik={korisnik}
+              onOdjava={() => setKorisnik(null)}
+            />
           ) : (
             <button
               type="button"

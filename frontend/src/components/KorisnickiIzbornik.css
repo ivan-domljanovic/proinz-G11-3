@@ -1,0 +1,99 @@
+.korisnicki-izbornik {
+   position: relative;
+}
+
+/* Ime korisnika */
+.korisnicko-ime {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   cursor: pointer;
+   padding: 8px 12px;
+   border-radius: 10px;
+   color: #203d32;
+   font-weight: 600;
+   list-style: none;
+   transition: background 0.2s;
+}
+
+.korisnicko-ime:hover {
+   background: #edf2ec;
+}
+
+.korisnicko-ime::-webkit-details-marker {
+   display: none;
+}
+
+/* Strelica */
+.strelica {
+   width: 7px;
+   height: 7px;
+   margin-left: 5px;
+   border-right: 2px solid #60746b;
+   border-bottom: 2px solid #60746b;
+   transform: rotate(45deg);
+   transition: transform 0.2s;
+}
+
+.korisnicki-izbornik[open] .strelica {
+   transform: rotate(225deg);
+}
+
+/* Padajuća kartica */
+.korisnicka-kartica {
+   position: absolute;
+   top: calc(100% + 10px);
+   right: 0;
+   width: 260px;
+   padding: 20px;
+   background: white;
+   border: 1px solid #e0e5df;
+   border-radius: 14px;
+   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+   z-index: 100;
+}
+
+/* Podaci korisnika */
+.korisnicki-podaci {
+   padding-bottom: 15px;
+   border-bottom: 1px solid #e0e5df;
+}
+
+.korisnicki-podaci strong {
+   color: #203d32;
+}
+
+.korisnicki-podaci p {
+   color: #687771;
+   font-size: 13px;
+   margin: 6px 0 0;
+   overflow-wrap: anywhere;
+}
+
+/* Zakazane aktivnosti */
+.korisnicke-aktivnosti {
+   display: flex;
+   justify-content: space-between;
+   gap: 10px;
+   padding: 18px 0;
+   font-size: 14px;
+   color: #203d32;
+}
+
+/* Gumb za odjavu */
+.gumb-odjava {
+   width: 100%;
+   padding: 11px;
+   background: #203d32;
+   color: white;
+   border: none;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 14px;
+   font-weight: 600;
+   transition: background 0.2s;
+}
+
+.gumb-odjava:hover {
+   background: #315649;
+}
