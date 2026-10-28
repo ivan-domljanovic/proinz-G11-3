@@ -1,18 +1,11 @@
 package hr.fer.progi.backend;
 
-import hr.fer.progi.backend.enums.Status;
-import hr.fer.progi.backend.enums.Uloga;
-import hr.fer.progi.backend.model.*;
 import hr.fer.progi.backend.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -33,7 +26,7 @@ public class BackendApplication {
             RezervacijaRepository rezervacijaRepository,
             TerminResursRepository terminResursRepository
     ) {
-        return args -> {
+        return args -> {}/*{
             if (korisnikRepository.count() > 0 ||
                     atrakcijaRepository.count() > 0 ||
                     dodatnaUslugaRepository.count() > 0 ||
@@ -280,6 +273,6 @@ public class BackendApplication {
             rezervacijaRepository.save(realizirana);
 
             System.out.println("Dummy podaci uspješno spremljeni.");
-        };
+        }*/;
     }
 }

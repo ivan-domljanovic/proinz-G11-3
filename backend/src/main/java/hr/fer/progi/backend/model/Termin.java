@@ -33,6 +33,8 @@ public class Termin {
 
     private Integer potrebanBrojVodica;
 
+    private Integer trajanjeMinuta;
+
     @ManyToOne
     @JoinColumn(name = "izlet_id", nullable = false)
     private Izlet izlet;

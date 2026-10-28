@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {TerminMapperHelper.class})
 public interface TerminMapper {
+
     @Mapping(target = "brojSlobodnihMjesta", source = "termin", qualifiedByName = "brojSlobodnihMjesta")
-    @Mapping(target = "kapacitet", source = "kapacitet")
     TerminResponse toResponse(Termin termin);
 
     TerminRezervacijaResponse toRezervacijaResponse(Termin termin);

@@ -1,6 +1,7 @@
 package hr.fer.progi.backend.controller;
 
 import hr.fer.progi.backend.dto.request.IzletCreateRequest;
+import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
 import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.service.IzletService;
@@ -45,21 +46,14 @@ public class IzletController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> azurirajIzlet(@PathVariable Long id) {
-        // todo: NIJE IMPLEMENTIRANO
-        return ResponseEntity.ok().build();
+    public ResponseEntity<IzletDetailResponse> azurirajIzlet(@PathVariable Long id, @RequestBody
+    IzletUpdateRequest request) {
+        var data = izletService.azurirajIzlet(id, request);
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping("/{id}/termini")
     public ResponseEntity<List<TerminResponse>> dohvatiTermineIzleta(@PathVariable Long id) {
-        // todo: NIJE IMPLEMENTIRANO
         return ResponseEntity.ok(izletService.dohvatiTermineIzleta(id));
-    }
-
-    @PostMapping("/{id}/termini")
-    public ResponseEntity<?> dodajTerminIzletu(@PathVariable Long id) {
-        // <TerminResponse>
-        // todo: NIJE IMPLEMENTIRANO
-        return ResponseEntity.ok().build();
     }
 }

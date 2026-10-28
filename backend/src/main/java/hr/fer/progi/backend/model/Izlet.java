@@ -23,8 +23,6 @@ public class Izlet {
     private String opis;
     private String kategorijaAktivnosti;
 
-    private Integer trajanjeMinuta;
-
     private String lokacija;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -36,11 +34,10 @@ public class Izlet {
     @OneToMany(mappedBy = "izlet")
     private List<Termin> termini;
 
-    public Izlet(String naziv, String opis, String kategorijaAktivnosti, Integer trajanjeMinuta, String lokacija, List<Atrakcija> atrakcije, List<DodatnaUsluga> dodatneUsluge) {
+    public Izlet(String naziv, String opis, String kategorijaAktivnosti, String lokacija, List<Atrakcija> atrakcije, List<DodatnaUsluga> dodatneUsluge) {
         this.naziv = naziv;
         this.opis = opis;
         this.kategorijaAktivnosti = kategorijaAktivnosti;
-        this.trajanjeMinuta = trajanjeMinuta;
         this.lokacija = lokacija;
         this.atrakcije = atrakcije;
         this.dodatneUsluge = dodatneUsluge;
