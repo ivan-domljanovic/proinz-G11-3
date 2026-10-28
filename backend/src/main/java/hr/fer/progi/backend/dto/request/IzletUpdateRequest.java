@@ -1,8 +1,14 @@
 package hr.fer.progi.backend.dto.request;
 
-public record IzletUpdateRequest(String naziv, String opis,
-                                 String kategorijaAktivnosti,
-                                 String lokacija,
-                                 Long[] atrakcije,
-                                 Long[] dodatneUsluge) {
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+import java.util.List;
+
+public record IzletUpdateRequest(@NotNull String naziv, @NotNull String opis,
+                                 @NotNull String kategorijaAktivnosti,
+                                 @NotNull String lokacija,
+                                 List<@NotNull @Positive Long> atrakcije,
+                                 List<@NotNull @Positive Long> dodatneUsluge) {
 }
+

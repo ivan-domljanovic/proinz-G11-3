@@ -13,7 +13,7 @@ import hr.fer.progi.backend.repository.IzletRepository;
 import hr.fer.progi.backend.repository.KorisnikRepository;
 import hr.fer.progi.backend.repository.TerminRepository;
 import hr.fer.progi.backend.service.TerminService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +22,25 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class TerminServiceImpl implements TerminService {
 
     private final TerminRepository terminRepository;
     private final TerminMapper terminMapper;
     private final IzletRepository izletRepository;
     private final KorisnikRepository korisnikRepository;
+
+
+    public TerminServiceImpl(
+            TerminRepository terminRepository,
+            @Lazy TerminMapper terminMapper,
+            IzletRepository izletRepository,
+            KorisnikRepository korisnikRepository) {
+
+        this.terminRepository = terminRepository;
+        this.terminMapper = terminMapper;
+        this.izletRepository = izletRepository;
+        this.korisnikRepository = korisnikRepository;
+    }
 
     @Override
     public Termin dohvatiTerminEntitet(Long id) {
@@ -60,8 +72,8 @@ public class TerminServiceImpl implements TerminService {
                 () -> new ResourceNotFoundException("Izlet s tim id ne postoji"));
 
         Set<Korisnik> vodici = null;
-        if (request.vodici().length > 0) {
-            var ids = new HashSet<>(List.of(request.vodici()));
+        if (!request.vodici().isEmpty()) {
+            var ids = new HashSet<>(request.vodici());
             vodici = new HashSet<>(korisnikRepository.findAllById(ids));
             if (vodici.size() != ids.size())
                 throw new ResourceNotFoundException("Jedan ili vise vodica ne postoji");
@@ -97,7 +109,7 @@ public class TerminServiceImpl implements TerminService {
         termin.setPotrebanBrojVodica(request.potrebanBrojVodica());
 
         if (request.vodici() != null) {
-            var ids = new HashSet<>(List.of(request.vodici()));
+            var ids = new HashSet<>(request.vodici());
 
             var korisnici =
                     korisnikRepository.findAllById(ids);
@@ -131,7 +143,7 @@ public class TerminServiceImpl implements TerminService {
         var termin = terminRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Termin s tim id ne postoji"));
 
-        var ids = new HashSet<>(List.of(request.vodici()));
+        var ids = new HashSet<>(request.vodici());
         var korisnici = korisnikRepository.findAllById(ids);
 
         if (korisnici.size() != ids.size()) {

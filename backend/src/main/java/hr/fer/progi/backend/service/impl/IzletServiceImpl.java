@@ -45,8 +45,8 @@ public class IzletServiceImpl implements IzletService {
     @Override
     @Transactional
     public IzletDetailResponse kreirajIzlet(IzletCreateRequest request) {
-        var atrakcije = atrakcijaRepository.findAllById(List.of(request.atrakcije()));
-        var dodatneUsluge = dodatnaUslugaRepository.findAllById(List.of(request.dodatneUsluge()));
+        var atrakcije = atrakcijaRepository.findAllById(request.atrakcije());
+        var dodatneUsluge = dodatnaUslugaRepository.findAllById(request.dodatneUsluge());
 
         var izlet = new Izlet(request.naziv(), request.opis(), request.kategorijaAktivnosti(),
                 request.lokacija(), atrakcije,
@@ -80,14 +80,14 @@ public class IzletServiceImpl implements IzletService {
         izlet.setLokacija(request.lokacija());
 
         if (request.atrakcije() != null) {
-            var atrakcije = atrakcijaRepository.findAllById(List.of(request.atrakcije()));
-            if (atrakcije.size() != request.atrakcije().length)
+            var atrakcije = atrakcijaRepository.findAllById(request.atrakcije());
+            if (atrakcije.size() != request.atrakcije().size())
                 throw new ResourceNotFoundException("Jedna ili vise atrakcija ne postoji");
             izlet.setAtrakcije(atrakcije);
         }
         if (request.dodatneUsluge() != null) {
-            var usluge = dodatnaUslugaRepository.findAllById(List.of(request.dodatneUsluge()));
-            if (usluge.size() != request.dodatneUsluge().length)
+            var usluge = dodatnaUslugaRepository.findAllById(request.dodatneUsluge());
+            if (usluge.size() != request.dodatneUsluge().size())
                 throw new ResourceNotFoundException("Jedna ili vise dodatna usluga ne postoji");
             izlet.setDodatneUsluge(usluge);
         }

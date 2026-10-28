@@ -5,6 +5,7 @@ import hr.fer.progi.backend.dto.request.TerminSetVodiciRequest;
 import hr.fer.progi.backend.dto.request.TerminUpdateRequest;
 import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.service.TerminService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +32,13 @@ public class TerminController {
     }
 
     @PostMapping("")
-    public ResponseEntity<TerminResponse> kreirajTermin(@RequestBody TerminCreateRequest request) {
+    public ResponseEntity<TerminResponse> kreirajTermin(@Valid @RequestBody TerminCreateRequest request) {
         var data = terminService.kreirajTermin(request);
         return ResponseEntity.ok(data);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TerminResponse> azurirajTermin(@PathVariable Long id, @RequestBody
+    public ResponseEntity<TerminResponse> azurirajTermin(@PathVariable Long id, @Valid @RequestBody
     TerminUpdateRequest request) {
         var data = terminService.azurirajTermin(id, request);
         return ResponseEntity.ok(data);
@@ -50,7 +51,7 @@ public class TerminController {
     }
 
     @PutMapping("/{terminId}/vodici")
-    public ResponseEntity<TerminResponse> postaviVodice(@PathVariable Long terminId, @RequestBody
+    public ResponseEntity<TerminResponse> postaviVodice(@PathVariable Long terminId, @Valid @RequestBody
     TerminSetVodiciRequest request) {
         var data = terminService.postaviVodice(terminId, request);
         return ResponseEntity.ok(data);

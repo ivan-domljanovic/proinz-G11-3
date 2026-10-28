@@ -5,6 +5,7 @@ import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
 import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.service.IzletService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class IzletController {
 
     @PostMapping("")
     public ResponseEntity<IzletDetailResponse> kreirajIzlet(
-            @RequestBody IzletCreateRequest request) {
+            @Valid @RequestBody IzletCreateRequest request) {
         var data = izletService.kreirajIzlet(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(data);
     }
@@ -46,7 +47,7 @@ public class IzletController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IzletDetailResponse> azurirajIzlet(@PathVariable Long id, @RequestBody
+    public ResponseEntity<IzletDetailResponse> azurirajIzlet(@PathVariable Long id, @Valid @RequestBody
     IzletUpdateRequest request) {
         var data = izletService.azurirajIzlet(id, request);
         return ResponseEntity.ok(data);

@@ -5,6 +5,7 @@ import hr.fer.progi.backend.dto.request.RezervacijaRequest;
 import hr.fer.progi.backend.dto.response.RezervacijaResponse;
 import hr.fer.progi.backend.mapper.RezervacijaMapper;
 import hr.fer.progi.backend.service.RezervacijaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,7 @@ public class RezervacijaController {
 
     @PostMapping("")
     public ResponseEntity<RezervacijaResponse> rezerviraj(
-            @RequestBody RezervacijaRequest request,
+            @Valid @RequestBody RezervacijaRequest request,
             @AuthenticationPrincipal OAuth2User user
     ) {
         var rezervacija = rezervacijaService.rezerviraj(request, user.getAttribute("sub"));
