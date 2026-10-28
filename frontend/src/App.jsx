@@ -3,11 +3,14 @@ import KarticaIzleta from "./components/KarticaIzleta.jsx";
 import useIzleti from "./hooks/useIzleti.js";
 import "./App.css";
 import PonudaIzleta from "./pages/PonudaIzleta"
+import { useState } from "react";
+import KarticaPrijave from "./components/KarticaPrijave.jsx";
 
 export default function App() {
   const { izleti, ucitavanje, greska } = useIzleti();
+  const [prijavaOtvorena, setPrijavaOtvorena] = useState(false);
 
-return (
+  return (
     <>
       <header className="zaglavlje">
         <div className="kontejner navigacija">
@@ -17,7 +20,11 @@ return (
           <span className="opis-aplikacije">
             Izleti i turističke aktivnosti
           </span>
+          <button type="button" onClick={() => setPrijavaOtvorena(true)}>
+            Prijava
+          </button>
         </div>
+
       </header>
 
       <main className="kontejner">
@@ -35,7 +42,8 @@ return (
           </p>
         </section>
 
-        <PonudaIzleta/>
+        <PonudaIzleta />
+
       </main>
 
       <footer className="podnozje">
@@ -43,7 +51,12 @@ return (
           Projekt G11-3 · Upravljanje izletima i turističkim aktivnostima
         </div>
       </footer>
+      <KarticaPrijave
+        otvoreno={prijavaOtvorena}
+        onZatvori={() => setPrijavaOtvorena(false)}
+      />
     </>
+
   );
 }
 
