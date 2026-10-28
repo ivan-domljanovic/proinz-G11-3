@@ -9,8 +9,13 @@ export default function KorisnickiIzbornik({
       <details className="korisnicki-izbornik">
 
          <summary className="korisnicko-ime">
+            <span className="avatar">
+               {korisnik.name?.charAt(0).toUpperCase()}
+            </span>
+
             <span>{korisnik.name}</span>
-            <span className="strelica"></span>
+
+            <span className="strelica" aria-hidden="true"></span>
          </summary>
 
          <div className="korisnicka-kartica">

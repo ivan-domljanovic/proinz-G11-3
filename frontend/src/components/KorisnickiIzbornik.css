@@ -2,14 +2,14 @@
    position: relative;
 }
 
-/* Ime korisnika */
+/* Ime korisnika i avatar */
 .korisnicko-ime {
    display: flex;
    align-items: center;
    gap: 10px;
    cursor: pointer;
-   padding: 8px 12px;
-   border-radius: 10px;
+   padding: 7px 12px;
+   border-radius: 12px;
    color: #203d32;
    font-weight: 600;
    list-style: none;
@@ -24,7 +24,21 @@
    display: none;
 }
 
-/* Strelica */
+/* Avatar s prvim slovom imena */
+.avatar {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   background: #dfeae2;
+   color: #203d32;
+   font-size: 14px;
+   font-weight: 600;
+}
+
+/* Mala strelica */
 .strelica {
    width: 7px;
    height: 7px;
@@ -53,7 +67,7 @@
    z-index: 100;
 }
 
-/* Podaci korisnika */
+/* Ime i email */
 .korisnicki-podaci {
    padding-bottom: 15px;
    border-bottom: 1px solid #e0e5df;
