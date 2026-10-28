@@ -1,8 +1,8 @@
 package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.dto.request.ResursCreateRequest;
-import hr.fer.progi.backend.dto.response.ResursDetailsResponse;
 import hr.fer.progi.backend.dto.request.ResursUpdateRequest;
+import hr.fer.progi.backend.dto.response.ResursDetailsResponse;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.mapper.ResursMapper;
 import hr.fer.progi.backend.model.Resurs;
