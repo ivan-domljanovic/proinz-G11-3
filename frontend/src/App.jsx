@@ -11,16 +11,12 @@ export default function App() {
   const { izleti, ucitavanje, greska } = useIzleti();
   const [prijavaOtvorena, setPrijavaOtvorena] = useState(false);
 
-  //const [korisnik, setKorisnik] = useState(null);
-  const [korisnik, setKorisnik] = useState({
-    name: "Mate Knežević",
-    email: "mate@gmail.com",
-    picture: "https://i.pravatar.cc/150?img=12"
-  });
-  //const [ucitavanjeKorisnika, setUcitavanjeKorisnika] = useState(true);
-  const [ucitavanjeKorisnika, setUcitavanjeKorisnika] = useState(false);
+  const [korisnik, setKorisnik] = useState(null);
 
-  /*useEffect(() => {
+  const [ucitavanjeKorisnika, setUcitavanjeKorisnika] = useState(true);
+
+
+  useEffect(() => {
     async function dohvatiKorisnika() {
       try {
         const response = await fetch("/me", {
@@ -48,7 +44,7 @@ export default function App() {
     }
 
     dohvatiKorisnika();
-  }, []);*/
+  }, []);
 
   return (
     <>
