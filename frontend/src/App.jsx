@@ -3,12 +3,51 @@ import KarticaIzleta from "./components/KarticaIzleta.jsx";
 import useIzleti from "./hooks/useIzleti.js";
 import "./App.css";
 import PonudaIzleta from "./pages/PonudaIzleta"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import KarticaPrijave from "./components/KarticaPrijave.jsx";
 
 export default function App() {
   const { izleti, ucitavanje, greska } = useIzleti();
   const [prijavaOtvorena, setPrijavaOtvorena] = useState(false);
+
+  //const [korisnik, setKorisnik] = useState(null);
+  const [korisnik, setKorisnik] = useState({
+    name: "Mate Knežević",
+    email: "mate@gmail.com",
+    picture: "https://i.pravatar.cc/150?img=12"
+  });
+  //const [ucitavanjeKorisnika, setUcitavanjeKorisnika] = useState(true);
+  const [ucitavanjeKorisnika, setUcitavanjeKorisnika] = useState(false);
+
+  /*useEffect(() => {
+    async function dohvatiKorisnika() {
+      try {
+        const response = await fetch("/me", {
+          credentials: "include"
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const tip = response.headers.get("content-type");
+
+        if (!tip?.includes("application/json")) {
+          return;
+        }
+
+        const podaci = await response.json();
+        setKorisnik(podaci);
+
+      } catch (error) {
+        console.error("Greška pri dohvaćanju korisnika:", error);
+      } finally {
+        setUcitavanjeKorisnika(false);
+      }
+    }
+
+    dohvatiKorisnika();
+  }, []);*/
 
   return (
     <>
@@ -20,9 +59,22 @@ export default function App() {
           <span className="opis-aplikacije">
             Izleti i turističke aktivnosti
           </span>
-          <button type="button" onClick={() => setPrijavaOtvorena(true)}>
-            Prijava
-          </button>
+
+          {ucitavanjeKorisnika ? (
+            <span>Učitavanje...</span>
+          ) : korisnik ? (
+            <span className="ime-korisnika">
+              {korisnik.name}
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setPrijavaOtvorena(true)}
+            >
+              Prijava
+            </button>
+          )}
+
         </div>
 
       </header>
