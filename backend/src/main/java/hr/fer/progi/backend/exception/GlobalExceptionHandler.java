@@ -13,23 +13,25 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // SVE JE GENERIC
-    // todo: dodat sve exceptione i opise
-
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex, HttpServletRequest request) {
-        var status = HttpStatus.BAD_REQUEST;
+    public ResponseEntity<ErrorResponse> handleRuntimeException(
+            RuntimeException ex,
+            HttpServletRequest request) {
+
         var response = new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                "Interna greska servera",
                 LocalDateTime.now(),
                 request.getRequestURI());
-        return ResponseEntity.status(status).body(response);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex,
+                                                                        HttpServletRequest request) {
         var status = HttpStatus.BAD_REQUEST;
         var response = new ErrorResponse(
                 status.value(),
@@ -41,7 +43,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException ex, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException ex,
+                                                                     HttpServletRequest request) {
         var status = HttpStatus.BAD_REQUEST;
         var response = new ErrorResponse(
                 status.value(),
@@ -72,5 +75,35 @@ public class GlobalExceptionHandler {
                 request.getRequestURI());
 
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(ResursAlreadyAllocatedException.class)
+    public ResponseEntity<ErrorResponse> handleException(
+            ResursAlreadyAllocatedException ex,
+            HttpServletRequest request) {
+
+        var response = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                LocalDateTime.now(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleException(
+            ResourceNotFoundException ex,
+            HttpServletRequest request) {
+
+        var response = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                ex.getMessage(),
+                LocalDateTime.now(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }

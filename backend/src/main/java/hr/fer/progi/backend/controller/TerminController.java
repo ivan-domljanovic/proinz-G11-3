@@ -1,12 +1,12 @@
 package hr.fer.progi.backend.controller;
 
-import hr.fer.progi.backend.dto.request.TerminCreateRequest;
-import hr.fer.progi.backend.dto.request.TerminSetVodiciRequest;
-import hr.fer.progi.backend.dto.request.TerminUpdateRequest;
+import hr.fer.progi.backend.dto.request.*;
 import hr.fer.progi.backend.dto.response.TerminResponse;
+import hr.fer.progi.backend.dto.response.TerminResursResponse;
 import hr.fer.progi.backend.service.TerminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +32,8 @@ public class TerminController {
     }
 
     @PostMapping("")
-    public ResponseEntity<TerminResponse> kreirajTermin(@Valid @RequestBody TerminCreateRequest request) {
+    public ResponseEntity<TerminResponse> kreirajTermin(
+            @Valid @RequestBody TerminCreateRequest request) {
         var data = terminService.kreirajTermin(request);
         return ResponseEntity.ok(data);
     }
@@ -51,9 +52,39 @@ public class TerminController {
     }
 
     @PutMapping("/{terminId}/vodici")
-    public ResponseEntity<TerminResponse> postaviVodice(@PathVariable Long terminId, @Valid @RequestBody
-    TerminSetVodiciRequest request) {
+    public ResponseEntity<TerminResponse> postaviVodice(@PathVariable Long terminId,
+                                                        @Valid @RequestBody
+                                                        TerminSetVodiciRequest request) {
         var data = terminService.postaviVodice(terminId, request);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/{id}/resursi")
+    public ResponseEntity<List<TerminResursResponse>> sviResursiTermina(@PathVariable Long id) {
+        var data = terminService.dohvatiSveResurseTermina(id);
+        return ResponseEntity.ok(data);
+    }
+
+    @DeleteMapping("/{terminId}/resursi/{resursId}")
+    public ResponseEntity<Void> makniResursTerminu(@PathVariable Long terminId,
+                                                   @PathVariable Long resursId) {
+        terminService.makniResursTerminu(terminId, resursId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/resursi")
+    public ResponseEntity<TerminResursResponse> dodijeliResursTerminu(@PathVariable Long id,
+                                                                      @Valid @RequestBody
+                                                                      TerminResursSetRequest request) {
+        var data = terminService.dodijeliResursTerminu(id, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(data);
+    }
+
+    @PutMapping("/{terminId}/resursi/{resursId}")
+    public ResponseEntity<TerminResursResponse> azurirajKolicinuResursaTerminu(
+            @PathVariable Long terminId, @PathVariable Long resursId,
+            @Valid @RequestBody TerminResursUpdateRequest request) {
+        var data = terminService.azurirajKolicinuResursaTerminu(terminId, resursId, request);
         return ResponseEntity.ok(data);
     }
 }
