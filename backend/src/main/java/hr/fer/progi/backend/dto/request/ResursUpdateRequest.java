@@ -1,4 +1,7 @@
 package hr.fer.progi.backend.dto.request;
 
-public record ResursUpdateRequest(String naziv, Integer kolicina) {
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+
+public record ResursUpdateRequest(@NotNull String naziv, @NotNull @PositiveOrZero Integer kolicina) {
 }

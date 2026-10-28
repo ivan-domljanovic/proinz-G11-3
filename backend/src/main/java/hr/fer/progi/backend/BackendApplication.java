@@ -122,7 +122,6 @@ public class BackendApplication {
                     "Planinarenje Medvednicom",
                     "Obilazak Medvedgrada i uspon na Sljeme.",
                     "PLANINARENJE",
-                    300,
                     "Medvednica",
                     List.of(sljeme, medvedgrad),
                     List.of(rucak)
@@ -133,7 +132,6 @@ public class BackendApplication {
                     "Jednodnevni izlet na Plitvice",
                     "Vođeni obilazak jezera i slapova.",
                     "PRIRODA",
-                    600,
                     "Plitvička jezera",
                     List.of(plitvice),
                     List.of(rucak, prijevoz)
@@ -148,6 +146,7 @@ public class BackendApplication {
             );
             medvednicaTermin.setKapacitet(20);
             medvednicaTermin.setPotrebanBrojVodica(1);
+            medvednicaTermin.setTrajanjeMinuta(300);
             medvednicaTermin.setMjestoPolaska("Autobusni kolodvor Zagreb");
             medvednicaTermin.setCijena(50.0);
             medvednicaTermin.setIzlet(medvednicaIzlet);
@@ -160,34 +159,12 @@ public class BackendApplication {
             );
             plitviceTermin.setKapacitet(30);
             plitviceTermin.setPotrebanBrojVodica(1);
+            plitviceTermin.setTrajanjeMinuta(600);
             plitviceTermin.setMjestoPolaska("Autobusni kolodvor Zagreb");
             plitviceTermin.setCijena(80.0);
             plitviceTermin.setIzlet(plitviceIzlet);
             plitviceTermin.setVodici(Set.of(vodic));
             plitviceTermin = terminRepository.save(plitviceTermin);
-
-//
-//            Izlet medvedgradIzlet = new Izlet(
-//                    "Povijesna šetnja Medvedgradom",
-//                    "Obilazak srednjovjekovne utvrde i upoznavanje povijesti Medvednice.",
-//                    "KULTURNI_OBILAZAK",
-//                    120,
-//                    "Medvednica",
-//                    List.of(medvedgrad),
-//                    List.of(rucak, prijevoz)
-//            );
-//            medvedgradIzlet = izletRepository.save(medvedgradIzlet);
-//
-//            Izlet sljemeIzlet = new Izlet(
-//                    "Vikend na Sljemenu",
-//                    "Rekreativna šetnja do vrha uz odmor i ručak.",
-//                    "PLANINARENJE",
-//                    240,
-//                    "Sljeme",
-//                    List.of(sljeme),
-//                    List.of(rucak)
-//            );
-//            sljemeIzlet = izletRepository.save(sljemeIzlet);
 
             // Nadolazeći: za dva dana
             Termin medvednicaUskoro = new Termin();
@@ -200,9 +177,11 @@ public class BackendApplication {
             medvednicaUskoro.setMjestoPolaska("Autobusni kolodvor Zagreb");
             medvednicaUskoro.setCijena(50.0);
             medvednicaUskoro.setPotrebanBrojVodica(1);
+            medvednicaUskoro.setTrajanjeMinuta(300);
+            medvednicaUskoro.setVodici(Set.of(vodic));
             terminRepository.save(medvednicaUskoro);
 
-// Nadolazeći: za tjedan dana
+            // Nadolazeći: za tjedan dana
             Termin medvednicaKasnije = new Termin();
             medvednicaKasnije.setIzlet(medvednicaIzlet);
             medvednicaKasnije.setDatumVrijeme(
@@ -213,9 +192,11 @@ public class BackendApplication {
             medvednicaKasnije.setMjestoPolaska("Tunel Sljeme");
             medvednicaKasnije.setCijena(45.0);
             medvednicaKasnije.setPotrebanBrojVodica(1);
+            medvednicaKasnije.setTrajanjeMinuta(300);
+            medvednicaKasnije.setVodici(Set.of(vodic));
             terminRepository.save(medvednicaKasnije);
 
-// Prošli: prije tri dana
+            // Prošli: prije tri dana
             Termin medvednicaProsli = new Termin();
             medvednicaProsli.setIzlet(medvednicaIzlet);
             medvednicaProsli.setDatumVrijeme(
@@ -226,6 +207,8 @@ public class BackendApplication {
             medvednicaProsli.setMjestoPolaska("Lisinski");
             medvednicaProsli.setCijena(48.0);
             medvednicaProsli.setPotrebanBrojVodica(1);
+            medvednicaProsli.setTrajanjeMinuta(300);
+            medvednicaProsli.setVodici(Set.of(vodic));
             terminRepository.save(medvednicaProsli);
 
             Termin prosliTermin = new Termin();
@@ -234,6 +217,7 @@ public class BackendApplication {
             );
             prosliTermin.setKapacitet(20);
             prosliTermin.setPotrebanBrojVodica(1);
+            prosliTermin.setTrajanjeMinuta(300);
             prosliTermin.setMjestoPolaska("Lisinski");
             prosliTermin.setCijena(50.0);
             prosliTermin.setIzlet(medvednicaIzlet);

@@ -1,9 +1,11 @@
 package hr.fer.progi.backend.controller;
 
 import hr.fer.progi.backend.dto.request.IzletCreateRequest;
+import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
 import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.service.IzletService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,33 +35,26 @@ public class IzletController {
 
     @PostMapping("")
     public ResponseEntity<IzletDetailResponse> kreirajIzlet(
-            @RequestBody IzletCreateRequest request) {
+            @Valid @RequestBody IzletCreateRequest request) {
         var data = izletService.kreirajIzlet(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(data);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> obrisiIzlet(@PathVariable Long id) {
+    public ResponseEntity<Void> obrisiIzlet(@PathVariable Long id) {
         izletService.obrisiIzlet(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> azurirajIzlet(@PathVariable Long id) {
-        // todo: NIJE IMPLEMENTIRANO
-        return ResponseEntity.ok().build();
+    public ResponseEntity<IzletDetailResponse> azurirajIzlet(@PathVariable Long id, @Valid @RequestBody
+    IzletUpdateRequest request) {
+        var data = izletService.azurirajIzlet(id, request);
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping("/{id}/termini")
     public ResponseEntity<List<TerminResponse>> dohvatiTermineIzleta(@PathVariable Long id) {
-        // todo: NIJE IMPLEMENTIRANO
         return ResponseEntity.ok(izletService.dohvatiTermineIzleta(id));
-    }
-
-    @PostMapping("/{id}/termini")
-    public ResponseEntity<?> dodajTerminIzletu(@PathVariable Long id) {
-        // <TerminResponse>
-        // todo: NIJE IMPLEMENTIRANO
-        return ResponseEntity.ok().build();
     }
 }
