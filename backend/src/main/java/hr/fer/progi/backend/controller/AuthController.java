@@ -12,8 +12,8 @@ public class AuthController {
 
     @GetMapping("/me")
     public Map<String, Object> me(@AuthenticationPrincipal OAuth2User user) {
-//        System.out.println(user.getAttributes());
         return Map.of(
+                "sub", user.getAttribute("sub"),
                 "name", user.getAttribute("name"),
                 "email", user.getAttribute("email"),
                 "picture", user.getAttribute("picture")

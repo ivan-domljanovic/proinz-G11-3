@@ -53,10 +53,16 @@ public class Termin {
     @OneToMany(mappedBy = "termin")
     private List<TerminResurs> resursi;
 
-    public Termin(LocalDateTime datumVrijeme, Integer kapacitet, Izlet izlet, Set<Korisnik> vodici) {
+    public Termin(LocalDateTime datumVrijeme, Integer kapacitet, String mjestoPolaska,
+                  Double cijena,
+                  Integer potrebanBrojVodica, Integer trajanjeMinuta, Izlet izlet) {
+
         this.datumVrijeme = datumVrijeme;
         this.kapacitet = kapacitet;
+        this.mjestoPolaska = mjestoPolaska;
+        this.cijena = cijena;
+        this.potrebanBrojVodica = potrebanBrojVodica;
+        this.trajanjeMinuta = trajanjeMinuta;
         this.izlet = izlet;
-        this.vodici = vodici;
     }
 }

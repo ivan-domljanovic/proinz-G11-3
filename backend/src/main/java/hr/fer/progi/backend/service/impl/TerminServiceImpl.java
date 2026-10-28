@@ -1,23 +1,151 @@
 package hr.fer.progi.backend.service.impl;
 
+import hr.fer.progi.backend.dto.request.TerminCreateRequest;
+import hr.fer.progi.backend.dto.request.TerminSetVodiciRequest;
+import hr.fer.progi.backend.dto.request.TerminUpdateRequest;
+import hr.fer.progi.backend.dto.response.TerminResponse;
+import hr.fer.progi.backend.enums.Uloga;
+import hr.fer.progi.backend.exception.ResourceNotFoundException;
+import hr.fer.progi.backend.mapper.TerminMapper;
+import hr.fer.progi.backend.model.Korisnik;
 import hr.fer.progi.backend.model.Termin;
+import hr.fer.progi.backend.repository.IzletRepository;
+import hr.fer.progi.backend.repository.KorisnikRepository;
 import hr.fer.progi.backend.repository.TerminRepository;
 import hr.fer.progi.backend.service.TerminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class TerminServiceImpl implements TerminService {
+
     private final TerminRepository terminRepository;
+    private final TerminMapper terminMapper;
+    private final IzletRepository izletRepository;
+    private final KorisnikRepository korisnikRepository;
 
     @Override
-    public Termin dohvatiTermin(Long id) {
-        return terminRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Termin ne postoji"));
+    public Termin dohvatiTerminEntitet(Long id) {
+        return terminRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Termin ne postoji"));
     }
 
     @Override
     public Integer dohvatiBrojSlobodnihMjesta(Termin termin) {
         return terminRepository.getNumberOfAvailableSpots(termin);
+    }
+
+    @Override
+    public TerminResponse dohvatiTermin(Long id) {
+        var termin = terminRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Termin s tim id ne postoji"));
+        return terminMapper.toResponse(termin);
+    }
+
+    @Override
+    public List<TerminResponse> dohvatiSveTermine() {
+        return terminRepository.findAll().stream().map(terminMapper::toResponse).toList();
+    }
+
+    @Override
+    @Transactional
+    public TerminResponse kreirajTermin(TerminCreateRequest request) {
+        var izlet = izletRepository.findById(request.izletId()).orElseThrow(
+                () -> new ResourceNotFoundException("Izlet s tim id ne postoji"));
+
+        Set<Korisnik> vodici = null;
+        if (request.vodici().length > 0) {
+            var ids = new HashSet<>(List.of(request.vodici()));
+            vodici = new HashSet<>(korisnikRepository.findAllById(ids));
+            if (vodici.size() != ids.size())
+                throw new ResourceNotFoundException("Jedan ili vise vodica ne postoji");
+
+            if (!jesuSviVodici(List.copyOf(vodici))) {
+                throw new IllegalArgumentException("Jedan ili vise korisnika nisu vodici");
+            }
+        }
+
+        var termin = new Termin(request.datumVrijeme(), request.kapacitet(),
+                request.mjestoPolaska(), request.cijena(), request.potrebanBrojVodica(),
+                request.trajanjeMinuta(), izlet);
+
+        if (vodici != null)
+            termin.setVodici(vodici);
+
+        var terminDb = terminRepository.save(termin);
+
+        return terminMapper.toResponse(terminDb);
+    }
+
+    @Override
+    @Transactional
+    public TerminResponse azurirajTermin(Long id, TerminUpdateRequest request) {
+        var termin = terminRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Termin s tim id ne postoji"));
+
+        termin.setCijena(request.cijena());
+        termin.setDatumVrijeme(request.datumVrijeme());
+        termin.setKapacitet(request.kapacitet());
+        termin.setMjestoPolaska(request.mjestoPolaska());
+        termin.setTrajanjeMinuta(request.trajanjeMinuta());
+        termin.setPotrebanBrojVodica(request.potrebanBrojVodica());
+
+        if (request.vodici() != null) {
+            var ids = new HashSet<>(List.of(request.vodici()));
+
+            var korisnici =
+                    korisnikRepository.findAllById(ids);
+            if (korisnici.size() != ids.size())
+                throw new ResourceNotFoundException("Jedan ili vise vodica ne postoji");
+
+            if (!jesuSviVodici(korisnici))
+                throw new IllegalArgumentException("Jedan ili vise korisnika nisu vodici");
+
+            termin.setVodici(new HashSet<>(korisnici));
+        }
+
+        return terminMapper.toResponse(termin);
+    }
+
+    @Override
+    @Transactional
+    public void obrisiTermin(Long id) {
+        if (!terminRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Termin s tim id ne postoji");
+        }
+        terminRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public TerminResponse postaviVodice(Long id, TerminSetVodiciRequest request) {
+        if (request.vodici() == null)
+            throw new IllegalArgumentException("Nema polja za vodice");
+
+        var termin = terminRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Termin s tim id ne postoji"));
+
+        var ids = new HashSet<>(List.of(request.vodici()));
+        var korisnici = korisnikRepository.findAllById(ids);
+
+        if (korisnici.size() != ids.size()) {
+            throw new ResourceNotFoundException("Jedan ili vise vodica ne postoji");
+        }
+        if (!jesuSviVodici(korisnici))
+            throw new IllegalArgumentException("Jedan ili vise korisnika nisu vodici");
+
+        termin.setVodici(new HashSet<>(korisnici));
+
+        return terminMapper.toResponse(termin);
+    }
+
+    private boolean jesuSviVodici(List<Korisnik> korisnici) {
+        return korisnici.stream().allMatch(vodic -> vodic.getUloge().contains(Uloga.VODIC));
     }
 }
