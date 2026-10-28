@@ -32,7 +32,7 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         }
         var dodatneUsluge = new ArrayList<DodatnaUsluga>();
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
-            dodatneUsluge.add(dodatneUslugeService.dohvatiDodatnuUslugu(dodatnaUslugaId));
+            dodatneUsluge.add(dodatneUslugeService.dohvatiDodatnuUsluguEntitet(dodatnaUslugaId));
         }
         var korisnik = korisnikService.dohvatiKorisnika(sub);
         var rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(), dodatneUsluge, korisnik, termin);

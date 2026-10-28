@@ -4,7 +4,7 @@ import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.model.Izlet;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {TerminMapper.class, AtrakcijeMapper.class, DodatneUslugeMapper.class})
+@Mapper(componentModel = "spring", uses = {TerminMapper.class, AtrakcijaMapper.class, DodatneUslugeMapper.class})
 public interface IzletMapper {
     IzletDetailResponse toResponse(Izlet izlet);
 }
