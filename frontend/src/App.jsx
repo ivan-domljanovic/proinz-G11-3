@@ -12,9 +12,7 @@ export default function App() {
   const [prijavaOtvorena, setPrijavaOtvorena] = useState(false);
 
   const [korisnik, setKorisnik] = useState(null);
-
   const [ucitavanjeKorisnika, setUcitavanjeKorisnika] = useState(true);
-
 
   useEffect(() => {
     async function dohvatiKorisnika() {

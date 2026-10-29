@@ -1,12 +1,15 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./KorisnickiIzbornik.css";
 
 export default function KorisnickiIzbornik({
    korisnik,
-   onOdjava
+   onOdjava,
+   brojRezervacija = null,
+   onMojeRezervacije
 }) {
    const izbornikRef = useRef(null);
+   const [porukaRezervacije, setPorukaRezervacije] = useState(false);
 
    useEffect(() => {
       function klikIzvan(event) {
@@ -25,12 +28,25 @@ export default function KorisnickiIzbornik({
       };
    }, []);
 
+   function otvoriRezervacije() {
+      if (onMojeRezervacije) {
+         onMojeRezervacije();
+         izbornikRef.current.open = false;
+      } else {
+         setPorukaRezervacije(true);
+      }
+   }
+
    return (
       <details
          ref={izbornikRef}
          className="korisnicki-izbornik"
       >
          <summary className="korisnicko-ime">
+            <span className="avatar">
+               {korisnik.name?.charAt(0).toUpperCase()}
+            </span>
+
             <span>{korisnik.name}</span>
             <span className="strelica" aria-hidden="true"></span>
          </summary>
@@ -44,16 +60,36 @@ export default function KorisnickiIzbornik({
 
             <div className="korisnicke-aktivnosti">
                <span>Zakazane aktivnosti</span>
-               <strong>—</strong>
+               <strong className="broj-aktivnosti">
+                  {brojRezervacija ?? "—"}
+               </strong>
             </div>
 
             <button
                type="button"
-               className="gumb-odjava"
-               onClick={onOdjava}
+               className="moje-rezervacije"
+               onClick={otvoriRezervacije}
             >
-               Odjava
+               <span className="rezervacije-ikona">▣</span>
+               Moje rezervacije
+               <span className="rezervacije-strelica">›</span>
             </button>
+
+            {porukaRezervacije && !onMojeRezervacije && (
+               <p className="rezervacije-poruka">
+                  Pregled rezervacija još nije dostupan.
+               </p>
+            )}
+
+            <div className="kartica-odjava">
+               <button
+                  type="button"
+                  className="gumb-odjava"
+                  onClick={onOdjava}
+               >
+                  Odjava
+               </button>
+            </div>
 
          </div>
       </details>

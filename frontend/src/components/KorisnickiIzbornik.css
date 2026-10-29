@@ -2,14 +2,14 @@
    position: relative;
 }
 
-/* Ime korisnika i avatar */
+/* Ime korisnika */
 .korisnicko-ime {
    display: flex;
    align-items: center;
    gap: 10px;
    cursor: pointer;
-   padding: 7px 12px;
-   border-radius: 12px;
+   padding: 8px 12px;
+   border-radius: 10px;
    color: #203d32;
    font-weight: 600;
    list-style: none;
@@ -24,21 +24,12 @@
    display: none;
 }
 
-/* Avatar s prvim slovom imena */
-.avatar {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 32px;
-   height: 32px;
-   border-radius: 50%;
-   background: #dfeae2;
-   color: #203d32;
-   font-size: 14px;
-   font-weight: 600;
+.korisnicko-ime:focus-visible {
+   outline: 2px solid #315649;
+   outline-offset: 3px;
 }
 
-/* Mala strelica */
+/* Strelica uz ime */
 .strelica {
    width: 7px;
    height: 7px;
@@ -53,28 +44,31 @@
    transform: rotate(225deg);
 }
 
-/* Padajuća kartica */
+/* Korisnička kartica */
 .korisnicka-kartica {
    position: absolute;
    top: calc(100% + 10px);
    right: 0;
-   width: 260px;
+   width: 280px;
+   max-width: calc(100vw - 32px);
    padding: 20px;
    background: white;
    border: 1px solid #e0e5df;
    border-radius: 14px;
    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
    z-index: 100;
+   box-sizing: border-box;
 }
 
-/* Ime i email */
+/* Podaci korisnika */
 .korisnicki-podaci {
-   padding-bottom: 15px;
+   padding-bottom: 17px;
    border-bottom: 1px solid #e0e5df;
 }
 
 .korisnicki-podaci strong {
    color: #203d32;
+   font-size: 15px;
 }
 
 .korisnicki-podaci p {
@@ -84,9 +78,10 @@
    overflow-wrap: anywhere;
 }
 
-/* Zakazane aktivnosti */
+/* Broj zakazanih aktivnosti */
 .korisnicke-aktivnosti {
    display: flex;
+   align-items: center;
    justify-content: space-between;
    gap: 10px;
    padding: 18px 0;
@@ -94,7 +89,60 @@
    color: #203d32;
 }
 
-/* Gumb za odjavu */
+.broj-aktivnosti {
+   background: #edf2ec;
+   color: #203d32;
+   padding: 5px 10px;
+   border-radius: 8px;
+   font-size: 13px;
+}
+
+/* Moje rezervacije */
+.moje-rezervacije {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   width: 100%;
+   padding: 11px;
+   background: transparent;
+   color: #203d32;
+   border: none;
+   border-radius: 8px;
+   font-size: 14px;
+   font-weight: 500;
+   text-align: left;
+   cursor: pointer;
+   transition: background 0.2s;
+}
+
+.moje-rezervacije:hover {
+   background: #edf2ec;
+}
+
+.rezervacije-ikona {
+   font-size: 18px;
+   color: #60746b;
+}
+
+.rezervacije-strelica {
+   margin-left: auto;
+   font-size: 22px;
+   color: #687771;
+}
+
+.rezervacije-poruka {
+   font-size: 12px;
+   color: #687771;
+   margin: 5px 0 12px;
+}
+
+/* Odjava */
+.kartica-odjava {
+   margin-top: 12px;
+   padding-top: 15px;
+   border-top: 1px solid #e0e5df;
+}
+
 .gumb-odjava {
    width: 100%;
    padding: 11px;
@@ -110,4 +158,18 @@
 
 .gumb-odjava:hover {
    background: #315649;
+}
+
+.avatar {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 32px;
+   height: 32px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #dfeae2;
+   color: #203d32;
+   font-size: 14px;
+   font-weight: 600;
 }
