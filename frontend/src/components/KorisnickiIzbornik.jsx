@@ -1,20 +1,37 @@
 
+import { useEffect, useRef } from "react";
 import "./KorisnickiIzbornik.css";
 
 export default function KorisnickiIzbornik({
    korisnik,
    onOdjava
 }) {
+   const izbornikRef = useRef(null);
+
+   useEffect(() => {
+      function klikIzvan(event) {
+         if (
+            izbornikRef.current &&
+            !izbornikRef.current.contains(event.target)
+         ) {
+            izbornikRef.current.open = false;
+         }
+      }
+
+      document.addEventListener("pointerdown", klikIzvan);
+
+      return () => {
+         document.removeEventListener("pointerdown", klikIzvan);
+      };
+   }, []);
+
    return (
-      <details className="korisnicki-izbornik">
-
+      <details
+         ref={izbornikRef}
+         className="korisnicki-izbornik"
+      >
          <summary className="korisnicko-ime">
-            <span className="avatar">
-               {korisnik.name?.charAt(0).toUpperCase()}
-            </span>
-
             <span>{korisnik.name}</span>
-
             <span className="strelica" aria-hidden="true"></span>
          </summary>
 
@@ -39,7 +56,6 @@ export default function KorisnickiIzbornik({
             </button>
 
          </div>
-
       </details>
    );
 }
