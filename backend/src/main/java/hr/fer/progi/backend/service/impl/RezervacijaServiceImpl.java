@@ -5,7 +5,7 @@ import hr.fer.progi.backend.enums.Status;
 import hr.fer.progi.backend.model.DodatnaUsluga;
 import hr.fer.progi.backend.model.Rezervacija;
 import hr.fer.progi.backend.repository.RezervacijaRepository;
-import hr.fer.progi.backend.service.DodatneUslugeService;
+import hr.fer.progi.backend.service.DodatnaUslugaService;
 import hr.fer.progi.backend.service.KorisnikService;
 import hr.fer.progi.backend.service.RezervacijaService;
 import hr.fer.progi.backend.service.TerminService;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RezervacijaServiceImpl implements RezervacijaService {
-    private final DodatneUslugeService dodatneUslugeService;
+    private final DodatnaUslugaService dodatnaUslugaService;
     private final KorisnikService korisnikService;
     private final TerminService terminService;
     private final RezervacijaRepository rezervacijaRepository;
@@ -32,7 +32,7 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         }
         var dodatneUsluge = new ArrayList<DodatnaUsluga>();
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
-            dodatneUsluge.add(dodatneUslugeService.dohvatiDodatnuUslugu(dodatnaUslugaId));
+            dodatneUsluge.add(dodatnaUslugaService.dohvatiDodatnuUslugu(dodatnaUslugaId));
         }
         var korisnik = korisnikService.dohvatiKorisnika(sub);
         var rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(), dodatneUsluge, korisnik, termin);
