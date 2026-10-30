@@ -1,0 +1,52 @@
+@baseUrl = http://localhost:8080
+
+### Bez filtera
+# Očekivano: Medvednica s 3 buduća termina i Plitvice s 1 terminom.
+# Prošli termini ne smiju biti vraćeni.
+GET {{baseUrl}}/api/izleti
+
+### Lokacija — djelomično podudaranje, neovisno o velikim slovima
+# Očekivano: samo Planinarenje Medvednicom.
+GET {{baseUrl}}/api/izleti?lokacija=MEDV
+
+### Kategorija
+# Očekivano: samo Jednodnevni izlet na Plitvice.
+GET {{baseUrl}}/api/izleti?kategorija=PRIRODA
+
+### Cijena do 45 EUR, uključivo
+# Očekivano: Medvednica, samo termin u 08:30 s cijenom 45.
+GET {{baseUrl}}/api/izleti?cijenaDo=45
+
+### Raspon cijene
+# Očekivano: Medvednica, samo 2 buduća termina s cijenom 50.
+GET {{baseUrl}}/api/izleti?cijenaOd=50&cijenaDo=50
+
+### Trajanje u minutama
+# Očekivano: samo Plitvice, trajanje 600 minuta.
+GET {{baseUrl}}/api/izleti?trajanjeOd=301&trajanjeDo=600
+
+### Dovoljno slobodnih mjesta
+# Očekivano: Medvednica, samo termin s 20 slobodnih mjesta.
+# Termin s 18 slobodnih mjesta i termin s kapacitetom 15 otpadaju.
+GET {{baseUrl}}/api/izleti?lokacija=Medvednica&brojOsoba=19
+
+### Otkazana rezervacija ne zauzima mjesta
+# Očekivano: Plitvice imaju svih 30 mjesta dostupno.
+GET {{baseUrl}}/api/izleti?kategorija=PRIRODA&brojOsoba=30
+
+### Nema dovoljno mjesta
+# Očekivano: 200 OK i [].
+GET {{baseUrl}}/api/izleti?brojOsoba=31
+
+### Svi uvjeti moraju vrijediti za ISTI termin
+# Očekivano: 200 OK i [].
+# Jeftini termin ima samo 15 mjesta, a ostali koštaju više od 45.
+GET {{baseUrl}}/api/izleti?lokacija=Medvednica&cijenaDo=45&brojOsoba=16
+
+### Obrnuti raspon cijene
+# Očekivano: 200 OK i [].
+GET {{baseUrl}}/api/izleti?cijenaOd=80&cijenaDo=40
+
+### Neispravan broj osoba
+# Očekivano: 400 Bad Request zbog @Positive.
+GET {{baseUrl}}/api/izleti?brojOsoba=0

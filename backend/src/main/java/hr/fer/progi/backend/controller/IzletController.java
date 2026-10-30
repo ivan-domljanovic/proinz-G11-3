@@ -1,6 +1,7 @@
 package hr.fer.progi.backend.controller;
 
 import hr.fer.progi.backend.dto.request.IzletCreateRequest;
+import hr.fer.progi.backend.dto.request.IzletSearchRequest;
 import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
 import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.dto.response.TerminResponse;
@@ -25,9 +26,11 @@ public class IzletController {
     private final TerminMapper terminMapper;
 
     @GetMapping("")
-    public ResponseEntity<List<IzletDetailResponse>> sviIzleti() {
-        var data = izletService.dohvatiSveIzlete().stream().map(izletMapper::toResponse).toList();
-        return ResponseEntity.ok(data);
+    public ResponseEntity<List<IzletDetailResponse>> sviIzleti(
+            @Valid @ModelAttribute IzletSearchRequest request) {
+
+        return ResponseEntity.ok(
+                izletService.pretraziIzlete(request));
     }
 
     // todo: dodat filtriranje u url-u

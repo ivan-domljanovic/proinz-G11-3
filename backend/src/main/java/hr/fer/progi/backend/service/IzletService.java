@@ -1,7 +1,9 @@
 package hr.fer.progi.backend.service;
 
 import hr.fer.progi.backend.dto.request.IzletCreateRequest;
+import hr.fer.progi.backend.dto.request.IzletSearchRequest;
 import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
+import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.model.Izlet;
 import hr.fer.progi.backend.model.Termin;
 
@@ -20,4 +22,6 @@ public interface IzletService {
     Izlet azurirajIzlet(Long id, IzletUpdateRequest request);
 
     List<Termin> dohvatiTermineIzleta(Long id);
+
+    List<IzletDetailResponse> pretraziIzlete(IzletSearchRequest request);
 }
