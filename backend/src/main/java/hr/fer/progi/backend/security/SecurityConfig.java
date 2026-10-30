@@ -1,5 +1,6 @@
 package hr.fer.progi.backend.security;
 
+import hr.fer.progi.backend.service.impl.GoogleOidcUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -15,14 +16,20 @@ public class SecurityConfig {
 
     @Bean
     @Profile("dev")
-    public SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChainDev(HttpSecurity http,
+                                                      GoogleOidcUserService googleOidcUserService) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth
                                 .anyRequest().permitAll()
                 )
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/oauth2/authorization/google") // iskljucuje springov login html
+                        .userInfoEndpoint(info -> info
+                                .oidcUserService(googleOidcUserService)
+                        )
+                )
                 .logout(logout -> logout
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"));

@@ -17,12 +17,20 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Korisnik {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String ime;
+
+    private String prezime;
+
     private String email;
+
+    @Column(nullable = false, unique = true)
     private String sub;
+
     private String avatarUrl;
 
     @Enumerated(EnumType.STRING)
@@ -33,10 +41,4 @@ public class Korisnik {
     @OneToMany(mappedBy = "korisnik")
     private Set<Rezervacija> rezervacije;
 
-    public Korisnik(String ime, String email, String avatarUrl, Set<Uloga> uloge) {
-        this.ime = ime;
-        this.email = email;
-        this.avatarUrl = avatarUrl;
-        this.uloge = uloge;
-    }
 }
