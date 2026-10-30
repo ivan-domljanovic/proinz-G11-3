@@ -7,7 +7,6 @@ public record IzletDetailResponse(
         String naziv,
         String opis,
         String kategorijaAktivnosti,
-        Integer trajanjeMinuta,
         String lokacija,
         List<TerminResponse> termini,
         List<AtrakcijaResponse> atrakcije,

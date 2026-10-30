@@ -47,24 +47,24 @@ public class BackendApplication {
             }
 
             Korisnik korisnik = new Korisnik();
-            korisnik.setId(1001L);
-            korisnik.setIme("Ana Anić");
+            korisnik.setIme("Ana");
+            korisnik.setPrezime("Anić");
             korisnik.setEmail("ana@example.com");
             korisnik.setSub("116881078227036825705");
             korisnik.setUloge(Set.of(Uloga.KORISNIK));
             korisnik = korisnikRepository.save(korisnik);
 
             Korisnik vodic = new Korisnik();
-            vodic.setId(1002L);
-            vodic.setIme("Marko Marković");
+            vodic.setIme("Marko");
+            vodic.setPrezime("Marković");
             vodic.setEmail("marko@example.com");
             vodic.setSub("958881078227206825123");
             vodic.setUloge(Set.of(Uloga.KORISNIK, Uloga.VODIC));
             vodic = korisnikRepository.save(vodic);
 
             Korisnik administrator = new Korisnik();
-            administrator.setId(1003L);
-            administrator.setIme("Iva Ivić");
+            administrator.setIme("Iva");
+            administrator.setPrezime("Ivić");
             administrator.setEmail("iva@example.com");
             administrator.setSub("746881062449336825123");
             administrator.setUloge(Set.of(

@@ -5,6 +5,6 @@ import hr.fer.progi.backend.model.Atrakcija;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface AtrakcijeMapper {
+public interface AtrakcijaMapper {
     AtrakcijaResponse toResponse(Atrakcija atrakcija);
 }

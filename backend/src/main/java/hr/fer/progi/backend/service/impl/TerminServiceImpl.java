@@ -1,8 +1,6 @@
 package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.dto.request.*;
-import hr.fer.progi.backend.dto.response.TerminResponse;
-import hr.fer.progi.backend.dto.response.TerminResursResponse;
 import hr.fer.progi.backend.enums.Uloga;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.exception.ResursAlreadyAllocatedException;
@@ -50,31 +48,24 @@ public class TerminServiceImpl implements TerminService {
     }
 
     @Override
-    public Termin dohvatiTerminEntitet(Long id) {
-        return terminRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Termin ne postoji"));
-    }
-
-    @Override
     public Integer dohvatiBrojSlobodnihMjesta(Termin termin) {
         return terminRepository.getNumberOfAvailableSpots(termin);
     }
 
     @Override
-    public TerminResponse dohvatiTermin(Long id) {
-        var termin = terminRepository.findById(id).orElseThrow(
+    public Termin dohvatiTermin(Long id) {
+        return terminRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Termin s tim id ne postoji"));
-        return terminMapper.toResponse(termin);
     }
 
     @Override
-    public List<TerminResponse> dohvatiSveTermine() {
-        return terminRepository.findAll().stream().map(terminMapper::toResponse).toList();
+    public List<Termin> dohvatiSveTermine() {
+        return terminRepository.findAll();
     }
 
     @Override
     @Transactional
-    public TerminResponse kreirajTermin(TerminCreateRequest request) {
+    public Termin kreirajTermin(TerminCreateRequest request) {
         var izlet = izletRepository.findById(request.izletId()).orElseThrow(
                 () -> new ResourceNotFoundException("Izlet s tim id ne postoji"));
 
@@ -97,14 +88,12 @@ public class TerminServiceImpl implements TerminService {
         if (vodici != null)
             termin.setVodici(vodici);
 
-        var terminDb = terminRepository.save(termin);
-
-        return terminMapper.toResponse(terminDb);
+        return terminRepository.save(termin);
     }
 
     @Override
     @Transactional
-    public TerminResponse azurirajTermin(Long id, TerminUpdateRequest request) {
+    public Termin azurirajTermin(Long id, TerminUpdateRequest request) {
         var termin = terminRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Termin s tim id ne postoji"));
 
@@ -129,7 +118,7 @@ public class TerminServiceImpl implements TerminService {
             termin.setVodici(new HashSet<>(korisnici));
         }
 
-        return terminMapper.toResponse(termin);
+        return termin;
     }
 
     @Override
@@ -143,7 +132,7 @@ public class TerminServiceImpl implements TerminService {
 
     @Override
     @Transactional
-    public TerminResponse postaviVodice(Long id, TerminSetVodiciRequest request) {
+    public Termin postaviVodice(Long id, TerminSetVodiciRequest request) {
         if (request.vodici() == null)
             throw new IllegalArgumentException("Nema polja za vodice");
 
@@ -161,17 +150,15 @@ public class TerminServiceImpl implements TerminService {
 
         termin.setVodici(new HashSet<>(korisnici));
 
-        return terminMapper.toResponse(termin);
+        return termin;
     }
 
     @Override
-    public List<TerminResursResponse> dohvatiSveResurseTermina(Long id) {
+    public List<TerminResurs> dohvatiSveResurseTermina(Long id) {
         var termin = terminRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Termin s tim id ne postoji"));
 
-        var resursi = terminResursRepository.findAllByTermin_Id(termin.getId());
-
-        return resursi.stream().map(terminResursMapper::toResponse).toList();
+        return terminResursRepository.findAllByTermin_Id(termin.getId());
     }
 
     @Override
@@ -186,7 +173,7 @@ public class TerminServiceImpl implements TerminService {
 
     @Override
     @Transactional
-    public TerminResursResponse dodijeliResursTerminu(Long id, TerminResursSetRequest request) {
+    public TerminResurs dodijeliResursTerminu(Long id, TerminResursSetRequest request) {
         Long resursId = request.resursId();
         if (!terminRepository.existsById(id))
             throw new ResourceNotFoundException("Termin s tim id ne postoji");
@@ -204,13 +191,12 @@ public class TerminServiceImpl implements TerminService {
         }
 
         var terminResurs = new TerminResurs(termin, resurs, request.kolicina());
-        var entityDb = terminResursRepository.save(terminResurs);
-        return terminResursMapper.toResponse(entityDb);
+        return (terminResursRepository.save(terminResurs));
     }
 
     @Override
     @Transactional
-    public TerminResursResponse azurirajKolicinuResursaTerminu(
+    public TerminResurs azurirajKolicinuResursaTerminu(
             Long terminId,
             Long resursId,
             TerminResursUpdateRequest request) {
@@ -222,7 +208,7 @@ public class TerminServiceImpl implements TerminService {
 
         terminResurs.setKolicina(request.kolicina());
 
-        return terminResursMapper.toResponse(terminResurs);
+        return terminResurs;
     }
 
     private boolean jesuSviVodici(List<Korisnik> korisnici) {

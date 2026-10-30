@@ -3,6 +3,7 @@ package hr.fer.progi.backend.controller;
 import hr.fer.progi.backend.dto.request.ResursCreateRequest;
 import hr.fer.progi.backend.dto.request.ResursUpdateRequest;
 import hr.fer.progi.backend.dto.response.ResursDetailsResponse;
+import hr.fer.progi.backend.mapper.ResursMapper;
 import hr.fer.progi.backend.service.ResursService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,28 +19,34 @@ import java.util.List;
 public class ResursController {
 
     private final ResursService resursService;
+    private final ResursMapper resursMapper;
 
     @GetMapping("")
     public ResponseEntity<List<ResursDetailsResponse>> sviResursi() {
-        return ResponseEntity.ok(resursService.dohvatiSveResurse());
+        var data = resursService.dohvatiSveResurse().stream().map(
+                resursMapper::toResponse).toList();
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResursDetailsResponse> dohvatiResurs(@PathVariable Long id) {
-        return ResponseEntity.ok(resursService.dohvatiResurs(id));
+        var data = resursService.dohvatiResurs(id);
+        return ResponseEntity.ok(resursMapper.toResponse(data));
     }
 
     @PostMapping("")
     public ResponseEntity<ResursDetailsResponse> kreirajResurs(
             @Valid @RequestBody ResursCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(resursService.kreirajResurs(request));
+        var data = resursService.kreirajResurs(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resursMapper.toResponse(data));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResursDetailsResponse> azurirajResurs(@PathVariable Long id, @Valid @RequestBody
-    ResursUpdateRequest request) {
+    public ResponseEntity<ResursDetailsResponse> azurirajResurs(@PathVariable Long id,
+                                                                @Valid @RequestBody
+                                                                ResursUpdateRequest request) {
         var data = resursService.azurirajResurs(id, request);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok(resursMapper.toResponse(data));
     }
 
     @DeleteMapping("/{id}")

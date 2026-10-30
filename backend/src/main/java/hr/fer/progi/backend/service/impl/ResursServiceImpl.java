@@ -2,7 +2,6 @@ package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.dto.request.ResursCreateRequest;
 import hr.fer.progi.backend.dto.request.ResursUpdateRequest;
-import hr.fer.progi.backend.dto.response.ResursDetailsResponse;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.mapper.ResursMapper;
 import hr.fer.progi.backend.model.Resurs;
@@ -22,31 +21,27 @@ public class ResursServiceImpl implements ResursService {
     private final ResursMapper resursMapper;
 
     @Override
-    public List<ResursDetailsResponse> dohvatiSveResurse() {
-        // todo: pagination logika
-        var data = resursRepository.findAll().stream().map(resursMapper::toResponse).toList();
-        return data;
+    public List<Resurs> dohvatiSveResurse() {
+        return resursRepository.findAll();
     }
 
     @Override
-    public ResursDetailsResponse dohvatiResurs(Long id) {
-        var data = resursRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Ne postoji resurs s tim id"));
-        return resursMapper.toResponse(data);
+    public Resurs dohvatiResurs(Long id) {
+        return (resursRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Ne postoji resurs s tim id")));
     }
 
     @Transactional
     @Override
-    public ResursDetailsResponse kreirajResurs(ResursCreateRequest request) {
+    public Resurs kreirajResurs(ResursCreateRequest request) {
 //        todo: validacija podataka
         var resurs = new Resurs(request.naziv(), request.kolicina());
-        var resursDb = resursRepository.save(resurs);
-        return resursMapper.toResponse(resursDb);
+        return (resursRepository.save(resurs));
     }
 
     @Transactional
     @Override
-    public ResursDetailsResponse azurirajResurs(Long id, ResursUpdateRequest request) {
+    public Resurs azurirajResurs(Long id, ResursUpdateRequest request) {
 //        todo: validacija podataka
         var resurs = resursRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Ne postoji resurs s tim id"));
@@ -54,8 +49,7 @@ public class ResursServiceImpl implements ResursService {
         resurs.setNaziv(request.naziv());
         resurs.setKolicina(request.kolicina());
 
-        var resursDb = resursRepository.save(resurs);
-        return resursMapper.toResponse(resursDb);
+        return (resursRepository.save(resurs));
     }
 
     @Transactional

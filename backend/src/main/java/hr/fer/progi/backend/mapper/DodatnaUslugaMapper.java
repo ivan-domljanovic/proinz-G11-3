@@ -5,6 +5,6 @@ import hr.fer.progi.backend.model.DodatnaUsluga;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface DodatneUslugeMapper {
+public interface DodatnaUslugaMapper {
     DodatnaUslugaResponse toResponse(DodatnaUsluga dodatnaUsluga);
 }
