@@ -30,7 +30,8 @@ public class GoogleOidcUserService extends OidcUserService {
                 .orElseGet(() -> {
                     var novi = new Korisnik();
                     novi.setSub(googleUser.getSubject());
-                    novi.setIme(googleUser.getFullName());
+                    novi.setIme(googleUser.getGivenName());
+                    novi.setPrezime(googleUser.getFamilyName());
                     novi.setEmail(googleUser.getEmail());
                     novi.setAvatarUrl(googleUser.getPicture());
                     novi.setUloge(new HashSet<>(Set.of(Uloga.KORISNIK)));
