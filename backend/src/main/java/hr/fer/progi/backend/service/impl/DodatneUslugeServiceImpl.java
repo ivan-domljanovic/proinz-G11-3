@@ -12,7 +12,7 @@ public class DodatneUslugeServiceImpl implements DodatneUslugeService {
     private final DodatnaUslugaRepository dodatnaUslugaRepository;
 
     @Override
-    public DodatnaUsluga dohvatiDodatnuUsluguEntitet(Long id) {
+    public DodatnaUsluga dohvatiDodatnuUslugu(Long id) {
         return dodatnaUslugaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Dodatna usluga ne postoji"));
     }
 }

@@ -4,6 +4,8 @@ import hr.fer.progi.backend.dto.request.IzletCreateRequest;
 import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
 import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.dto.response.TerminResponse;
+import hr.fer.progi.backend.mapper.IzletMapper;
+import hr.fer.progi.backend.mapper.TerminMapper;
 import hr.fer.progi.backend.service.IzletService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +21,12 @@ import java.util.List;
 public class IzletController {
 
     private final IzletService izletService;
+    private final IzletMapper izletMapper;
+    private final TerminMapper terminMapper;
 
     @GetMapping("")
     public ResponseEntity<List<IzletDetailResponse>> sviIzleti() {
-        var data = izletService.dohvatiSveIzlete();
+        var data = izletService.dohvatiSveIzlete().stream().map(izletMapper::toResponse).toList();
         return ResponseEntity.ok(data);
     }
 
@@ -30,14 +34,14 @@ public class IzletController {
     @GetMapping("/{id}")
     public ResponseEntity<IzletDetailResponse> detaljiOdredenogIzleta(@PathVariable("id") Long id) {
         var data = izletService.dohvatiIzlet(id);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok(izletMapper.toResponse(data));
     }
 
     @PostMapping("")
     public ResponseEntity<IzletDetailResponse> kreirajIzlet(
             @Valid @RequestBody IzletCreateRequest request) {
         var data = izletService.kreirajIzlet(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(izletMapper.toResponse(data));
     }
 
     @DeleteMapping("/{id}")
@@ -47,14 +51,17 @@ public class IzletController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IzletDetailResponse> azurirajIzlet(@PathVariable Long id, @Valid @RequestBody
-    IzletUpdateRequest request) {
+    public ResponseEntity<IzletDetailResponse> azurirajIzlet(@PathVariable Long id,
+                                                             @Valid @RequestBody
+                                                             IzletUpdateRequest request) {
         var data = izletService.azurirajIzlet(id, request);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok(izletMapper.toResponse(data));
     }
 
     @GetMapping("/{id}/termini")
     public ResponseEntity<List<TerminResponse>> dohvatiTermineIzleta(@PathVariable Long id) {
-        return ResponseEntity.ok(izletService.dohvatiTermineIzleta(id));
+        var data = izletService.dohvatiTermineIzleta(id).stream().map(
+                terminMapper::toResponse).toList();
+        return ResponseEntity.ok(data);
     }
 }

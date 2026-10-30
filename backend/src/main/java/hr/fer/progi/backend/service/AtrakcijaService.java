@@ -2,18 +2,18 @@ package hr.fer.progi.backend.service;
 
 import hr.fer.progi.backend.dto.request.AtrakcijaCreateRequest;
 import hr.fer.progi.backend.dto.request.AtrakcijaUpdateRequest;
-import hr.fer.progi.backend.dto.response.AtrakcijaResponse;
+import hr.fer.progi.backend.model.Atrakcija;
 
 import java.util.List;
 
 public interface AtrakcijaService {
-    AtrakcijaResponse dohvatiAtrakciju(Long id);
+    Atrakcija dohvatiAtrakciju(Long id);
 
-    List<AtrakcijaResponse> dohvatiSveAtrakcije();
+    List<Atrakcija> dohvatiSveAtrakcije();
 
-    AtrakcijaResponse kreirajAtrakciju(AtrakcijaCreateRequest request);
+    Atrakcija kreirajAtrakciju(AtrakcijaCreateRequest request);
 
-    AtrakcijaResponse azurirajAtrakciju(Long id, AtrakcijaUpdateRequest request);
+    Atrakcija azurirajAtrakciju(Long id, AtrakcijaUpdateRequest request);
 
     void obrisiAtrakciju(Long id);
 }

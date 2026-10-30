@@ -3,6 +3,7 @@ package hr.fer.progi.backend.controller;
 import hr.fer.progi.backend.dto.request.AtrakcijaCreateRequest;
 import hr.fer.progi.backend.dto.request.AtrakcijaUpdateRequest;
 import hr.fer.progi.backend.dto.response.AtrakcijaResponse;
+import hr.fer.progi.backend.mapper.AtrakcijaMapper;
 import hr.fer.progi.backend.service.AtrakcijaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +19,19 @@ import java.util.List;
 public class AtrakcijaController {
 
     private final AtrakcijaService atrakcijaService;
+    private final AtrakcijaMapper atrakcijaMapper;
 
     @GetMapping("")
     public ResponseEntity<List<AtrakcijaResponse>> dohvatiSveAtrakcije() {
-        return ResponseEntity.ok(atrakcijaService.dohvatiSveAtrakcije());
+        var data = atrakcijaService.dohvatiSveAtrakcije().stream().map(
+                atrakcijaMapper::toResponse).toList();
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AtrakcijaResponse> dohvatiAtrakciju(@PathVariable Long id) {
-        return ResponseEntity.ok(atrakcijaService.dohvatiAtrakciju(id));
+        var data = atrakcijaService.dohvatiAtrakciju(id);
+        return ResponseEntity.ok(atrakcijaMapper.toResponse(data));
     }
 
     @PostMapping("")
@@ -34,7 +39,7 @@ public class AtrakcijaController {
             @Valid @RequestBody
             AtrakcijaCreateRequest request) {
         var data = atrakcijaService.kreirajAtrakciju(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(atrakcijaMapper.toResponse(data));
     }
 
     @PutMapping("/{id}")
@@ -42,7 +47,7 @@ public class AtrakcijaController {
                                                                @Valid @RequestBody
                                                                AtrakcijaUpdateRequest request) {
         var data = atrakcijaService.azurirajAtrakciju(id, request);
-        return ResponseEntity.ok(data);
+        return ResponseEntity.ok(atrakcijaMapper.toResponse(data));
     }
 
     @DeleteMapping("/{id}")

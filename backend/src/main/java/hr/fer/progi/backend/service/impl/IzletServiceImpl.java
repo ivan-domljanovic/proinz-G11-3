@@ -2,12 +2,11 @@ package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.dto.request.IzletCreateRequest;
 import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
-import hr.fer.progi.backend.dto.response.IzletDetailResponse;
-import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.mapper.IzletMapper;
 import hr.fer.progi.backend.mapper.TerminMapper;
 import hr.fer.progi.backend.model.Izlet;
+import hr.fer.progi.backend.model.Termin;
 import hr.fer.progi.backend.repository.AtrakcijaRepository;
 import hr.fer.progi.backend.repository.DodatnaUslugaRepository;
 import hr.fer.progi.backend.repository.IzletRepository;
@@ -31,20 +30,19 @@ public class IzletServiceImpl implements IzletService {
     private final TerminMapper terminMapper;
 
     @Override
-    public IzletDetailResponse dohvatiIzlet(Long id) {
-        var izlet = izletRepository.findById(id).orElseThrow(
+    public Izlet dohvatiIzlet(Long id) {
+        return izletRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Izlet s tim id ne postoji"));
-        return izletMapper.toResponse(izlet);
     }
 
     @Override
-    public List<IzletDetailResponse> dohvatiSveIzlete() {
-        return izletRepository.findAll().stream().map(izletMapper::toResponse).toList();
+    public List<Izlet> dohvatiSveIzlete() {
+        return izletRepository.findAll();
     }
 
     @Override
     @Transactional
-    public IzletDetailResponse kreirajIzlet(IzletCreateRequest request) {
+    public Izlet kreirajIzlet(IzletCreateRequest request) {
         var atrakcije = atrakcijaRepository.findAllById(request.atrakcije());
         var dodatneUsluge = dodatnaUslugaRepository.findAllById(request.dodatneUsluge());
 
@@ -52,9 +50,7 @@ public class IzletServiceImpl implements IzletService {
                 request.lokacija(), atrakcije,
                 dodatneUsluge);
 
-        var izletDb = izletRepository.save(izlet);
-
-        return izletMapper.toResponse(izletDb);
+        return izletRepository.save(izlet);
     }
 
     @Override
@@ -67,7 +63,7 @@ public class IzletServiceImpl implements IzletService {
 
     @Override
     @Transactional
-    public IzletDetailResponse azurirajIzlet(
+    public Izlet azurirajIzlet(
             Long id, IzletUpdateRequest request) {
 
         var izlet = izletRepository.findById(id)
@@ -92,15 +88,14 @@ public class IzletServiceImpl implements IzletService {
             izlet.setDodatneUsluge(usluge);
         }
 
-        return izletMapper.toResponse(izlet);
+        return izlet;
     }
 
     @Override
-    public List<TerminResponse> dohvatiTermineIzleta(Long id) {
+    public List<Termin> dohvatiTermineIzleta(Long id) {
         if (!izletRepository.existsById(id))
             throw new ResourceNotFoundException("Izlet s tim id ne postoji");
 
-        return terminRepository.findAllByIzlet_Id(id).stream().map(
-                terminMapper::toResponse).toList();
+        return terminRepository.findAllByIzlet_Id(id);
     }
 }

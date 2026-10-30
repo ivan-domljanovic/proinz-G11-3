@@ -26,13 +26,13 @@ public class RezervacijaServiceImpl implements RezervacijaService {
 
     @Override
     public Rezervacija rezerviraj(RezervacijaRequest request, String sub) {
-        var termin = terminService.dohvatiTerminEntitet(request.terminId());
+        var termin = terminService.dohvatiTermin(request.terminId());
         if (request.brojMjesta() > terminService.dohvatiBrojSlobodnihMjesta(termin)) {
             throw new IllegalStateException("Nema dovoljno slobodnih mjesta za odabrani termin");
         }
         var dodatneUsluge = new ArrayList<DodatnaUsluga>();
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
-            dodatneUsluge.add(dodatneUslugeService.dohvatiDodatnuUsluguEntitet(dodatnaUslugaId));
+            dodatneUsluge.add(dodatneUslugeService.dohvatiDodatnuUslugu(dodatnaUslugaId));
         }
         var korisnik = korisnikService.dohvatiKorisnika(sub);
         var rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(), dodatneUsluge, korisnik, termin);
