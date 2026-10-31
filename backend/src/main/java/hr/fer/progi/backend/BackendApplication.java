@@ -31,7 +31,9 @@ public class BackendApplication {
             IzletRepository izletRepository,
             TerminRepository terminRepository,
             RezervacijaRepository rezervacijaRepository,
-            TerminResursRepository terminResursRepository
+            TerminResursRepository terminResursRepository,
+            RecenzijaIzletaRepository recenzijaIzletaRepository,
+            RecenzijaVodicaRepository recenzijaVodicaRepository
     ) {
         return args -> {
             if (korisnikRepository.count() > 0 ||
@@ -41,7 +43,9 @@ public class BackendApplication {
                     izletRepository.count() > 0 ||
                     terminRepository.count() > 0 ||
                     rezervacijaRepository.count() > 0 ||
-                    terminResursRepository.count() > 0) {
+                    terminResursRepository.count() > 0 ||
+                    recenzijaIzletaRepository.count() > 0 ||
+                    recenzijaVodicaRepository.count() > 0) {
                 System.out.println("VEC IMA NESTO U BAZI");
                 return;
             }
@@ -74,7 +78,14 @@ public class BackendApplication {
             ));
             administrator = korisnikRepository.save(administrator);
 
-            // ATRAKCIJE
+            Korisnik drugiVodic = new Korisnik();
+            drugiVodic.setIme("Petra");
+            drugiVodic.setPrezime("Petrović");
+            drugiVodic.setEmail("petra@example.com");
+            drugiVodic.setSub("dummy-vodic-petra");
+            drugiVodic.setUloge(Set.of(Uloga.KORISNIK, Uloga.VODIC));
+            drugiVodic = korisnikRepository.save(drugiVodic);
+
             Atrakcija sljeme = new Atrakcija();
             sljeme.setNaziv("Sljeme");
             sljeme.setOpis("Vrh Medvednice i pogled na Zagreb.");
@@ -216,12 +227,12 @@ public class BackendApplication {
                     sada.toLocalDate().minusDays(7).atTime(9, 0)
             );
             prosliTermin.setKapacitet(20);
-            prosliTermin.setPotrebanBrojVodica(1);
+            prosliTermin.setPotrebanBrojVodica(2);
             prosliTermin.setTrajanjeMinuta(300);
             prosliTermin.setMjestoPolaska("Lisinski");
             prosliTermin.setCijena(50.0);
             prosliTermin.setIzlet(medvednicaIzlet);
-            prosliTermin.setVodici(Set.of(vodic));
+            prosliTermin.setVodici(Set.of(vodic, drugiVodic));
             prosliTermin = terminRepository.save(prosliTermin);
 
             TerminResurs stapoviZaTermin = new TerminResurs();
@@ -261,7 +272,33 @@ public class BackendApplication {
             realizirana.setKorisnik(korisnik);
             realizirana.setTermin(prosliTermin);
             realizirana.setDodatneUsluge(List.of(rucak));
-            rezervacijaRepository.save(realizirana);
+            realizirana = rezervacijaRepository.save(realizirana);
+
+            RecenzijaIzleta recenzijaIzleta = new RecenzijaIzleta();
+            recenzijaIzleta.setRezervacija(realizirana);
+            recenzijaIzleta.setOcjena(4);
+            recenzijaIzleta.setKomentar("Lijepa ruta i odličan pogled sa Sljemena.");
+            recenzijaIzleta.setDatumRecenzije(sada.minusDays(6));
+            recenzijaIzleta.setDatumZadnjeIzmjene(sada.minusDays(6));
+            recenzijaIzletaRepository.save(recenzijaIzleta);
+
+            RecenzijaVodica recenzijaMarka = new RecenzijaVodica();
+            recenzijaMarka.setRezervacija(realizirana);
+            recenzijaMarka.setVodic(vodic);
+            recenzijaMarka.setOcjena(5);
+            recenzijaMarka.setKomentar("Marko je odlično objasnio povijest Medvedgrada.");
+            recenzijaMarka.setDatumRecenzije(sada.minusDays(6));
+            recenzijaMarka.setDatumZadnjeIzmjene(sada.minusDays(6));
+            recenzijaVodicaRepository.save(recenzijaMarka);
+
+            RecenzijaVodica recenzijaPetre = new RecenzijaVodica();
+            recenzijaPetre.setRezervacija(realizirana);
+            recenzijaPetre.setVodic(drugiVodic);
+            recenzijaPetre.setOcjena(4);
+            recenzijaPetre.setKomentar("Petra je pomagala grupi tijekom uspona.");
+            recenzijaPetre.setDatumRecenzije(sada.minusDays(6));
+            recenzijaPetre.setDatumZadnjeIzmjene(sada.minusDays(5));
+            recenzijaVodicaRepository.save(recenzijaPetre);
 
             System.out.println("Dummy podaci uspješno spremljeni.");
         };

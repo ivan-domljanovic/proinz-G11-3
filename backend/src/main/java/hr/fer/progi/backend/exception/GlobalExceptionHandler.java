@@ -42,6 +42,32 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(response);
     }
 
+    @ExceptionHandler(ForbiddenOperationException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenOperationException(ForbiddenOperationException ex,
+                                                                        HttpServletRequest request) {
+        var status = HttpStatus.FORBIDDEN;
+        var response = new ErrorResponse(
+                status.value(),
+                status.getReasonPhrase(),
+                ex.getMessage(),
+                LocalDateTime.now(),
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(response);
+    }
+
+    @ExceptionHandler(RecenzijaAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleRecenzijaAlreadyExistsException(RecenzijaAlreadyExistsException ex,
+                                                                        HttpServletRequest request) {
+        var status = HttpStatus.CONFLICT;
+        var response = new ErrorResponse(
+                status.value(),
+                status.getReasonPhrase(),
+                ex.getMessage(),
+                LocalDateTime.now(),
+                request.getRequestURI());
+        return ResponseEntity.status(status).body(response);
+    }
+
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException ex,
                                                                      HttpServletRequest request) {
