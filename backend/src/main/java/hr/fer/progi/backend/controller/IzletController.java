@@ -4,10 +4,13 @@ import hr.fer.progi.backend.dto.request.IzletCreateRequest;
 import hr.fer.progi.backend.dto.request.IzletSearchRequest;
 import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
 import hr.fer.progi.backend.dto.response.IzletDetailResponse;
+import hr.fer.progi.backend.dto.response.RecenzijaIzletaResponse;
 import hr.fer.progi.backend.dto.response.TerminResponse;
 import hr.fer.progi.backend.mapper.IzletMapper;
+import hr.fer.progi.backend.mapper.RecenzijaIzletaMapper;
 import hr.fer.progi.backend.mapper.TerminMapper;
 import hr.fer.progi.backend.service.IzletService;
+import hr.fer.progi.backend.service.RecenzijaIzletaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,8 @@ public class IzletController {
     private final IzletService izletService;
     private final IzletMapper izletMapper;
     private final TerminMapper terminMapper;
+    private final RecenzijaIzletaService recenzijaIzletaService;
+    private final RecenzijaIzletaMapper recenzijaIzletaMapper;
 
     @GetMapping("")
     public ResponseEntity<List<IzletDetailResponse>> sviIzleti(
@@ -65,6 +70,13 @@ public class IzletController {
     public ResponseEntity<List<TerminResponse>> dohvatiTermineIzleta(@PathVariable Long id) {
         var data = izletService.dohvatiTermineIzleta(id).stream().map(
                 terminMapper::toResponse).toList();
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/{id}/recenzije")
+    public ResponseEntity<List<RecenzijaIzletaResponse>> dohvatiRecenzije(@PathVariable Long id) {
+        var data = recenzijaIzletaService.dohvatiSveRecenzijeIzleta(id).stream().map(
+                recenzijaIzletaMapper::toResponse).toList();
         return ResponseEntity.ok(data);
     }
 }

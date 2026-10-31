@@ -4,7 +4,6 @@ import hr.fer.progi.backend.service.impl.GoogleOidcUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -38,7 +37,8 @@ public class SecurityConfig {
 
     @Bean
     @Profile("prod")
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   GoogleOidcUserService googleOidcUserService) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
@@ -47,7 +47,12 @@ public class SecurityConfig {
                                 .requestMatchers("/api/izleti", "/api/izleti/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/oauth2/authorization/google") // iskljucuje springov login html
+                        .userInfoEndpoint(info -> info
+                                .oidcUserService(googleOidcUserService)
+                        )
+                )
                 .logout(logout -> logout
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"));

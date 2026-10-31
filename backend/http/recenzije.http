@@ -1,0 +1,75 @@
+@baseUrl = http://localhost:8080
+@medvednicaId = 1
+@plitviceId = 2
+@markoId = 2
+@petraId = 4
+
+### Medvednica — jedna recenzija, Ana, ocjena 4
+GET {{baseUrl}}/api/izleti/{{medvednicaId}}/recenzije
+Accept: application/json
+
+> {%
+    client.test("Medvednica ima Aninu recenziju", function () {
+        client.assert(response.status === 200, "Očekivan status 200");
+        client.assert(response.body.length === 1, "Očekivana jedna recenzija");
+        const recenzija = response.body[0];
+        client.assert(recenzija.ocjena === 4, "Očekivana ocjena 4");
+        client.assert(recenzija.autor.ime === "Ana", "Autor treba biti Ana");
+        client.assert(!("email" in recenzija.autor), "Email ne smije biti izložen");
+    });
+%}
+
+### Plitvice — nema recenzija
+GET {{baseUrl}}/api/izleti/{{plitviceId}}/recenzije
+Accept: application/json
+
+> {%
+    client.test("Plitvice imaju prazan popis recenzija", function () {
+        client.assert(response.status === 200, "Očekivan status 200");
+        client.assert(response.body.length === 0, "Očekivan prazan popis");
+    });
+%}
+
+### Marko — jedna recenzija, ocjena 5
+GET {{baseUrl}}/api/vodici/{{markoId}}/recenzije
+Accept: application/json
+
+> {%
+    client.test("Markova recenzija ispravno je mapirana", function () {
+        client.assert(response.status === 200, "Očekivan status 200");
+        client.assert(response.body.length === 1, "Očekivana jedna recenzija");
+        const recenzija = response.body[0];
+        client.assert(recenzija.ocjena === 5, "Očekivana ocjena 5");
+        const trazeniVodicId = Number(
+            request.url().match(/\/vodici\/(\d+)\/recenzije/)[1]
+        );
+
+        client.assert(
+            recenzija.vodicId === trazeniVodicId,
+            `Očekivan vodicId=${trazeniVodicId}, dobiven=${recenzija.vodicId}`
+        );
+        client.assert(recenzija.autor.ime === "Ana", "Autor treba biti Ana");
+    });
+%}
+
+### Petra — druga recenzija vodiča za istu rezervaciju
+GET {{baseUrl}}/api/vodici/{{petraId}}/recenzije
+Accept: application/json
+
+> {%
+    client.test("Petra ima zasebnu recenziju", function () {
+        client.assert(response.status === 200, "Očekivan status 200");
+        client.assert(response.body.length === 1, "Očekivana jedna recenzija");
+        const recenzija = response.body[0];
+        client.assert(recenzija.ocjena === 4, "Očekivana ocjena 4");
+        const trazeniVodicId = Number(
+            request.url().match(/\/vodici\/(\d+)\/recenzije/)[1]
+        );
+
+        client.assert(
+            recenzija.vodicId === trazeniVodicId,
+            `Očekivan vodicId=${trazeniVodicId}, dobiven=${recenzija.vodicId}`
+        );
+        client.assert(recenzija.autor.ime === "Ana", "Autor treba biti Ana");
+    });
+%}
