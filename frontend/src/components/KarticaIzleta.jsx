@@ -1,5 +1,5 @@
 //podacio jednog izleta
-import { prikaziTrajanje } from "../utils/formatiranje.js";
+//import { prikaziTrajanje } from "../utils/formatiranje.js";
 import TerminiIzleta from "./TerminiIzleta.jsx";
 
 export default function KarticaIzleta({ izlet }) {
@@ -10,9 +10,8 @@ export default function KarticaIzleta({ izlet }) {
           {izlet.kategorijaAktivnosti}
         </span>
 
-          <span className="trajanje">
-          {prikaziTrajanje(izlet.trajanjeMinuta)}
-        </span>
+
+
         </div>
 
         <h2>{izlet.naziv}</h2>
@@ -25,7 +24,7 @@ export default function KarticaIzleta({ izlet }) {
           </div>
         </dl>
 
-        <TerminiIzleta terminiIzleta={izlet.termini ?? []} />
+        {<TerminiIzleta terminiIzleta={izlet.termini ?? []} />}
       </article>
   );
 }

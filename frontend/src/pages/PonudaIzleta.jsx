@@ -1,7 +1,7 @@
 import {useState} from "react";
 import useIzleti from "../hooks/useIzleti.js";
 import KarticaIzleta from "../components/KarticaIzleta";
-//import DetaljiIzleta from "../components/DetaljiIzleta.jsx"
+import DetaljiIzleta from "../components/DetaljiIzleta";
 
 const pocetniFilteri={
     naziv:"",
@@ -20,7 +20,7 @@ export default function PonudaIzleta(){
     const izleti=paket.izleti;
     const ucitavanje=paket.ucitavanje;
     const greska=paket.greska;
-    
+
     const [odabraniIzlet, setOdabraniIzlet]=useState(null); //korisnik još nije ništa kliknuo -> null
 
     //trenutno su rez isto sto i izleti
@@ -39,6 +39,15 @@ export default function PonudaIzleta(){
             </p>;
     }
 
+    if(odabraniIzlet){
+        return(
+            <DetaljiIzleta
+                izlet = {odabraniIzlet}
+                onNatrag={()=> setOdabraniIzlet(null)}
+                />
+        )
+    }
+
     return (
         <section className="ponuda" id="izleti">
             <div className="naslov-ponude">
@@ -50,8 +59,33 @@ export default function PonudaIzleta(){
                 Pronađeno: {rezultati.length} / {izleti.length}
               </span>
             </div>
-            
-            {rezultati.length === 0 ? (<p className="poruka">Nema izleta za prikaz.</p>) :
+
+            <form
+                className="filteri-izleta"
+                onSubmit={(event) => event.preventDefault()}>
+
+                <label>
+                    Naziv izleta
+                    <input
+                    type="search"
+                    name="naziv"
+                    placeholder="Pretraži izlete"
+
+                    />
+                </label>
+            </form>
+
+            {rezultati.length === 0 ? (
+                <div className="poruka" role="status">
+                    <h3>
+                        {izleti.length===0 ? "Trenutačno nema izleta u ponudi."
+                            :"Nema izleta koji odgovara odabranim kriterijima."}
+                    </h3>
+                    {izleti.length > 0 && (
+                        <p>Promjeni kriterije ili očisti filtere.</p>
+                    )}
+                </div>
+                ) :
             (<div className="popis-izleta">
                 {rezultati.map((izlet) => (
                     <div className="rezultat-izleta" key={izlet.id}>
