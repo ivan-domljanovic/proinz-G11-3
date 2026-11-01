@@ -2,6 +2,7 @@
 import { useState } from "react";
 import TerminIzleta from "./TerminIzleta.jsx";
 
+
 export default function TerminiIzleta({ terminiIzleta = [] }) {
   const [prikaziSveTermine, setPrikaziSveTermine] = useState(false);
   const [prikazTermina, setPrikazTermina] = useState("nadolazeci")

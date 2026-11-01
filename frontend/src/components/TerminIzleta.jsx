@@ -1,5 +1,5 @@
 //datum, dostupnost, polazak i cijena
-import { cijenaFormat, datumFormat } from "../utils/formatiranje.js";
+import { cijenaFormat, datumFormat, prikaziTrajanje } from "../utils/formatiranje.js";
 
 export default function TerminIzleta({ termin }) {
   const datum = termin.datumVrijeme
@@ -59,6 +59,11 @@ export default function TerminIzleta({ termin }) {
                   ? "Nije navedena"
                   : cijenaFormat.format(termin.cijena)}
             </dd>
+          </div>
+
+          <div>
+            <dt>Trajanje</dt>
+            <dd>{prikaziTrajanje((termin.trajanjeMinuta))}</dd>
           </div>
         </dl>
       </li>
