@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,47 +37,59 @@ public class RezervacijaController {
 
     @GetMapping("")
     public ResponseEntity<List<RezervacijaResponse>> dohvatiSveKorisnikoveRezervacije(
-            @AuthenticationPrincipal OAuth2User user
+            @AuthenticationPrincipal AppOidcUser user
     ) {
         var rezervacije = rezervacijaService.dohvatiSveKorisnikoveRezervacije(
-                user.getAttribute("sub"));
+                user.getUserId());
         return ResponseEntity.ok(rezervacije.stream().map(rezervacijaMapper::toResponse).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RezervacijaResponse> dohvatiRezervaciju(
             @PathVariable Long id,
-            @AuthenticationPrincipal OAuth2User user
+            @AuthenticationPrincipal AppOidcUser user
     ) {
-        var rezervacija = rezervacijaService.dohvatiRezervaciju(id, user.getAttribute("sub"));
+        var rezervacija = rezervacijaService.dohvatiRezervaciju(id, user.getUserId());
         return ResponseEntity.ok(rezervacijaMapper.toResponse(rezervacija));
     }
 
     @PostMapping("")
     public ResponseEntity<RezervacijaResponse> rezerviraj(
             @Valid @RequestBody RezervacijaRequest request,
-            @AuthenticationPrincipal OAuth2User user
+            @AuthenticationPrincipal AppOidcUser user
     ) {
-        var rezervacija = rezervacijaService.rezerviraj(request, user.getAttribute("sub"));
+        var rezervacija = rezervacijaService.rezerviraj(request, user.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 rezervacijaMapper.toResponse(rezervacija));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RezervacijaResponse> azurirajRezervaciju(
+            @PathVariable Long id,
+            @Valid @RequestBody RezervacijaRequest request,
+            @AuthenticationPrincipal AppOidcUser user
+    ) {
+        var rezervacija = rezervacijaService.azurirajRezervaciju(id, request, user.getUserId());
+        return ResponseEntity.ok(rezervacijaMapper.toResponse(rezervacija));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> otkaziRezervaciju(
             @PathVariable Long id,
-            @AuthenticationPrincipal OAuth2User user
+            @AuthenticationPrincipal AppOidcUser user
     ) {
-        rezervacijaService.otkazi(id, user.getAttribute("sub"));
+        rezervacijaService.otkazi(id, user.getUserId());
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/recenzije-vodica")
-    public ResponseEntity<RecenzijaVodicaResponse> recenzirajVodica(@PathVariable Long id,
-                                                                    @Valid @RequestBody
-                                                                    RVodicaCreateRequest request,
-                                                                    @AuthenticationPrincipal
-                                                                    AppOidcUser user) {
+    public ResponseEntity<RecenzijaVodicaResponse> recenzirajVodica(
+            @PathVariable Long id,
+            @Valid @RequestBody
+            RVodicaCreateRequest request,
+            @AuthenticationPrincipal
+            AppOidcUser user
+    ) {
         var autorId = user.getUserId();
         var data = recenzijaVodicaService.dodajRecenzijuVodica(id, autorId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -86,11 +97,13 @@ public class RezervacijaController {
     }
 
     @PostMapping("/{id}/recenzije-izleta")
-    public ResponseEntity<RecenzijaIzletaResponse> recenzirajIzlet(@PathVariable Long id,
-                                                                   @Valid @RequestBody
-                                                                   RIzletaCreateRequest request,
-                                                                   @AuthenticationPrincipal
-                                                                   AppOidcUser user) {
+    public ResponseEntity<RecenzijaIzletaResponse> recenzirajIzlet(
+            @PathVariable Long id,
+            @Valid @RequestBody
+            RIzletaCreateRequest request,
+            @AuthenticationPrincipal
+            AppOidcUser user
+    ) {
         var autorId = user.getUserId();
         var data = recenzijaIzletaService.dodajRecenzijuIzleta(id, autorId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(

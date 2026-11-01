@@ -17,4 +17,11 @@ public interface RezervacijaRepository extends JpaRepository<Rezervacija, Long> 
     void otkazi(Rezervacija rezervacija);
 
     List<Rezervacija> findByKorisnik(Korisnik korisnik);
+
+    @Modifying
+    @Query("UPDATE Rezervacija r SET r.status = 'POTVRDENO' WHERE r = :rezervacija")
+    void potvrdi(Rezervacija rezervacija);
+
+    @Query("SELECT r FROM Rezervacija r WHERE r.status = 'ZAHTJEV' ORDER BY r.vrijemeRezervacije ASC")
+    List<Rezervacija> dohvatiZahtjeveSortiranoPoVremenuRezervacije();
 }
