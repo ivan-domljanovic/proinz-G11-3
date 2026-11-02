@@ -385,11 +385,7 @@ h1 {
   background: #fff;
   color: #203b32;
 }
-@media (max-width: 1000px) {
-  .popis-izleta {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+
 .rezultat-izleta {
   display: flex;
   flex-direction: column;
@@ -532,57 +528,78 @@ h1 {
   margin-bottom: 18px;
   font-size: 1.2rem;
 }
-
-@media (max-width: 800px) {
-  .detalji-raspored {
-    grid-template-columns: 1fr;
-  }
+.stranica-prijave {
+  display: grid;
+  place-items: center;
+  min-height: 70vh;
+  padding-block: 64px;
 }
 
-
-@media (max-width: 640px) {
-  .kontejner {
-    width: calc(100% - 32px);
-  }
-
-  .navigacija {
-    min-height: 72px;
-  }
-
-  .opis-aplikacije {
-    display: none;
-  }
-
-  .uvod {
-    padding-block: 48px;
-  }
-
-  .naslov-ponude {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .popis-izleta {
-    grid-template-columns: 1fr;
-  }
-
-  .kartica {
-    padding: 22px;
-  }
-  .detalji-blok,
-  .detalji-termini {
-    padding: 22px;
-  }
-
-  .detalji-raspored {
-    gap: 20px;
-  }
-  .glavni-izbornik {
-    display: none;
-  }
+.kartica-prijave {
+  width: 100%;
+  max-width: 520px;
+  padding: 48px;
+  border: 1px solid #e0e5dc;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 16px 48px rgb(32 59 50 / 6%);
 }
 
+.kartica-prijave h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+}
+
+.prijava-opis {
+  margin: 24px 0 32px;
+  color: #647268;
+}
+
+.gumb-google {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 54px;
+  padding: 14px 20px;
+  border: 1px solid #d5dfcf;
+  border-radius: 12px;
+  background: #fff;
+  color: #203b32;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.gumb-google:hover {
+  background: #edf3e9;
+  border-color: #8aa180;
+}
+
+.prijava-napomena {
+  margin: 16px 0 32px;
+  color: #647268;
+  font-size: 0.8rem;
+}
+
+.prijava-povratak {
+  color: #52705c;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.prijava-povratak:hover {
+  text-decoration: underline;
+}
+
+.prijava-greska {
+  padding: 14px 16px;
+  border: 1px solid #e7b7a9;
+  border-radius: 10px;
+  background: #fceee8;
+  color: #a44629;
+}
 .gumb-vise-termina {
   width: 100%;
   margin-top: 12px;
@@ -636,3 +653,66 @@ html {
 .gumb-prijava:hover {
   background: #2f5446;
 }
+
+@media (max-width: 1000px) {
+  .popis-izleta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 800px) {
+  .detalji-raspored {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 640px) {
+  .kontejner {
+    width: calc(100% - 32px);
+  }
+
+  .navigacija {
+    min-height: 72px;
+  }
+
+  .opis-aplikacije {
+    display: none;
+  }
+
+  .uvod {
+    padding-block: 48px;
+  }
+
+  .naslov-ponude {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .popis-izleta {
+    grid-template-columns: 1fr;
+  }
+
+  .kartica {
+    padding: 22px;
+  }
+  .detalji-blok,
+  .detalji-termini {
+    padding: 22px;
+  }
+
+  .detalji-raspored {
+    gap: 20px;
+  }
+  .glavni-izbornik {
+    display: none;
+  }
+  .stranica-prijave {
+    padding-block: 32px;
+  }
+
+  .kartica-prijave {
+    padding: 28px 22px;
+  }
+}
+

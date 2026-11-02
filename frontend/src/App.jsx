@@ -4,6 +4,8 @@ import PonudaIzleta from "./pages/PonudaIzleta"
 import Zaglavlje from "./components/Zaglavlje.jsx";
 import { Routes, Route, Link} from "react-router"
 import StranicaIzleta from "./pages/StranicaIzleta.jsx";
+import Prijava from "./pages/Prijava"
+
 export default function App() {
 
     return (
@@ -38,7 +40,7 @@ export default function App() {
                       element={<StranicaIzleta/>}
                   />
 
-
+                  <Route path="/login" element={<Prijava />} />
               <Route
                   path="*"
                   element={
