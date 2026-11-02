@@ -1,6 +1,7 @@
 package hr.fer.progi.backend.dto.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -22,4 +23,5 @@ public record IzletSearchRequest(
         @PositiveOrZero Double cijenaDo,
 
         @Positive Integer brojOsoba
-) {}
+) {
+}

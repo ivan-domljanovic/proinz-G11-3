@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ForbiddenOperationException.class)
     public ResponseEntity<ErrorResponse> handleForbiddenOperationException(ForbiddenOperationException ex,
-                                                                        HttpServletRequest request) {
+                                                                           HttpServletRequest request) {
         var status = HttpStatus.FORBIDDEN;
         var response = new ErrorResponse(
                 status.value(),
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RecenzijaAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleRecenzijaAlreadyExistsException(RecenzijaAlreadyExistsException ex,
-                                                                        HttpServletRequest request) {
+                                                                               HttpServletRequest request) {
         var status = HttpStatus.CONFLICT;
         var response = new ErrorResponse(
                 status.value(),

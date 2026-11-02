@@ -6,11 +6,17 @@ import hr.fer.progi.backend.model.Rezervacija;
 import java.util.List;
 
 public interface RezervacijaService {
-    Rezervacija rezerviraj(RezervacijaRequest request, String sub);
+    Rezervacija rezerviraj(RezervacijaRequest request, Long korisnikId);
 
-    void otkazi(Long id, String sub);
+    Rezervacija azurirajRezervaciju(Long id, RezervacijaRequest request, Long korisnikId);
 
-    Rezervacija dohvatiRezervaciju(Long id, String sub);
+    void otkazi(Long id, Long korisnikId);
 
-    List<Rezervacija> dohvatiSveKorisnikoveRezervacije(String sub);
+    void potvrdiZahtjeve(Integer brojMjesta);
+
+    Rezervacija dohvatiRezervaciju(Long id);
+
+    Rezervacija dohvatiRezervaciju(Long id, Long korisnikId);
+
+    List<Rezervacija> dohvatiSveKorisnikoveRezervacije(Long korisnikId);
 }

@@ -12,7 +12,7 @@ export default function Zaglavlje(){
                     <Link to="/">Izleti</Link>
                 </nav>
 
-                <a className="gumb-prijava" href="/login">Prijava</a>
+                <Link className="gumb-prijava" to="/login">Prijava</Link>
             </div>
 
         

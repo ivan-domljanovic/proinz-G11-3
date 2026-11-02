@@ -43,8 +43,8 @@ public class DodatnaUslugaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<DodatnaUslugaResponse> azuriraj(@PathVariable Long id,
-                                                             @Valid @RequestBody
-                                                             DUslugeUpdateRequest request) {
+                                                          @Valid @RequestBody
+                                                          DUslugeUpdateRequest request) {
         var data = dodatnaUslugaService.azurirajDodatnuUslugu(id, request);
         return ResponseEntity.ok(dodatnaUslugaMapper.toResponse(data));
     }
