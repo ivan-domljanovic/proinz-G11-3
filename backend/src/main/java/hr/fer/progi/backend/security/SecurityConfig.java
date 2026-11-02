@@ -28,6 +28,8 @@ public class SecurityConfig {
                         .userInfoEndpoint(info -> info
                                 .oidcUserService(googleOidcUserService)
                         )
+                        .defaultSuccessUrl("http://localhost:5173", true)
+                        .failureUrl("http://localhost:5173")
                 )
                 .logout(logout -> logout
                         .invalidateHttpSession(true)
