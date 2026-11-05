@@ -1,6 +1,7 @@
 export class PotrebnaPrijava extends Error {
     constructor() {
         super("Za rezervaciju termina trebate se prijaviti.");
+        this.provjeraPrijave = true;
     }
 }
 
@@ -14,12 +15,16 @@ async function provjeriSesiju(signal) {
     // Provjera sesije prije slanja rezervacije, uključujući dev profil.
     const sesija = await fetch("/me", { credentials: "include", redirect: "manual", signal });
     provjeriPrijavu(sesija);
-    if (!sesija.ok) {
-        const greska = new Error("Nije moguće provjeriti prijavu. Ako niste prijavljeni, otvorite prijavu pa pokušajte ponovno.");
-        greska.provjeraPrijave = true;
-        throw greska;
+    const korisnik = await sesija.json().catch(() => null);
+    // Postojeći backend u dev profilu za praznu sesiju vraća JSON grešku 500.
+    // Vite za ugašeni backend vraća grešku bez tog JSON odgovora.
+    if (sesija.status === 500 && korisnik?.path === "/me" && korisnik?.status === 500) {
+        throw new PotrebnaPrijava();
     }
-    const korisnik = await sesija.json();
+    if (!sesija.ok) {
+        throw new Error("Poslužitelj trenutačno nije dostupan ili provjera prijave nije uspjela. Pokušajte ponovno.");
+    }
+    if (!korisnik) throw new Error("Provjera prijave nije vratila ispravan odgovor. Pokušajte ponovno.");
     if (!korisnik?.sub) throw new PotrebnaPrijava();
 }
 

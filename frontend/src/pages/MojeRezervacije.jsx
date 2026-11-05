@@ -56,7 +56,7 @@ export default function MojeRezervacije() {
             if (!controller.signal.aborted) setUcitavanje(false);
         });
         return () => controller.abort();
-    }, [pokusaj]);
+    }, [pokusaj, dohvatiRezervacije]);
 
     return <section className="moje-rezervacije">
         <header className="naslov-ponude">
@@ -69,7 +69,7 @@ export default function MojeRezervacije() {
         {obavijest && <p role="status">{obavijest}</p>}
         {ucitavanje ? <p className="poruka" role="status">Učitavanje rezervacija...</p>
             : greska ? <div className="poruka greska" role="alert">
-                <p>{greska}</p>
+                <p>{prijava ? "Prijavite se kako bi vidjeli rezervacije" : greska}</p>
                 {prijava && <Link to="/login">Idi na prijavu →</Link>}
             </div>
             : rezervacije.length === 0 ? <div className="poruka">
