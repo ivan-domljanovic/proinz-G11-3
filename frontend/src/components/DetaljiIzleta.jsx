@@ -1,11 +1,13 @@
 import {useEffect, useRef} from "react";
 import TerminiIzleta from "./TerminiIzleta";
+import PregledRezervacije from "./PregledRezervacije.jsx";
 import {cijenaFormat} from "../utils/formatiranje";
 
 export default function DetaljiIzleta({izlet, onNatrag}){
     const atrakcije = izlet.atrakcije ?? [];
     const dodatneUsluge = izlet.dodatneUsluge ?? [];
     const naslovRef = useRef(null);
+    const rezervacijaRef = useRef(null);
 
     useEffect(()=>{
         naslovRef.current?.focus();
@@ -91,13 +93,19 @@ export default function DetaljiIzleta({izlet, onNatrag}){
                     </section>
                 </div>
 
-                <aside className="detalji-termini">
-                    <TerminiIzleta
-                        key = {izlet.id}
-                        terminiIzleta = {izlet.termini ?? []}
-                    />
+                <aside className="detalji-rezervacija">
+                    <div className="detalji-termini">
+                        <TerminiIzleta
+                            key = {izlet.id}
+                            terminiIzleta = {izlet.termini ?? []}
+                        />
+                    </div>
+                    <button type="button" className="gumb-detalji" onClick={() => rezervacijaRef.current.showModal()}>
+                        Rezerviraj termin
+                    </button>
                 </aside>
             </div>
+            <PregledRezervacije key={izlet.id} izlet={izlet} dialogRef={rezervacijaRef} />
         </section>
     );
 }
