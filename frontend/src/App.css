@@ -598,6 +598,12 @@ html {
   color: #b46b32;
 }
 
+.prijavljeni-korisnik { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.korisnik-avatar { width: 40px; height: 40px; flex-shrink: 0; border: 1px solid #dce2d8; border-radius: 50%; object-fit: cover; }
+.korisnik-inicijal { display: grid; place-items: center; background: #edf3e9; color: #203b32; font-weight: 700; }
+.korisnik-ime { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.korisnik-ucitavanje { color: #647268; font-size: 0.8rem; }
+
 .gumb-prijava {
   padding: 10px 20px;
   color: #fff;
