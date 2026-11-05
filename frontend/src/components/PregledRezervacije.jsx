@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Link } from "react-router";
+import { PotrebnaPrijava, rezervirajTermin } from "../services/rezervacijeApi.js";
 import { cijenaFormat, datumFormat } from "../utils/formatiranje.js";
 
 function naplataPoOsobi(usluga) {
@@ -10,6 +12,11 @@ export default function PregledRezervacije({ izlet, dialogRef }) {
     const [terminId, setTerminId] = useState("");
     const [brojLjudi, setBrojLjudi] = useState(1);
     const [odabraneUsluge, setOdabraneUsluge] = useState([]);
+    const [slanje, setSlanje] = useState(false);
+    const [greska, setGreska] = useState("");
+    const [potrebnaPrijava, setPotrebnaPrijava] = useState(false);
+    const [rezultat, setRezultat] = useState(null);
+    const saljeSe = useRef(false);
     const usluge = izlet.dodatneUsluge ?? [];
     const odabrane = usluge.filter((u) => odabraneUsluge.includes(u.id));
     const cijenaUsluga = odabrane.reduce((zbroj, u) =>
@@ -20,6 +27,31 @@ export default function PregledRezervacije({ izlet, dialogRef }) {
         .sort((a, b) => new Date(a.datumVrijeme) - new Date(b.datumVrijeme));
     const termin = termini.find((t) => String(t.id) === terminId);
     const ispravanBroj = Number.isSafeInteger(Number(brojLjudi)) && Number(brojLjudi) > 0;
+
+    async function potvrdiRezervaciju() {
+        if (saljeSe.current || rezultat) return;
+        if (!termin || !ispravanBroj) {
+            setGreska("Odaberite termin i unesite pozitivan cijeli broj ljudi.");
+            return;
+        }
+        saljeSe.current = true;
+        setSlanje(true);
+        setGreska("");
+        setPotrebnaPrijava(false);
+        try {
+            setRezultat(await rezervirajTermin({
+                terminId: termin.id,
+                brojMjesta: Number(brojLjudi),
+                dodatneUslugeId: odabrane.map((u) => u.id),
+            }));
+        } catch (error) {
+            setPotrebnaPrijava(error instanceof PotrebnaPrijava || error.provjeraPrijave === true);
+            setGreska(error.message || "Rezervacija nije uspjela. Pokušajte ponovno.");
+        } finally {
+            saljeSe.current = false;
+            setSlanje(false);
+        }
+    }
 
     return <dialog
         ref={dialogRef}
@@ -39,7 +71,13 @@ export default function PregledRezervacije({ izlet, dialogRef }) {
         </div>
         <h2 id="rezervacija-naslov">Rezerviraj termin</h2>
         <p className="rezervacija-izlet">{izlet.naziv}</p>
-        {termini.length === 0 ? <p>Nema nadolazećih termina za ovaj izlet.</p> : <>
+        {rezultat ? <div className="rezervacija-sazetak" role="status">
+            <strong>{rezultat.status === "POTVRDENO" ? "Rezervacija je potvrđena!" : rezultat.status === "ZAHTJEV" ? "Rezervacija je na listi čekanja." : `Status rezervacije: ${rezultat.status}`}</strong>
+            <p>Rezervacija #{rezultat.id} · Broj ljudi: {rezultat.brojMjesta ?? brojLjudi}</p>
+            {rezultat.status === "ZAHTJEV" && <p>Kad se oslobode mjesta, rezervacija se može automatski potvrditi.</p>}
+            <button type="button" className="gumb-detalji" onClick={() => dialogRef.current.close()}>Zatvori</button>
+        </div> : termini.length === 0 ? <p>Nema nadolazećih termina za ovaj izlet.</p> : <>
+            <fieldset className="rezervacija-unos" disabled={slanje}>
             <label className="rezervacija-polje">Odaberite termin
                 <select autoFocus value={terminId} onChange={(e) => setTerminId(e.target.value)}>
                     <option value="">Odaberite datum i vrijeme</option>
@@ -78,8 +116,12 @@ export default function PregledRezervacije({ izlet, dialogRef }) {
                     {ispravanBroj && termin.brojSlobodnihMjesta != null && Number(brojLjudi) > termin.brojSlobodnihMjesta && <p>Za odabrani broj ljudi rezervacija bi bila na listi čekanja.</p>}
                 </> : <p>Odaberite termin za prikaz cijene.</p>}
             </div>
-            <button type="button" className="gumb-detalji" disabled>Potvrdi rezervaciju</button>
-            <p className="rezervacija-napomena">Pregled izgleda — rezervacija se još ne šalje.</p>
+            </fieldset>
+            <button type="button" className="gumb-detalji" disabled={slanje} onClick={potvrdiRezervaciju}>{slanje ? "Spremanje rezervacije..." : "Potvrdi rezervaciju"}</button>
+            {greska && <div className="rezervacija-obavijest" role="alert">
+                <p>{greska}</p>
+                {potrebnaPrijava && <Link to="/login" onClick={() => dialogRef.current.close()}>Idi na prijavu →</Link>}
+            </div>}
         </>}
     </dialog>;
 }

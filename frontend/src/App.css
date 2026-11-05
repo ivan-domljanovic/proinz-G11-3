@@ -555,6 +555,10 @@ body:has(.rezervacija-modal[open]) {
 .rezervacija-ukupno strong { font-size: 1.7rem; letter-spacing: -0.04em; }
 .rezervacija-modal button:disabled { opacity: 0.5; cursor: not-allowed; }
 .rezervacija-napomena { margin: 12px 0 0; text-align: center; font-size: 0.75rem; color: #647268; }
+.rezervacija-unos { min-width: 0; margin: 0; padding: 0; border: 0; }
+.rezervacija-obavijest { margin-top: 16px; padding: 16px; border: 1px solid #e7b7a9; border-radius: 12px; background: #fff5ed; }
+.rezervacija-obavijest p { margin: 0 0 8px; }
+.rezervacija-obavijest a { color: #203b32; font-weight: 600; }
 
 .rezervacija-usluge { min-width: 0; margin: 24px 0; padding: 0; border: 0; }
 .rezervacija-usluge legend { padding: 0; font-size: 0.85rem; font-weight: 600; }
