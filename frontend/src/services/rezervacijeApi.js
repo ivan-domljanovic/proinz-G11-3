@@ -33,6 +33,20 @@ export async function dohvatiRezervacije(signal) {
     return podaci;
 }
 
+export async function otkaziRezervaciju(id) {
+    await provjeriSesiju();
+    const odgovor = await fetch(`/api/rezervacije/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        credentials: "include",
+        redirect: "manual",
+    });
+    provjeriPrijavu(odgovor);
+    if (!odgovor.ok) {
+        const podaci = await odgovor.json().catch(() => null);
+        throw new Error(podaci?.message || "Otkazivanje nije uspjelo. Pokušajte ponovno.");
+    }
+}
+
 export async function rezervirajTermin(podaci) {
     await provjeriSesiju();
 
