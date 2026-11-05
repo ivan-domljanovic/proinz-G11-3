@@ -760,9 +760,8 @@ html {
   .detalji-raspored {
     gap: 20px;
   }
-  .glavni-izbornik {
-    display: none;
-  }
+  .navigacija { flex-wrap: wrap; gap: 12px; padding-block: 16px; }
+  .glavni-izbornik { order: 3; width: 100%; margin-left: 0; gap: 20px; font-size: 0.85rem; }
   .stranica-prijave {
     padding-block: 32px;
   }
@@ -771,4 +770,9 @@ html {
     padding: 28px 22px;
   }
 }
+
+.moje-rezervacije { padding-block: 40px 72px; }
+.moje-rezervacije h1 { font-size: clamp(2rem, 5vw, 3rem); }
+.popis-rezervacija { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; }
+.popis-rezervacija .kartica-vrh h2 { margin: 0; font-size: 1.15rem; }
 

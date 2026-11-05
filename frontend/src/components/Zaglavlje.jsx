@@ -10,6 +10,7 @@ export default function Zaglavlje(){
                 </Link>
                 <nav className="glavni-izbornik" aria-label="Glavni izbornik">
                     <Link to="/">Izleti</Link>
+                    <Link to="/moje-rezervacije">Moje rezervacije</Link>
                 </nav>
 
                 <Link className="gumb-prijava" to="/login">Prijava</Link>

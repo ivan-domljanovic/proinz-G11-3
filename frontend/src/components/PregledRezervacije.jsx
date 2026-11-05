@@ -74,6 +74,7 @@ export default function PregledRezervacije({ izlet, dialogRef }) {
         {rezultat ? <div className="rezervacija-sazetak" role="status">
             <strong>{rezultat.status === "POTVRDENO" ? "Rezervacija je potvrđena!" : rezultat.status === "ZAHTJEV" ? "Rezervacija je na listi čekanja." : `Status rezervacije: ${rezultat.status}`}</strong>
             <p>Rezervacija #{rezultat.id} · Broj ljudi: {rezultat.brojMjesta ?? brojLjudi}</p>
+            <Link to="/moje-rezervacije" onClick={() => dialogRef.current.close()}>Pregledaj moje rezervacije →</Link>
             {rezultat.status === "ZAHTJEV" && <p>Kad se oslobode mjesta, rezervacija se može automatski potvrditi.</p>}
             <button type="button" className="gumb-detalji" onClick={() => dialogRef.current.close()}>Zatvori</button>
         </div> : termini.length === 0 ? <p>Nema nadolazećih termina za ovaj izlet.</p> : <>
