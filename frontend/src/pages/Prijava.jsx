@@ -8,7 +8,7 @@ export default function Prijava(){
         <section className="stranica-prijave">
             <div className="kartica-prijave">
                 <p className="nadnaslov">VAŠA SLJEDEĆA AVANTURA</p>
-                <h1> Dobro dosli u Waypoint.</h1>
+                <h1> Dobro došli u Waypoint.</h1>
                 <p className="prijava-opis">
                     Prijavite se Google računom kako biste mogli rezervirati izlete i pregledavati svoje rezervacije.
                 </p>

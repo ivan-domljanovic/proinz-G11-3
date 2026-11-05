@@ -2,29 +2,40 @@
 import useIzleti from "../hooks/useIzleti.js";
 import KarticaIzleta from "../components/KarticaIzleta";
 import {Link} from "react-router";
+import { useState } from "react";
 
 const pocetniFilteri={
-    naziv:"",
     lokacija:"",
-    aktivnost:"",
-    datum:"",
-    trajanje:"",
-    cijena:"",
-    osobe:""
+    kategorija: "",
+    datumOd: "",
+    datumDo: "",
+    trajanjeOd: "",
+    trajanjeDo: "",
+    cijenaOd: "",
+    cijenaDo: "",
+    brojOsoba: ""
 };
 
 
 export default function PonudaIzleta(){ 
-
     const paket=useIzleti(); //podaci s backenda
     const izleti=paket.izleti;
     const ucitavanje=paket.ucitavanje;
     const greska=paket.greska;
 
+    const [filteri, setFilteri]=useState(pocetniFilteri);
+    const [pretraga, setPretragu]=useState("");
+
+    const [prozorZaFiltre, setProzorZaFiltre]=useState(false); //kada pritisnem ostali filtri da se otvori i namjeste ostali filtri
+    const brojAktivnihFiltera=Object.values(filteri).filter((v)=>v!="").length; 
+
+
 
     //trenutno su rez isto sto i izleti
     //dodati da se mogu filtrirati kasnije pa da rez!=izleti
-    const rezultati=izleti; 
+    const rezultati=izleti.filter((i)=>( 
+        i.naziv.toLowerCase().includes(pretraga.toLowerCase())
+    )); 
 
     if (ucitavanje){
         return <p className="poruka">
@@ -38,9 +49,53 @@ export default function PonudaIzleta(){
             </p>;
     }
 
-
-
     return (
+        <>
+        <section className="uvod">
+            <div className="uvod-tekst">
+                <p className="nadnaslov">NOVO ISKUSTVO VAS ČEKA</p>
+                <h1 id="glavni-naslov">
+                    Mali odmak.<br />   
+                    Veliki doživljaji.
+                </h1>
+                <p className="uvod-opis">
+                    Istražite gradove, provedite dan u prirodi ili
+                    pronađite svoju sljedeću avanturu.
+                </p>
+            </div>
+
+            <form
+                className="filteri-izleta"
+                onSubmit={(event) => event.preventDefault()}>
+                <label className="traka-pretrage">
+                    <span className="ikona-pretrage" aria-hidden="true">⌕</span>
+                    <input
+                        type="search"
+                        name="naziv"
+                        placeholder="Pretraži izlete"
+                        aria-label="Pretraži izlete po nazivu"
+                        value={pretraga}
+                        onChange={(p) => setPretragu(p.target.value)}
+                    />
+                </label>
+
+                <button
+                    type="button"
+                    className="gumb-filteri"
+                    onClick={()=>setProzorZaFiltre(true)}
+                >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                        <path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0" />
+                        <circle cx="16" cy="6" r="2" />
+                        <circle cx="10" cy="12" r="2" />
+                        <circle cx="18" cy="18" r="2" />
+                    </svg>
+                    Filteri{brojAktivnihFiltera > 0 && ` · ${brojAktivnihFiltera}`}
+                </button>
+            </form>
+        </section>
+
         <section className="ponuda" id="izleti">
             <div className="naslov-ponude">
                 <div>
@@ -52,20 +107,7 @@ export default function PonudaIzleta(){
               </span>
             </div>
 
-            <form
-                className="filteri-izleta"
-                onSubmit={(event) => event.preventDefault()}>
-
-                <label>
-                    Naziv izleta
-                    <input
-                    type="search"
-                    name="naziv"
-                    placeholder="Pretraži izlete"
-
-                    />
-                </label>
-            </form>
+        
 
             {rezultati.length === 0 ? (
                 <div className="poruka" role="status">
@@ -93,5 +135,49 @@ export default function PonudaIzleta(){
             }
 
         </section>
+
+        {prozorZaFiltre && (
+            <div className="pozadina-prozora" onClick={()=>setProzorZaFiltre(false)}>
+                <div
+                    className="prozor-filtera"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="naslov-filtera"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <header className="prozor-zaglavlje">
+                        <h2 id="naslov-filtera">Filteri</h2>
+                        <button
+                            type="button"
+                            className="gumb-zatvori"
+                            aria-label="Zatvori filtere"
+                            onClick={()=>setProzorZaFiltre(false)}
+                        > ✕ </button>
+                    </header>
+
+                    <div className="prozor-sadrzaj">
+                        <p>Ovdje ce bit filtri ???</p>
+                    </div>
+
+                    <footer className="prozor-dno">
+                        <button
+                            type="button"
+                            className="gumb-ocisti"
+                            onClick={()=>setFilteri(pocetniFilteri)}
+                        >
+                            Očisti
+                        </button>
+                        <button
+                            type="button"
+                            className="gumb-primijeni"
+                            onClick={()=>setProzorZaFiltre(false)}
+                        >
+                            Prikaži rezultate
+                        </button>
+                    </footer>
+                </div>
+            </div>
+        )}
+        </>
     )
 }
