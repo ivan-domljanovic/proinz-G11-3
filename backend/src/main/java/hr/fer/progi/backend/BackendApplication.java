@@ -54,7 +54,7 @@ public class BackendApplication {
             korisnik.setIme("Ana");
             korisnik.setPrezime("Anić");
             korisnik.setEmail("ana@example.com");
-            korisnik.setSub("116881078227036825705");
+            korisnik.setSub("047881078227036825473");
             korisnik.setUloge(Set.of(Uloga.KORISNIK));
             korisnik = korisnikRepository.save(korisnik);
 
