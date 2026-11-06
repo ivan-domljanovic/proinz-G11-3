@@ -40,6 +40,7 @@ export default function Zaglavlje(){
                 </Link>
                 <nav className="glavni-izbornik" aria-label="Glavni izbornik">
                     <Link to="/">Izleti</Link>
+                    <Link to="/moje-rezervacije">Moje rezervacije</Link>
                 </nav>
 
                 {ucitavanje ? <span className="korisnik-ucitavanje" role="status">Provjera prijave...</span>

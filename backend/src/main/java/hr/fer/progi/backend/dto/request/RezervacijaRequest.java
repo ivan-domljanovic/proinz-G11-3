@@ -5,6 +5,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 import java.util.List;
 
-public record RezervacijaRequest(@NotNull @PositiveOrZero Long terminId, @NotNull @PositiveOrZero Integer brojMjesta,
+public record RezervacijaRequest(@NotNull @PositiveOrZero Long terminId,
+                                 @NotNull @PositiveOrZero Integer brojMjesta,
                                  List<@NotNull @PositiveOrZero Long> dodatneUslugeId) {
 }

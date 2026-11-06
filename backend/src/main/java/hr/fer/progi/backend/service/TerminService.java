@@ -29,6 +29,7 @@ public interface TerminService {
 
     TerminResurs dodijeliResursTerminu(Long id, TerminResursSetRequest request);
 
-    TerminResurs azurirajKolicinuResursaTerminu(Long terminId, Long resursId, TerminResursUpdateRequest request);
+    TerminResurs azurirajKolicinuResursaTerminu(Long terminId, Long resursId,
+                                                TerminResursUpdateRequest request);
 
 }

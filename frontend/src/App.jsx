@@ -5,6 +5,7 @@
   import { Routes, Route, Link} from "react-router"
   import StranicaIzleta from "./pages/StranicaIzleta.jsx";
   import Prijava from "./pages/Prijava"
+import MojeRezervacije from "./pages/MojeRezervacije.jsx";
 
   export default function App() {
 
@@ -24,7 +25,8 @@
                     />
 
                     <Route path="/login" element={<Prijava />} />
-                <Route
+                <Routepath="/moje-rezervacije" element={<MojeRezervacije />} />
+              <Route
                     path="*"
                     element={
                     <section className="poruka">

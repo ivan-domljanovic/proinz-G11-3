@@ -477,6 +477,62 @@ h1 {
   font-weight: 700;
 }
 
+body:has(.rezervacija-modal[open]) {
+  overflow: hidden;
+}
+
+.rezervacija-modal {
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100dvh - 48px);
+  padding: clamp(24px, 5vw, 36px);
+  border: 1px solid #e0e5dc;
+  border-radius: 24px;
+  color: #203b32;
+  background: #fff;
+  box-shadow: 0 24px 90px rgb(20 40 30 / 24%);
+}
+
+.rezervacija-modal::backdrop {
+  background: rgb(22 39 31 / 30%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.rezervacija-modal-vrh { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.rezervacija-modal-vrh .nadnaslov { margin: 0; font-size: 0.65rem; }
+.rezervacija-zatvori { width: 36px; height: 36px; flex-shrink: 0; border: 0; border-radius: 50%; background: #f0f3ed; color: #203b32; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.rezervacija-modal h2 { margin: 20px 0 6px; font-size: 1.8rem; line-height: 1.2; letter-spacing: -0.04em; }
+.rezervacija-izlet { margin: 0 0 28px; color: #647268; }
+.rezervacija-polje { display: grid; gap: 8px; margin-bottom: 20px; font-size: 0.85rem; font-weight: 600; }
+.rezervacija-polje select, .rezervacija-polje input { width: 100%; min-height: 48px; padding: 12px; border: 1px solid #d5dfcf; border-radius: 10px; color: #203b32; background: #f6f7f2; font: inherit; }
+.rezervacija-sazetak { display: grid; gap: 14px; margin-block: 24px; padding: 20px; border-radius: 14px; background: #f0f4ec; }
+.rezervacija-sazetak > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.rezervacija-sazetak p { margin: 0; font-size: 0.85rem; color: #52645b; }
+.rezervacija-ukupno { padding-top: 14px; border-top: 1px solid #d5dfcf; }
+.rezervacija-ukupno strong { font-size: 1.7rem; letter-spacing: -0.04em; }
+.rezervacija-modal button:disabled { opacity: 0.5; cursor: not-allowed; }
+.rezervacija-napomena { margin: 12px 0 0; text-align: center; font-size: 0.75rem; color: #647268; }
+.rezervacija-unos { min-width: 0; margin: 0; padding: 0; border: 0; }
+.rezervacija-obavijest { margin-top: 16px; padding: 16px; border: 1px solid #e7b7a9; border-radius: 12px; background: #fff5ed; }
+.rezervacija-obavijest p { margin: 0 0 8px; }
+.rezervacija-obavijest a { color: #203b32; font-weight: 600; }
+
+.rezervacija-usluge { min-width: 0; margin: 24px 0; padding: 0; border: 0; }
+.rezervacija-usluge legend { padding: 0; font-size: 0.85rem; font-weight: 600; }
+.rezervacija-usluge > p { margin: 6px 0 12px; font-size: 0.8rem; color: #647268; }
+.rezervacija-usluga { display: flex; align-items: flex-start; gap: 12px; margin-top: 10px; padding: 14px; border: 1px solid #dce2d8; border-radius: 12px; cursor: pointer; }
+.rezervacija-usluga:has(input:checked) { border-color: #52705c; background: #f0f4ec; }
+.rezervacija-usluga input { flex-shrink: 0; width: 18px; height: 18px; margin: 3px 0 0; accent-color: #203b32; }
+.rezervacija-usluga-opis { display: grid; flex: 1; min-width: 0; gap: 4px; font-size: 0.85rem; }
+.rezervacija-usluga-opis small { color: #647268; font-weight: 400; }
+.rezervacija-usluga-cijena { flex-shrink: 0; font-size: 0.8rem; font-weight: 600; }
+
+.detalji-rezervacija {
+  display: grid;
+  min-width: 0;
+  gap: 16px;
+}
+
 .detalji-termini > .termini {
   margin-bottom: 0;
 }
@@ -668,9 +724,8 @@ html {
   .detalji-raspored {
     gap: 20px;
   }
-  .glavni-izbornik {
-    display: none;
-  }
+  .navigacija { flex-wrap: wrap; gap: 12px; padding-block: 16px; }
+  .glavni-izbornik { order: 3; width: 100%; margin-left: 0; gap: 20px; font-size: 0.85rem; }
   .stranica-prijave {
     padding-block: 32px;
   }
@@ -679,6 +734,14 @@ html {
     padding: 28px 22px;
   }
 }
+
+.moje-rezervacije { padding-block: 40px 72px; }
+.moje-rezervacije h1 { font-size: clamp(2rem, 5vw, 3rem); }
+.popis-rezervacija { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; }
+.popis-rezervacija .kartica-vrh h2 { margin: 0; font-size: 1.15rem; }
+.gumb-otkazi-rezervaciju { width: 100%; min-height: 44px; margin-top: auto; padding: 12px 18px; border: 1px solid #a33131; border-radius: 10px; background: #b63b3b; color: #fff; font-weight: 600; cursor: pointer; }
+.gumb-otkazi-rezervaciju:hover:not(:disabled) { background: #932c2c; }
+.gumb-otkazi-rezervaciju:disabled { opacity: 0.6; cursor: wait; }
 
 
 /* ---------- traka za pretragu ---------- */
@@ -833,4 +896,4 @@ html {
 
 .gumb-primijeni:hover {
   background: #355747;
-}   
+}
