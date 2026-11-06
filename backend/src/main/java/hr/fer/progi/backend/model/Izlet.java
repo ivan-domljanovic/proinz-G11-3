@@ -34,7 +34,8 @@ public class Izlet {
     @OneToMany(mappedBy = "izlet")
     private List<Termin> termini;
 
-    public Izlet(String naziv, String opis, String kategorijaAktivnosti, String lokacija, List<Atrakcija> atrakcije, List<DodatnaUsluga> dodatneUsluge) {
+    public Izlet(String naziv, String opis, String kategorijaAktivnosti, String lokacija,
+                 List<Atrakcija> atrakcije, List<DodatnaUsluga> dodatneUsluge) {
         this.naziv = naziv;
         this.opis = opis;
         this.kategorijaAktivnosti = kategorijaAktivnosti;

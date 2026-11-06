@@ -13,11 +13,13 @@ public class KorisnikServiceImpl implements KorisnikService {
 
     @Override
     public Korisnik dohvatiKorisnika(Long id) {
-        return korisnikRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji"));
+        return korisnikRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Korisnik ne postoji"));
     }
 
     @Override
     public Korisnik dohvatiKorisnika(String sub) {
-        return korisnikRepository.findBySub(sub).orElseThrow(() -> new IllegalArgumentException("Korisnik ne postoji"));
+        return korisnikRepository.findBySub(sub).orElseThrow(
+                () -> new IllegalArgumentException("Korisnik ne postoji"));
     }
 }
