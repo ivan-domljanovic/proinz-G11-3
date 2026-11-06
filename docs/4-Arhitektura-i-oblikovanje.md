@@ -43,9 +43,13 @@ Za svaki UML dijagram čuvajte čitljivu sliku i PlantUML izvor, kako je opisano
 
 **Cilj:** Prikazati logičku podjelu programa na komponente, njihova sučelja i vanjske integracije. Dijagram komponenata prikazuje logičku organizaciju, dok dijagram razmještaja prikazuje fizičko izvođenje. Ovaj prikaz ažurirajte kako sustav poprima konačan oblik.
 
-**Dijagram komponenata:** [Ugradite čitljiv UML dijagram komponenata.]  
-**PlantUML izvor:** [Poveznica na odgovarajuću `.puml` datoteku.]
+   ![Dijagram komponenata aplikacije za upravljanje izletima](./assets/diagrams/4-1-sustav-CMP.svg)
 
+   **Slika 4.1. Dijagram komponenata aplikacije za upravljanje izletima**
+
+   **PlantUML izvor:** [izvor](./puml/4-1-sustav-CMP.puml)
+
+   Web-klijent i poslužiteljska aplikacija su unutar granice sustava, zajedno s bazom PostgreSQL. Google, usluga e-pošte i OpenStreetMap su vanjske usluge. Moduli unutar poslužiteljske aplikacije su logičke cjeline jedne Spring Boot aplikacije koja se postavlja kao cjelina, a ne zasebne usluge. Modul Statistika još nije implementiran.
 | Komponenta                 | Odgovornost                                                                                                                                                                                                  | Razlog za ovu granicu                                                                                                               |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
 | Web-klijent (React)        | Prikazuje korisničko sučelje u pregledniku na računalu, tabletu i mobitelu: pretragu izleta, rezervacije, administraciju, statistiku i digitalni vodič s kartom. Dohvaća lokaciju uređaja preko preglednika. | Prikaz i interakcija s korisnikom odvojeni su od poslovnih pravila i pohrane podataka, koji su na poslužitelju.                     |
