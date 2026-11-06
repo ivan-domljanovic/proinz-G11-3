@@ -96,15 +96,15 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Cilj:** Prikazati važne pohranjene entitete, njihove identifikatore i veze te dovoljno atributa za razumijevanje podataka aplikacije. ER dijagram odvojen je od reprezentativnog UML dijagrama razreda u nastavku.
 
-**ER dijagram:** [Ugradite čitljiv dijagram projekta.]  
-**Izvor dijagrama:** [Poveznica na njegov izvor.]  
-**Implementacija:** [Navedite gdje je odgovarajući model podataka definiran u projektu.]
+![ER dijagram aplikacije za upravljanje izletima](./assets/diagrams/4-2-podaci-ERD.png)
 
-**ER dijagram:** <!-- BACKEND GENERIRA ER DIJAGRAM -->
+**Slika 4.2. ER dijagram aplikacije za upravljanje izletima**
+
+**Izvor dijagrama:** generiran iz sheme baze `turisticka-agencija` alatom za ERD u pgAdminu.
 
 **Implementacija:** JPA entiteti u `backend/src/main/java/hr/fer/progi/backend/model/`; Hibernate iz njih stvara shemu `turisticka-agencija`.
 
-Izlet ima više termina, a svaki termin ima vlastitu cijenu, kapacitet, mjesto polaska i potreban broj vodiča (odjeljak 2.5). Rezervacija pripada jednom terminu i jednom korisniku i može uključivati više dodatnih usluga. Uloge korisnika spremaju se u tablicu `korisnik_uloga`, pa jedan korisnik može imati više uloga (AS-06). Vodiči se terminu dodjeljuju preko tablice `termin_vodic`, a resursi preko `termin_resurs`, koja pamti dodijeljenu količinu (npr. 2 od 3 kombija). Točke interesa spremaju se u tablicu `atrakcije`. Broj slobodnih mjesta ne sprema se, nego se računa iz kapaciteta termina i potvrđenih rezervacija.
+Izlet ima više termina, a svaki termin ima vlastitu cijenu, kapacitet, mjesto polaska i potreban broj vodiča (odjeljak 2.5). Rezervacija pripada jednom terminu i jednom korisniku i može uključivati više dodatnih usluga. Uloge korisnika spremaju se u tablicu `korisnik_uloga`, pa jedan korisnik može imati više uloga (AS-06). Vodiči se terminu dodjeljuju preko tablice `termin_vodic`, a resursi preko `termin_resurs`, koja pamti dodijeljenu količinu (npr. 2 od 3 kombija). Točke interesa spremaju se u tablicu `atrakcije`. Broj slobodnih mjesta ne sprema se, nego se računa iz kapaciteta termina i potvrđenih rezervacija.Veze više-prema-više ostvarene su vezničkim tablicama `izleti_atrakcije`, `izleti_dodatne_usluge` i `rezervacije_dodatne_usluge`. Tablice `recenzije_izleta` i `recenzije_vodica` postoje u bazi, ali recenzije još nisu dio zahtjeva iz poglavlja 2.
 <details>
 <summary><strong>Jedna prijava poplave i povezani podaci</strong></summary>
 
