@@ -30,9 +30,9 @@ Primjeri koriste temu projekta CrisisMap. Neki namjerno sadrže korisne nedostat
 | F-013 | Organizator dodjeljuje vodiče terminima izleta.                                                                                                                                                                                                                | Srednji   | Projektni zadatak | Organizator za termin odabire vodiče do potrebnog broja; dodijeljeni vodiči vidljivi su uz termin.                                            |
 | F-014 | Organizator vodi evidenciju resursa (prijevoz, oprema) i njihove zauzetosti po terminima.                                                                                                                                                                      | Srednji   | Projektni zadatak | Za svaki resurs vidljiva je ukupna količina i koliko je zauzeto u pojedinom terminu; terminu se ne može dodijeliti više od slobodne količine. |
 | F-015 | Administrator i organizator definiraju točke interesa izleta (naziv, kratak opis, značaj, zanimljivosti, lokacija).                                                                                                                                            | Srednji   | Projektni zadatak | Za izlet se može unijeti točka interesa s koordinatama i opisom; prikazuje se korisniku na karti tijekom izleta.                              |
-| F-016 | Voditelj turističke agencije pregledava statistiku: broj rezervacija, popunjenost izleta, ostvareni prihod te najtraženije aktivnosti i dodatne usluge.                                                                                                        | Srednji   | Projektni zadatak | Prikazani su svi navedeni podaci za izlete agencije.                                                                                          |
-| F-017 | Voditelj turističke agencije izvozi odabrane podatke i izvještaje u standardnom formatu (npr. CSV).                                                                                                                                                            | Srednji   | Projektni zadatak | Odabrani podaci mogu se preuzeti kao datoteka koja se otvara u uobičajenim alatima za obradu podataka.                                        |
-|       |                                                                                                                                                                                                                                                                |           |                   |                                                                                                                                               |
+| F-016 | Organizator pregledava statistiku svojih izleta: broj rezervacija, popunjenost izleta, ostvareni prihod te najtraženije aktivnosti i dodatne usluge. | Srednji | Projektni zadatak | Prikazani su svi navedeni podaci za izlete organizatora. |
+| F-017 | Organizator izvozi odabrane podatke i izvještaje u standardnom formatu (npr. CSV). | Srednji | Projektni zadatak | Odabrani podaci mogu se preuzeti kao datoteka koja se otvara u uobičajenim alatima za obradu podataka. |
+| F-018 | Administrator korisnicima dodjeljuje uloge (organizator, administrator), a sustav svakoj ulozi omogućuje samo njezine radnje. | Visok | Projektni zadatak | Nakon što administrator korisniku dodijeli ulogu organizatora, korisnik vidi organizatorske funkcije. Korisnik bez uloge administratora ne može izvršiti administratorske radnje; takav zahtjev se odbija. ||           |                   |                                                                                                                                               |
 
 <details>
 <summary><strong>Izvori zahtjeva i kriteriji prihvaćanja</strong></summary>
@@ -65,14 +65,11 @@ Za složenu interakciju kratak scenarij _Given / When / Then_ može pojasniti kr
 ## 2.2 Nefunkcijski zahtjevi
 
 **Cilj:** Odrediti važna svojstva kvalitete i uvjete rada odobrene aplikacije na način koji tim može razumno provjeriti.
-
-| ID    | Opis                                                                                                                   | Prioritet | Izvor             | Način provjere                                                                            |
-| ----- | ---------------------------------------------------------------------------------------------------------------------- | --------- | ----------------- | ----------------------------------------------------------------------------------------- |
-| NF-01 | Sustav razlikuje uloge (korisnik, organizator, administrator, voditelj agencije) i svakoj dopušta samo njezine radnje. | Visok     | Projektni zadatak | Testni scenarij: korisnik ne može izvršiti administratorske radnje.                       |
-| NF-02 | Sustav podržava istodobni rad više korisnika.                                                                          | Visok     | Projektni zadatak | Testni scenarij: dvije istodobne rezervacije zadnjeg slobodnog mjesta, uspije samo jedna. |
-| NF-03 | Sučelje je responzivno (računalo, tablet, mobitel).                                                                    | Visok     | Projektni zadatak | Pregled sučelja na sva tri tipa uređaja.                                                  |
-| NF-04 | Aplikacija je javno dostupna na internetu.                                                                             | Visok     | Projektni zadatak | Pregled: aplikacija se otvara na javnoj adresi izvan lokalne mreže.                       |
-|       |                                                                                                                        |           |                   |                                                                                           |
+| ID         | Opis                                                                                            | Prioritet | Izvor                        | Način provjere                                                                            |
+| ---------- | ----------------------------------------------------------------------------------------------- | --------- | ---------------------------- | ----------------------------------------------------------------------------------------- |
+| NF-01 | Sustav podržava istodobni rad više korisnika.       | Visok     | Projektni zadatak | Testni scenarij: dvije istodobne rezervacije zadnjeg slobodnog mjesta, uspije samo jedna. |
+| NF-02 | Sučelje je responzivno (računalo, tablet, mobitel). | Visok     | Projektni zadatak | Pregled sučelja na sva tri tipa uređaja.                                                  |
+| NF-03 | Aplikacija je javno dostupna na internetu.          | Visok     | Projektni zadatak | Pregled: aplikacija se otvara na javnoj adresi izvan lokalne mreže.                       |
 
 <details>
 <summary><strong>Nefunkcijski zahtjevi za analizu</strong></summary>
@@ -102,16 +99,14 @@ Relevantna svojstva mogu se odnositi na uporabljivost, pristupačnost, sigurnost
 ## 2.3 Dionici i akteri
 
 **Cilj:** Utvrditi uloge koje utječu na zahtjeve i razlikovati dionike od aktera koji komuniciraju s aplikacijom.
+| ID uloge ili aktera                                   | Odnos prema sustavu                                                                                                                                         | Relevantni zahtjevi          |
+| ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| A-01 Korisnik (uključuje neprijavljenog posjetitelja) | Neprijavljen pregledava i pretražuje izlete; prijavljen ih rezervira i koristi aplikaciju kao vodič tijekom izleta.                                         | F-001 do F-008               |
+| A-02 Organizator                                      | Objavljuje i uređuje vlastite izlete, dodjeljuje vodiče, vodi evidenciju resursa, definira točke interesa te pregledava statistiku i izvozi izvještaje.     | F-012 do F-017               |
+| A-03 Administrator                                    | Upravlja svim izletima, terminima, cijenama, kapacitetima, dodatnim uslugama, rezervacijama i točkama interesa te dodjeljuje uloge korisnicima.             | F-009 do F-011, F-015, F-018 |
+| A-04 Pružatelj identiteta (Google)                    | Vanjski sustav koji provodi prijavu korisnika.                                                                                                              | F-001                        |
+| A-05 Vanjske usluge (karta, e-pošta)                  | Vanjski sustavi za prikaz karte i slanje potvrda.                                                                                                           | F-007, F-008, F-015          |
 
-| ID uloge ili aktera                  | Odnos prema sustavu                                                                                             | Relevantni zahtjevi   |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------------- | --------------------- |
-| A-01 Korisnik (uključuje neprijavljenog posjetitelja) | Neprijavljen pregledava i pretražuje izlete; prijavljen ih rezervira i koristi aplikaciju kao vodič tijekom izleta. | F-001 do F-008 |
-| A-02 Organizator                     | Objavljuje i uređuje vlastite izlete, dodjeljuje vodiče, vodi evidenciju resursa i definira točke interesa.     | F-012 do F-015        |
-| A-03 Administrator                   | Upravlja svim izletima, terminima, cijenama, kapacitetima, dodatnim uslugama, rezervacijama i točkama interesa. | F-009 do F-011, F-015 |
-| A-04 Voditelj turističke agencije    | Pregledava statistiku poslovanja i izvozi izvještaje.                                                           | F-016, F-017          |
-| A-05 Pružatelj identiteta (Google)   | Vanjski sustav koji provodi prijavu korisnika.                                                                  | F-001                 |
-| A-06 Vanjske usluge (karta, e-pošta) | Vanjski sustavi za prikaz karte i slanje potvrda.                                                               | F-007, F-008          |
-|                                      |                                                                                                                 |                       |
 
 <details>
 <summary><strong>Akteri i povezani zahtjevi</strong></summary>
@@ -144,7 +139,7 @@ Relevantna svojstva mogu se odnositi na uporabljivost, pristupačnost, sigurnost
 | AS-03 | Pretpostavka | Rezervacija iz statusa „zahtjev” u „potvrđena” prelazi automatski, bez odobrenja organizatora ili administratora.                   | Procjena tima     | Potvrditi, inače dodati zahtjev za potvrđivanje rezervacije.                                                                                                                    |
 | AS-04 | Pretpostavka | Dovoljna je trenutačna GPS lokacija korisnika u pregledniku, bez praćenja lokacije na poslužitelju.                                 | Procjena tima     | Lokacija se ne šalje na poslužitelj niti sprema u bazu, što pojednostavljuje zaštitu osobnih podataka (GDPR). Provjera: u bazi ne postoje podaci o lokaciji korisnika.          |
 | AS-05 | Pretpostavka | Vodič je podatak uz izlet (dodjeljuje ga organizator), a ne zasebna korisnička uloga s vlastitim funkcijama.                        | Procjena tima     | Potvrditi, ako treba, dodati ulogu i zahtjeve za vodiča.                                                                                                                        |
-| AS-06 | Pretpostavka | Prijava je putem Googlea, a ulogu organizatora, administratora ili voditelja agencije korisniku dodjeljuje administrator u sustavu. | Procjena tima     | Pri prvoj prijavi korisnik automatski dobiva ulogu korisnika; ostale uloge dodaje administrator. Jedan korisnik može imati više uloga.                                          |
+| AS-06 | Pretpostavka | Prijava je putem Googlea, a ulogu organizatora ili administratora korisniku dodjeljuje administrator u sustavu (F-018). | Procjena tima | Pri prvoj prijavi korisnik automatski dobiva ulogu korisnika; ostale uloge dodaje administrator. Jedan korisnik može imati više uloga. |
 
 <details>
 <summary><strong>Ograničenja nasuprot pretpostavkama</strong></summary>
@@ -172,7 +167,8 @@ Ograničenje je uvjet koji tim mora poštovati; pretpostavka je uvjet na koji se
 | ------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | 25. 10. 2026. | F-002, F-009, F-010 | Mjesto polaska, cijena, kapacitet i potreban broj vodiča zadaju se za svaki termin izleta, a ne jednom za cijeli izlet, jer isti izlet može imati termine s različitom cijenom, kapacitetom i mjestom polaska. | Backend tim; model `Termin` u repozitoriju                   |
 | 25. 10. 2026. | F-013, F-014        | Vodiči se dodjeljuju pojedinom terminu izleta. Resursi (prijevoz, oprema) vode se kao količina koja se dodjeljuje terminu (npr. 2 od 3 kombija), a ne samo kao slobodan ili zauzet.                            | Backend tim; modeli `Termin` i `TerminResurs` u repozitoriju |
-
+| 6. 11. 2026. | NF-01, F-018 | Razlikovanje uloga i ovlasti opisuje što sustav radi, a ne svojstvo kvalitete, pa je premješteno iz nefunkcijskih zahtjeva u funkcijski zahtjev F-018. Ostali nefunkcijski zahtjevi renumerirani su u NF-01 do NF-03. | Profesor (konzultacije) |
+| 6. 11. 2026. | F-012 do F-017 | Uloge organizatora i voditelja turističke agencije spojene su u jednu ulogu, organizator, jer se obje odnose na istu osobu koja vodi ponudu izleta; statistika i izvoz sada pripadaju organizatoru. | Profesor (konzultacije) |
 <details>
 <summary><strong>Primjer značajne promjene</strong></summary>
 
