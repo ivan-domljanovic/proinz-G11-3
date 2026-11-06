@@ -1,0 +1,45 @@
+@startuml 4-4-rezervacija-SD
+title Rezervacija izleta (UC-003) - sekvencijski dijagram
+skinparam shadowing false
+autonumber
+
+actor Korisnik
+participant "Web-klijent" as WEB
+participant "RezervacijaController" as C
+participant "RezervacijaService" as S
+participant "TerminService" as TS
+database "PostgreSQL" as DB
+participant "MailService" as M
+participant "Usluga e-pošte" as MAIL
+
+Korisnik -> WEB : odabire termin, broj osoba (3)\ni dodatne usluge
+WEB -> C : POST /api/rezervacije\n{terminId, brojMjesta: 3, dodatneUslugeId}
+alt korisnik nije prijavljen
+  C --> WEB : 401 Unauthorized
+  WEB --> Korisnik : traži prijavu (UC-001)
+else korisnik je prijavljen
+  C -> S : rezerviraj(request, korisnikId)
+  S -> TS : dohvatiTermin(terminId)
+  TS -> DB : SELECT termin
+  DB --> TS : termin
+  S -> TS : dohvatiBrojSlobodnihMjesta(termin)
+  TS --> S : slobodno = 2
+  alt brojMjesta <= slobodno
+    S -> DB : INSERT rezervacija (POTVRDENO)
+    S -> M : posaljiPotvrduRezervacije(rezervacija)
+    M -> MAIL : poruka s podacima rezervacije
+    alt slanje nije uspjelo (UC-003, 8a)
+      MAIL --> M : greška
+      note right of M : rezervacija ostaje potvrđena
+    end
+    S --> C : rezervacija
+    C --> WEB : 201 Created (status POTVRDENO)
+    WEB --> Korisnik : prikazuje potvrdu
+  else brojMjesta > slobodno (npr. 3 > 2)
+    S -> DB : INSERT rezervacija (ZAHTJEV)
+    S --> C : rezervacija
+    C --> WEB : 201 Created (status ZAHTJEV)
+    WEB --> Korisnik : rezervacija čeka slobodna mjesta
+  end
+end
+@enduml
