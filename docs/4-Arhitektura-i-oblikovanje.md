@@ -16,16 +16,6 @@
 
 Za svaki UML dijagram čuvajte čitljivu sliku i PlantUML izvor, kako je opisano na stranici [Home](./Home.md). U dovršenoj stranici koristite vlastite projektne odluke i modele.
 
-## 4.1 Ključne arhitekturne odluke
-
-**Cilj:** Objasniti nekoliko arhitekturnih odluka koje najviše utječu na rješenje i navesti njihove projektno specifične razloge.
-
-| Odluka | Razmatrana alternativa | Projektno specifično obrazloženje i kompromis |
-| ------ | ---------------------- | --------------------------------------------- |
-|        |                        |                                               |
-
-Objasnite glavne arhitekturne odluke bez ponavljanja popisa tehnologija. Ako važna odluka ima ADR, dovoljno je u tablici navesti njegov ID.
-
 <details>
 <summary><strong>Primjer arhitekturnih odluka i kompromisa</strong></summary>
 
@@ -59,9 +49,9 @@ Objasnite glavne arhitekturne odluke bez ponavljanja popisa tehnologija. Ako va�
 | Komponenta                 | Odgovornost                                                                                                                                                                                                  | Razlog za ovu granicu                                                                                                               |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
 | Web-klijent (React)        | Prikazuje korisničko sučelje u pregledniku na računalu, tabletu i mobitelu: pretragu izleta, rezervacije, administraciju, statistiku i digitalni vodič s kartom. Dohvaća lokaciju uređaja preko preglednika. | Prikaz i interakcija s korisnikom odvojeni su od poslovnih pravila i pohrane podataka, koji su na poslužitelju.                     |
-| Modul Autentikacija        | Provodi prijavu putem Googlea, stvara korisnički račun pri prvoj prijavi i provjerava ulogu korisnika za svaki zaštićeni zahtjev.                                                                            | Sigurnosna pravila nalaze se na jednom mjestu i primjenjuju se na sve ostale module (NF-01).                                        |
+| Modul Autentikacija        | Provodi prijavu putem Googlea, stvara korisnički račun pri prvoj prijavi i provjerava ulogu korisnika za svaki zaštićeni zahtjev.                                                                            | Sigurnosna pravila nalaze se na jednom mjestu i primjenjuju se na sve ostale module (F-018).                                        |
 | Modul Izleti               | Upravlja izletima, terminima, kapacitetima, dodatnim uslugama i točkama interesa te omogućuje njihovu pretragu.                                                                                              | Ponuda izleta mijenja se neovisno o rezervacijama i ima vlastita pravila (npr. organizator mijenja samo svoje izlete).              |
-| Modul Rezervacije          | Stvara rezervacije, provjerava slobodna mjesta, mijenja status rezervacije i vraća mjesta pri otkazivanju.                                                                                                   | Pravila kapaciteta i statusa rezervacije imaju jasno mjesto odgovornosti, što je važno za sprječavanje prebukiranja (F-005, NF-02). |
+| Modul Rezervacije          | Stvara rezervacije, provjerava slobodna mjesta, mijenja status rezervacije i vraća mjesta pri otkazivanju.                                                                                                   | Pravila kapaciteta i statusa rezervacije imaju jasno mjesto odgovornosti, što je važno za sprječavanje prebukiranja (F-005, NF-01). |
 | Modul Resursi              | Vodi evidenciju vodiča, prijevoza i opreme te njihovu dodjelu i zauzetost po terminima.                                                                                                                      | Raspoloživost resursa je zasebna briga organizatora i ne utječe na rad rezervacija.                                                 |
 | Modul Statistika           | Izračunava broj rezervacija, popunjenost, prihod i najtraženije aktivnosti te izvozi podatke u CSV.                                                                                                          | Izvještavanje samo čita podatke drugih modula i ne mijenja ih.                                                                      |
 | Modul Obavijesti           | Šalje potvrdu rezervacije e-poštom putem vanjske usluge.                                                                                                                                                     | Komunikacija s vanjskom uslugom odvojena je od rezervacije, pa neuspješno slanje ne poništava rezervaciju (UC-003, 8a).             |
