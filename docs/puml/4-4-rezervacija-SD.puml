@@ -5,6 +5,7 @@ autonumber
 
 actor Korisnik
 participant "Web-klijent" as WEB
+participant "Spring Security" as SEC
 participant "RezervacijaController" as C
 participant "RezervacijaService" as S
 participant "TerminService" as TS
@@ -13,16 +14,19 @@ participant "MailService" as M
 participant "Usluga e-pošte" as MAIL
 
 Korisnik -> WEB : odabire termin, broj osoba (3)\ni dodatne usluge
-WEB -> C : POST /api/rezervacije\n{terminId, brojMjesta: 3, dodatneUslugeId}
+WEB -> SEC : POST /api/rezervacije\n{terminId, brojMjesta: 3, dodatneUslugeId}
 alt korisnik nije prijavljen
-  C --> WEB : 401 Unauthorized
+  SEC --> WEB : preusmjeravanje na prijavu putem Googlea
   WEB --> Korisnik : traži prijavu (UC-001)
 else korisnik je prijavljen
+  SEC -> C : rezerviraj(request, korisnik)
   C -> S : rezerviraj(request, korisnikId)
   S -> TS : dohvatiTermin(terminId)
   TS -> DB : SELECT termin
   DB --> TS : termin
   S -> TS : dohvatiBrojSlobodnihMjesta(termin)
+  TS -> DB : broj slobodnih mjesta termina
+  DB --> TS : 2
   TS --> S : slobodno = 2
   alt brojMjesta <= slobodno
     S -> DB : INSERT rezervacija (POTVRDENO)
