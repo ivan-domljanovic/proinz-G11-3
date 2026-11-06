@@ -8,6 +8,7 @@ import hr.fer.progi.backend.repository.RezervacijaRepository;
 import hr.fer.progi.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,16 +33,19 @@ public class RezervacijaServiceImpl implements RezervacijaService {
             dodatneUsluge.add(dodatnaUslugaService.dohvatiDodatnuUslugu(dodatnaUslugaId));
         }
         if (request.brojMjesta() > terminService.dohvatiBrojSlobodnihMjesta(termin)) {
-            rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(), dodatneUsluge, korisnik, termin);
+            rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(),
+                    dodatneUsluge, korisnik, termin);
             return rezervacijaRepository.save(rezervacija);
         }
-        rezervacija = new Rezervacija(Status.POTVRDENO, request.brojMjesta(), LocalDateTime.now(), dodatneUsluge, korisnik, termin);
+        rezervacija = new Rezervacija(Status.POTVRDENO, request.brojMjesta(), LocalDateTime.now(),
+                dodatneUsluge, korisnik, termin);
         rezervacija = rezervacijaRepository.save(rezervacija);
         mailService.posaljiPotvrduRezervacije(rezervacija);
         return rezervacija;
     }
 
     @Override
+    @Transactional
     public Rezervacija azurirajRezervaciju(Long id, RezervacijaRequest request, Long korisnikId) {
         var trenutnaRezervacija = dohvatiRezervaciju(id);
         var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
@@ -52,10 +56,13 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         if (!trenutnaRezervacija.getTermin().equals(termin)) {
             throw new IllegalArgumentException("Ne možete mijenjati termin rezervacije");
         }
-        if (trenutnaRezervacija.getStatus().equals(Status.OTKAZANO) || trenutnaRezervacija.getStatus().equals(Status.REALIZIRANO)) {
-            throw new IllegalStateException("Ne možete mijenjati rezervaciju koja je otkazana ili realizirana");
+        if (trenutnaRezervacija.getStatus().equals(
+                Status.OTKAZANO) || trenutnaRezervacija.getStatus().equals(Status.REALIZIRANO)) {
+            throw new IllegalStateException(
+                    "Ne možete mijenjati rezervaciju koja je otkazana ili realizirana");
         }
-        var noviBrojPotrebnihMjesta = trenutnaRezervacija.getStatus().equals(Status.POTVRDENO) ? request.brojMjesta() - trenutnaRezervacija.getBrojMjesta() : request.brojMjesta();
+        var noviBrojPotrebnihMjesta = trenutnaRezervacija.getStatus().equals(
+                Status.POTVRDENO) ? request.brojMjesta() - trenutnaRezervacija.getBrojMjesta() : request.brojMjesta();
         var dodatneUsluge = new ArrayList<DodatnaUsluga>();
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
             dodatneUsluge.add(dodatnaUslugaService.dohvatiDodatnuUslugu(dodatnaUslugaId));
@@ -75,8 +82,10 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     }
 
     @Override
+    @Transactional
     public void otkazi(Long id, Long korisnikId) {
-        var rezervacija = rezervacijaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Rezervacija ne postoji"));
+        var rezervacija = rezervacijaRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Rezervacija ne postoji"));
         var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
         if (!rezervacija.getKorisnik().equals(korisnik)) {
             throw new IllegalArgumentException("Rezervacija ne pripada korisniku");
@@ -88,10 +97,12 @@ public class RezervacijaServiceImpl implements RezervacijaService {
             throw new IllegalStateException("Rezervacija je već realizirana");
         }
         rezervacijaRepository.otkazi(rezervacija);
+        potvrdiZahtjeve(rezervacija.getBrojMjesta());
         mailService.posaljiOtkazivanjeRezervacije(rezervacija);
     }
 
     @Override
+    @Transactional
     public void potvrdiZahtjeve(Integer brojMjesta) {
         List<Rezervacija> rezervacije = rezervacijaRepository.dohvatiZahtjeveSortiranoPoVremenuRezervacije();
         List<Rezervacija> potvrdeneRezervacije = new ArrayList<>();
@@ -111,12 +122,14 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     @Override
     public Rezervacija dohvatiRezervaciju(Long id) {
         // Samo za korištenje u backendu
-        return rezervacijaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Rezervacija ne postoji"));
+        return rezervacijaRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Rezervacija ne postoji"));
     }
 
     @Override
     public Rezervacija dohvatiRezervaciju(Long id, Long korisnikId) {
-        var rezervacija = rezervacijaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Rezervacija ne postoji"));
+        var rezervacija = rezervacijaRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Rezervacija ne postoji"));
         var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
         if (!rezervacija.getKorisnik().equals(korisnik)) {
             throw new IllegalArgumentException("Rezervacija ne pripada korisniku");
