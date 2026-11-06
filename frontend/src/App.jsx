@@ -25,7 +25,7 @@ import MojeRezervacije from "./pages/MojeRezervacije.jsx";
                     />
 
                     <Route path="/login" element={<Prijava />} />
-                <Routepath="/moje-rezervacije" element={<MojeRezervacije />} />
+                    <Route path="/moje-rezervacije" element={<MojeRezervacije />} />
               <Route
                     path="*"
                     element={
