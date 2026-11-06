@@ -96,7 +96,7 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Cilj:** Prikazati važne pohranjene entitete, njihove identifikatore i veze te dovoljno atributa za razumijevanje podataka aplikacije. ER dijagram odvojen je od reprezentativnog UML dijagrama razreda u nastavku.
 
-![ER dijagram aplikacije za upravljanje izletima](./assets/diagrams/4-2-podaci-ERD.png)
+![ER dijagram aplikacije za upravljanje izletima](./assets/4-2-podaci-ERD.png).
 
 **Slika 4.2. ER dijagram aplikacije za upravljanje izletima**
 
