@@ -1,0 +1,44 @@
+@startuml 4-1-sustav-CMP
+title Aplikacija za upravljanje izletima - dijagram komponenata
+skinparam componentStyle uml2
+skinparam shadowing false
+
+actor "Korisnik /\nOrganizator /\nAdministrator" as U
+
+rectangle "Aplikacija za upravljanje izletima" {
+  component "Web-klijent\n(React, preglednik)" as WEB
+  node "Poslužiteljska aplikacija (Spring Boot)" {
+    component "REST API\n(kontroleri, /api/**)" as API
+    component "Autentikacija\n(SecurityConfig,\nGoogleOidcUserService)" as AUTH
+    component "Izleti\n(izleti, termini,\ndodatne usluge,\ntočke interesa)" as IZL
+    component "Rezervacije" as REZ
+    component "Resursi\n(vodiči, prijevoz,\noprema)" as RES
+    component "Statistika\n(planirano)" as STAT
+    component "Obavijesti\n(MailService)" as OBV
+  }
+  database "PostgreSQL" as DB
+}
+
+cloud "Google\n(OpenID Connect)" as G
+cloud "Usluga e-pošte\n(SMTP)" as MAIL
+cloud "OpenStreetMap\n(kartografske pločice)" as OSM
+
+U --> WEB : HTTPS
+WEB --> API : JSON preko HTTPS-a
+API --> AUTH
+API --> IZL
+API --> REZ
+API --> RES
+API --> STAT
+AUTH --> G : prijava korisnika
+REZ --> IZL : termin i slobodna mjesta
+REZ --> OBV : potvrda rezervacije
+RES --> IZL : termin
+STAT ..> REZ : čita rezervacije
+OBV --> MAIL : slanje poruke
+IZL --> DB : JPA
+REZ --> DB : JPA
+RES --> DB : JPA
+AUTH --> DB : korisnici i uloge
+WEB --> OSM : pločice karte
+@enduml
