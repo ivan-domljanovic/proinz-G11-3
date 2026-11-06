@@ -157,9 +157,15 @@ Kao reprezentativni dio odabrane su rezervacije jer sadrže najvažnije poslovno
 
 **Cilj:** Prikazati redoslijed poruka za jedan reprezentativni scenarij i odgovore na važnu alternativu.
 
-**Scenarij:** [Naziv interakcije; dodajte UC ID ako postoji.]  
-**sekvencijski dijagram:** [Ugradite čitljiv UML sekvencijski dijagram.]  
-**PlantUML izvor:** [Poveznica na odgovarajuću `.puml` datoteku.]
+**Scenarij:** Rezervacija izleta (UC-003)
+
+![Sekvencijski dijagram rezervacije izleta](./assets/diagrams/4-4-rezervacija-SD.svg)
+
+**Slika 4.4. Sekvencijski dijagram rezervacije izleta**
+
+**PlantUML izvor:** [izvor](./puml/4-4-rezervacija-SD.puml)
+
+Korisnik rezervira 3 mjesta. Zahtjev neprijavljenog korisnika zaustavlja Spring Security i preusmjerava ga na prijavu putem Googlea (UC-001, 1a). Za prijavljenog korisnika servis dohvaća termin i iz baze računa broj slobodnih mjesta. Ako ima dovoljno mjesta, rezervacija se sprema sa statusom POTVRDENO i šalje se potvrda e-poštom; ako slanje ne uspije, rezervacija ostaje potvrđena (UC-003, 8a). Ako mjesta nema dovoljno (npr. traži se 3, a slobodna su 2), rezervacija se sprema sa statusom ZAHTJEV i čeka da se mjesta oslobode.
 
 <details>
 <summary><strong>Odabir lokacije, provjera valjanosti i podnošenje prijave</strong></summary>
