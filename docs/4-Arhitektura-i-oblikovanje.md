@@ -124,9 +124,15 @@ Izlet ima više termina, a svaki termin ima vlastitu cijenu, kapacitet, mjesto p
 
 **Cilj:** Prije implementacije reprezentativnog dijela sustava modelirati i prikazati razrede ili sučelja potrebna za dodjelu odgovornosti, operacija i veza. Oblikovanje ažurirajte kada se te odluke promijene.
 
-**Dijagram razreda:** [Ugradite čitljiv UML dijagram razreda za reprezentativni dio oblikovanja.]  
-**PlantUML izvor:** [Poveznica na odgovarajuću `.puml` datoteku.]  
-**Referenca na kod pri završnom pregledu:** [Poveznica na odgovarajuću implementaciju.]
+![Dijagram razreda za rezervacije](./assets/diagrams/4-3-rezervacije-CD.svg)
+
+**Slika 4.3. Dijagram razreda za rezervacije**
+
+**PlantUML izvor:** [izvor](./puml/4-3-rezervacije-CD.puml)
+
+**Referenca na kod:** `controller/RezervacijaController.java`, `service/impl/RezervacijaServiceImpl.java`, `repository/RezervacijaRepository.java`
+
+Kao reprezentativni dio odabrane su rezervacije jer sadrže najvažnije poslovno pravilo: ne smije se rezervirati više mjesta nego što ih termin ima. `RezervacijaController` samo prima HTTP zahtjeve i prosljeđuje ih servisu. `RezervacijaServiceImpl` provodi pravila: provjerava slobodna mjesta preko `TerminService`, određuje status rezervacije i preko `MailService` šalje potvrdu. `RezervacijaRepository` definira operacije pohrane, uključujući dohvat rezervacija na čekanju poredanih po vremenu. Servisi su definirani kao sučelja pa se u testovima mogu zamijeniti.
 
 <details>
 <summary><strong>Oblikovanje odgovornosti prijave i dopuštenih promjena</strong></summary>
