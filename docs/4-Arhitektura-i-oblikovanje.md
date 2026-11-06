@@ -100,6 +100,11 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 **Izvor dijagrama:** [Poveznica na njegov izvor.]  
 **Implementacija:** [Navedite gdje je odgovarajući model podataka definiran u projektu.]
 
+**ER dijagram:** <!-- BACKEND GENERIRA ER DIJAGRAM -->
+
+**Implementacija:** JPA entiteti u `backend/src/main/java/hr/fer/progi/backend/model/`; Hibernate iz njih stvara shemu `turisticka-agencija`.
+
+Izlet ima više termina, a svaki termin ima vlastitu cijenu, kapacitet, mjesto polaska i potreban broj vodiča (odjeljak 2.5). Rezervacija pripada jednom terminu i jednom korisniku i može uključivati više dodatnih usluga. Uloge korisnika spremaju se u tablicu `korisnik_uloga`, pa jedan korisnik može imati više uloga (AS-06). Vodiči se terminu dodjeljuju preko tablice `termin_vodic`, a resursi preko `termin_resurs`, koja pamti dodijeljenu količinu (npr. 2 od 3 kombija). Točke interesa spremaju se u tablicu `atrakcije`. Broj slobodnih mjesta ne sprema se, nego se računa iz kapaciteta termina i potvrđenih rezervacija.
 <details>
 <summary><strong>Jedna prijava poplave i povezani podaci</strong></summary>
 
