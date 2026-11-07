@@ -43,7 +43,7 @@ public class TerminController {
         return ResponseEntity.ok(terminMapper.toResponse(data));
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<TerminResponse> azurirajTermin(@PathVariable Long id, @Valid @RequestBody
     TerminUpdateRequest request) {
         var data = terminService.azurirajTermin(id, request);
@@ -56,7 +56,7 @@ public class TerminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{terminId}/vodici")
+    @PostMapping("/{terminId}/vodici")
     public ResponseEntity<TerminResponse> postaviVodice(@PathVariable Long terminId,
                                                         @Valid @RequestBody
                                                         TerminSetVodiciRequest request) {
@@ -86,7 +86,7 @@ public class TerminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(terminResursMapper.toResponse(data));
     }
 
-    @PutMapping("/{terminId}/resursi/{resursId}")
+    @PostMapping("/{terminId}/resursi/{resursId}")
     public ResponseEntity<TerminResursResponse> azurirajKolicinuResursaTerminu(
             @PathVariable Long terminId, @PathVariable Long resursId,
             @Valid @RequestBody TerminResursUpdateRequest request) {

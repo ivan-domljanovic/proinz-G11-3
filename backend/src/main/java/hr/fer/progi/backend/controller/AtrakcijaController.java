@@ -42,7 +42,7 @@ public class AtrakcijaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(atrakcijaMapper.toResponse(data));
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<AtrakcijaResponse> azurirajAtrakciju(@PathVariable Long id,
                                                                @Valid @RequestBody
                                                                AtrakcijaUpdateRequest request) {

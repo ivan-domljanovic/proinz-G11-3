@@ -63,7 +63,7 @@ public class RezervacijaController {
                 rezervacijaMapper.toResponse(rezervacija));
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<RezervacijaResponse> azurirajRezervaciju(
             @PathVariable Long id,
             @Valid @RequestBody RezervacijaRequest request,

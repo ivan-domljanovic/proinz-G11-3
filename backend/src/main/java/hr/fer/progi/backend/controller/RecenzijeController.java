@@ -25,7 +25,7 @@ public class RecenzijeController {
     private final RecenzijaIzletaMapper recenzijaIzletaMapper;
     private final RecenzijaIzletaService recenzijaIzletaService;
 
-    @PutMapping("/recenzije-vodica/{id}")
+    @PostMapping("/recenzije-vodica/{id}")
     public ResponseEntity<RecenzijaVodicaResponse> azuriraj(@PathVariable Long id,
                                                             @Valid @RequestBody
                                                             RVodicaUpdateRequest request,
@@ -43,7 +43,7 @@ public class RecenzijeController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/recenzije-izleta/{id}")
+    @PostMapping("/recenzije-izleta/{id}")
     public ResponseEntity<RecenzijaIzletaResponse> azuriraj(@PathVariable Long id,
                                                             @Valid @RequestBody
                                                             RIzletaUpdateRequest request,

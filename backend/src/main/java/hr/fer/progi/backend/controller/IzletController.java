@@ -58,7 +58,7 @@ public class IzletController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<IzletDetailResponse> azurirajIzlet(@PathVariable Long id,
                                                              @Valid @RequestBody
                                                              IzletUpdateRequest request) {

@@ -41,7 +41,7 @@ public class ResursController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resursMapper.toResponse(data));
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<ResursDetailsResponse> azurirajResurs(@PathVariable Long id,
                                                                 @Valid @RequestBody
                                                                 ResursUpdateRequest request) {

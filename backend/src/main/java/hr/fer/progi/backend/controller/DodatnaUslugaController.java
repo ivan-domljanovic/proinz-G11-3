@@ -41,7 +41,7 @@ public class DodatnaUslugaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dodatnaUslugaMapper.toResponse(data));
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<DodatnaUslugaResponse> azuriraj(@PathVariable Long id,
                                                           @Valid @RequestBody
                                                           DUslugeUpdateRequest request) {
