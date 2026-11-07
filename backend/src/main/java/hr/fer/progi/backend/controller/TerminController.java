@@ -51,7 +51,7 @@ public class TerminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> obirisiTermin(@PathVariable Long id) {
+    public ResponseEntity<Void> obrisiTermin(@PathVariable Long id) {
         terminService.obrisiTermin(id);
         return ResponseEntity.noContent().build();
     }
