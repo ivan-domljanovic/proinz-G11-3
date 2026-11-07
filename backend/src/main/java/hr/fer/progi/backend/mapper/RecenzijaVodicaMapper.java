@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {KorisnikMapper.class})
 public interface RecenzijaVodicaMapper {
 
-    @Mapping(target = "vodicId", source = "vodic.id")
     @Mapping(target = "autor", source = "rezervacija.korisnik")
     RecenzijaVodicaResponse toResponse(RecenzijaVodica recenzija);
 }

@@ -32,6 +32,9 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
             dodatneUsluge.add(dodatnaUslugaService.getDodatnaUsluga(dodatnaUslugaId));
         }
+        if (termin.getDatumVrijeme().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Termin je već prošao");
+        }
         if (request.brojMjesta() > terminService.dohvatiBrojSlobodnihMjesta(termin)) {
             rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(),
                     dodatneUsluge, korisnik, termin);

@@ -6,6 +6,6 @@ public record RezervacijaResponse(Long id,
                                   String status,
                                   Integer brojMjesta,
                                   List<DodatnaUslugaResponse> dodatneUsluge,
-                                  TerminRezervacijaResponse termin
+                                  TerminResponse termin
 ) {
 }
