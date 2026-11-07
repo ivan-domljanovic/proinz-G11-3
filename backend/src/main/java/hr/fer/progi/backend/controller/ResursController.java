@@ -30,7 +30,7 @@ public class ResursController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ResursDetailsResponse> dohvatiResurs(@PathVariable Long id) {
-        var data = resursService.dohvatiResurs(id);
+        var data = resursService.getResurs(id);
         return ResponseEntity.ok(resursMapper.toResponse(data));
     }
 

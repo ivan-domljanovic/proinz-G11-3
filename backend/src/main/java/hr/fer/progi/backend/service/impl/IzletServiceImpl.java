@@ -3,11 +3,8 @@ package hr.fer.progi.backend.service.impl;
 import hr.fer.progi.backend.dto.request.IzletCreateRequest;
 import hr.fer.progi.backend.dto.request.IzletSearchRequest;
 import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
-import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.enums.Status;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
-import hr.fer.progi.backend.mapper.IzletMapper;
-import hr.fer.progi.backend.mapper.TerminMapper;
 import hr.fer.progi.backend.model.Izlet;
 import hr.fer.progi.backend.model.Termin;
 import hr.fer.progi.backend.repository.AtrakcijaRepository;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +28,12 @@ import java.util.stream.Collectors;
 public class IzletServiceImpl implements IzletService {
 
     private final IzletRepository izletRepository;
-    private final IzletMapper izletMapper;
     private final AtrakcijaRepository atrakcijaRepository;
     private final DodatnaUslugaRepository dodatnaUslugaRepository;
     private final TerminRepository terminRepository;
-    private final TerminMapper terminMapper;
 
     @Override
-    public Izlet dohvatiIzlet(Long id) {
+    public Izlet getIzlet(Long id) {
         return izletRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Izlet s tim id ne postoji"));
     }
@@ -73,9 +69,7 @@ public class IzletServiceImpl implements IzletService {
     public Izlet azurirajIzlet(
             Long id, IzletUpdateRequest request) {
 
-        var izlet = izletRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Izlet s tim id ne postoji"));
+        var izlet = getIzlet(id);
 
         izlet.setNaziv(request.naziv());
         izlet.setOpis(request.opis());
@@ -108,7 +102,7 @@ public class IzletServiceImpl implements IzletService {
 
     @Override
     @Transactional
-    public List<IzletDetailResponse> pretraziIzlete(
+    public Map<Long, List<Termin>> pretraziIzlete(
             IzletSearchRequest request) {
 
         var sada = LocalDateTime.now();
@@ -125,7 +119,7 @@ public class IzletServiceImpl implements IzletService {
                 : request.datumDo().plusDays(1).atStartOfDay();
 
         if (!od.isBefore(doIskljucivo)) {
-            return List.of();
+            return Collections.emptyMap();
         }
 
         var lokacija = request.lokacija();
@@ -152,12 +146,6 @@ public class IzletServiceImpl implements IzletService {
                         Collectors.toList()
                 ));
 
-        return poIzletu.values().stream()
-                .map(odabraniTermini ->
-                        izletMapper.toSearchResponse(
-                                odabraniTermini.getFirst().getIzlet(),
-                                odabraniTermini
-                        ))
-                .toList();
+        return poIzletu;
     }
 }

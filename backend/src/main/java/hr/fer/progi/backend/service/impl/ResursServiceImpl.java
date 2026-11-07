@@ -3,7 +3,6 @@ package hr.fer.progi.backend.service.impl;
 import hr.fer.progi.backend.dto.request.ResursCreateRequest;
 import hr.fer.progi.backend.dto.request.ResursUpdateRequest;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
-import hr.fer.progi.backend.mapper.ResursMapper;
 import hr.fer.progi.backend.model.Resurs;
 import hr.fer.progi.backend.repository.ResursRepository;
 import hr.fer.progi.backend.service.ResursService;
@@ -18,7 +17,6 @@ import java.util.List;
 public class ResursServiceImpl implements ResursService {
 
     private final ResursRepository resursRepository;
-    private final ResursMapper resursMapper;
 
     @Override
     public List<Resurs> dohvatiSveResurse() {
@@ -26,7 +24,7 @@ public class ResursServiceImpl implements ResursService {
     }
 
     @Override
-    public Resurs dohvatiResurs(Long id) {
+    public Resurs getResurs(Long id) {
         return (resursRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Ne postoji resurs s tim id")));
     }
@@ -43,8 +41,7 @@ public class ResursServiceImpl implements ResursService {
     @Override
     public Resurs azurirajResurs(Long id, ResursUpdateRequest request) {
 //        todo: validacija podataka
-        var resurs = resursRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Ne postoji resurs s tim id"));
+        var resurs = getResurs(id);
 
         resurs.setNaziv(request.naziv());
         resurs.setKolicina(request.kolicina());
@@ -55,8 +52,7 @@ public class ResursServiceImpl implements ResursService {
     @Transactional
     @Override
     public void obrisiResurs(Long id) {
-        var resurs = resursRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Ne postoji resurs s tim id"));
+        var resurs = getResurs(id);
         resursRepository.delete(resurs);
     }
 }

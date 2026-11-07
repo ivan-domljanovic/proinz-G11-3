@@ -23,7 +23,7 @@ public class DodatnaUslugaServiceImpl implements DodatnaUslugaService {
     }
 
     @Override
-    public DodatnaUsluga dohvatiDodatnuUslugu(Long id) {
+    public DodatnaUsluga getDodatnaUsluga(Long id) {
         return dodatnaUslugaRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Dodatna usluga ne postoji"));
     }
@@ -38,8 +38,7 @@ public class DodatnaUslugaServiceImpl implements DodatnaUslugaService {
     @Override
     @Transactional
     public DodatnaUsluga azurirajDodatnuUslugu(Long id, DUslugeUpdateRequest request) {
-        var usluga = dodatnaUslugaRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Dodatna usluga s tim id ne postoji"));
+        var usluga = getDodatnaUsluga(id);
 
         usluga.setCijena(request.cijena());
         usluga.setNaziv(request.naziv());

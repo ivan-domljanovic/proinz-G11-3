@@ -14,7 +14,7 @@ public interface RezervacijaService {
 
     void potvrdiZahtjeve(Integer brojMjesta);
 
-    Rezervacija dohvatiRezervaciju(Long id);
+    Rezervacija getRezervacija(Long id);
 
     Rezervacija dohvatiRezervaciju(Long id, Long korisnikId);
 

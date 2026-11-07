@@ -10,7 +10,7 @@ public interface ResursService {
 
     List<Resurs> dohvatiSveResurse();
 
-    Resurs dohvatiResurs(Long id);
+    Resurs getResurs(Long id);
 
     Resurs kreirajResurs(ResursCreateRequest request);
 

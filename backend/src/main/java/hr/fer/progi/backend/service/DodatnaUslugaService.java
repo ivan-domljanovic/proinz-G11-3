@@ -10,7 +10,7 @@ public interface DodatnaUslugaService {
 
     List<DodatnaUsluga> dohvatiSveDodatneUsluge();
 
-    DodatnaUsluga dohvatiDodatnuUslugu(Long id);
+    DodatnaUsluga getDodatnaUsluga(Long id);
 
     DodatnaUsluga kreirajDodatnuUslugu(DUslugeCreateRequest request);
 

@@ -19,7 +19,7 @@ public class AtrakcijaServiceImpl implements AtrakcijaService {
     private final AtrakcijaRepository atrakcijaRepository;
 
     @Override
-    public Atrakcija dohvatiAtrakciju(Long id) {
+    public Atrakcija getAtrakcija(Long id) {
         return atrakcijaRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Atrakcija s tim id ne postoji"));
     }
@@ -40,8 +40,7 @@ public class AtrakcijaServiceImpl implements AtrakcijaService {
     @Override
     @Transactional
     public Atrakcija azurirajAtrakciju(Long id, AtrakcijaUpdateRequest request) {
-        var atrakcija = atrakcijaRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Atrakcija s tim id ne postoji"));
+        var atrakcija = getAtrakcija(id);
 
         atrakcija.setLatitude(request.latitude());
         atrakcija.setLongitude(request.longitude());
@@ -54,8 +53,7 @@ public class AtrakcijaServiceImpl implements AtrakcijaService {
     @Override
     @Transactional
     public void obrisiAtrakciju(Long id) {
-        var atrakcija = atrakcijaRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Ne postoji atrakcija s tim id"));
+        var atrakcija = getAtrakcija(id);
         atrakcijaRepository.delete(atrakcija);
     }
 }

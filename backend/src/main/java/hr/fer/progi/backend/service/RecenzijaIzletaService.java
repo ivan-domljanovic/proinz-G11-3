@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RecenzijaIzletaService {
 
-    RecenzijaIzleta dohvatiRecenziju(Long id);
+    RecenzijaIzleta getRecenzija(Long id);
 
     List<RecenzijaIzleta> dohvatiSveRecenzijeIzleta(Long izletId);
 

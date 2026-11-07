@@ -7,7 +7,7 @@ import hr.fer.progi.backend.model.Atrakcija;
 import java.util.List;
 
 public interface AtrakcijaService {
-    Atrakcija dohvatiAtrakciju(Long id);
+    Atrakcija getAtrakcija(Long id);
 
     List<Atrakcija> dohvatiSveAtrakcije();
 

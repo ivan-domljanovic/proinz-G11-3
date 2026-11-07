@@ -30,7 +30,7 @@ public class DodatnaUslugaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DodatnaUslugaResponse> dohvatiUslugu(@PathVariable Long id) {
-        var data = dodatnaUslugaService.dohvatiDodatnuUslugu(id);
+        var data = dodatnaUslugaService.getDodatnaUsluga(id);
         return ResponseEntity.ok(dodatnaUslugaMapper.toResponse(data));
     }
 

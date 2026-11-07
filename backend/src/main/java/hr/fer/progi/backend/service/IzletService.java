@@ -3,15 +3,15 @@ package hr.fer.progi.backend.service;
 import hr.fer.progi.backend.dto.request.IzletCreateRequest;
 import hr.fer.progi.backend.dto.request.IzletSearchRequest;
 import hr.fer.progi.backend.dto.request.IzletUpdateRequest;
-import hr.fer.progi.backend.dto.response.IzletDetailResponse;
 import hr.fer.progi.backend.model.Izlet;
 import hr.fer.progi.backend.model.Termin;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IzletService {
 
-    Izlet dohvatiIzlet(Long id);
+    Izlet getIzlet(Long id);
 
     List<Izlet> dohvatiSveIzlete();
 
@@ -23,5 +23,5 @@ public interface IzletService {
 
     List<Termin> dohvatiTermineIzleta(Long id);
 
-    List<IzletDetailResponse> pretraziIzlete(IzletSearchRequest request);
+    Map<Long, List<Termin>> pretraziIzlete(IzletSearchRequest request);
 }

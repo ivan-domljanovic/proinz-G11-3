@@ -2,8 +2,11 @@ package hr.fer.progi.backend.service;
 
 import hr.fer.progi.backend.model.Korisnik;
 
-public interface KorisnikService {
-    Korisnik dohvatiKorisnika(Long id);
+import java.util.Collection;
+import java.util.Set;
 
-    Korisnik dohvatiKorisnika(String sub);
+public interface KorisnikService {
+    Korisnik getKorisnik(Long id);
+
+    Set<Korisnik> dohvatiSveKorisnikePoId(Collection<Long> ids);
 }

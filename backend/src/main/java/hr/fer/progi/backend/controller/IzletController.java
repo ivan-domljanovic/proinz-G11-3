@@ -35,13 +35,20 @@ public class IzletController {
             @Valid @ModelAttribute IzletSearchRequest request) {
 
         return ResponseEntity.ok(
-                izletService.pretraziIzlete(request));
+                izletService.pretraziIzlete(request).values().stream()
+                        .map(odabraniTermini ->
+                                izletMapper.toSearchResponse(
+                                        odabraniTermini.getFirst().getIzlet(),
+                                        odabraniTermini
+                                ))
+                        .toList()
+        );
     }
 
     // todo: dodat filtriranje u url-u
     @GetMapping("/{id}")
     public ResponseEntity<IzletDetailResponse> detaljiOdredenogIzleta(@PathVariable("id") Long id) {
-        var data = izletService.dohvatiIzlet(id);
+        var data = izletService.getIzlet(id);
         return ResponseEntity.ok(izletMapper.toResponse(data));
     }
 

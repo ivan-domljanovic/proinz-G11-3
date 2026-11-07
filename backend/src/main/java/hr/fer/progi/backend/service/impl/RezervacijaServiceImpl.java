@@ -26,11 +26,11 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     @Override
     public Rezervacija rezerviraj(RezervacijaRequest request, Long korisnikId) {
         Rezervacija rezervacija;
-        var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
-        var termin = terminService.dohvatiTermin(request.terminId());
+        var korisnik = korisnikService.getKorisnik(korisnikId);
+        var termin = terminService.getTermin(request.terminId());
         var dodatneUsluge = new ArrayList<DodatnaUsluga>();
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
-            dodatneUsluge.add(dodatnaUslugaService.dohvatiDodatnuUslugu(dodatnaUslugaId));
+            dodatneUsluge.add(dodatnaUslugaService.getDodatnaUsluga(dodatnaUslugaId));
         }
         if (request.brojMjesta() > terminService.dohvatiBrojSlobodnihMjesta(termin)) {
             rezervacija = new Rezervacija(Status.ZAHTJEV, request.brojMjesta(), LocalDateTime.now(),
@@ -47,9 +47,9 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     @Override
     @Transactional
     public Rezervacija azurirajRezervaciju(Long id, RezervacijaRequest request, Long korisnikId) {
-        var trenutnaRezervacija = dohvatiRezervaciju(id);
-        var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
-        var termin = terminService.dohvatiTermin(request.terminId());
+        var trenutnaRezervacija = getRezervacija(id);
+        var korisnik = korisnikService.getKorisnik(korisnikId);
+        var termin = terminService.getTermin(request.terminId());
         if (!trenutnaRezervacija.getKorisnik().equals(korisnik)) {
             throw new IllegalArgumentException("Rezervacija ne pripada korisniku");
         }
@@ -65,7 +65,7 @@ public class RezervacijaServiceImpl implements RezervacijaService {
                 Status.POTVRDENO) ? request.brojMjesta() - trenutnaRezervacija.getBrojMjesta() : request.brojMjesta();
         var dodatneUsluge = new ArrayList<DodatnaUsluga>();
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
-            dodatneUsluge.add(dodatnaUslugaService.dohvatiDodatnuUslugu(dodatnaUslugaId));
+            dodatneUsluge.add(dodatnaUslugaService.getDodatnaUsluga(dodatnaUslugaId));
         }
         trenutnaRezervacija.setBrojMjesta(request.brojMjesta());
         trenutnaRezervacija.setDodatneUsluge(dodatneUsluge);
@@ -84,9 +84,8 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     @Override
     @Transactional
     public void otkazi(Long id, Long korisnikId) {
-        var rezervacija = rezervacijaRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Rezervacija ne postoji"));
-        var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
+        var rezervacija = getRezervacija(id);
+        var korisnik = korisnikService.getKorisnik(korisnikId);
         if (!rezervacija.getKorisnik().equals(korisnik)) {
             throw new IllegalArgumentException("Rezervacija ne pripada korisniku");
         }
@@ -120,17 +119,15 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     }
 
     @Override
-    public Rezervacija dohvatiRezervaciju(Long id) {
-        // Samo za korištenje u backendu
+    public Rezervacija getRezervacija(Long id) {
         return rezervacijaRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Rezervacija ne postoji"));
     }
 
     @Override
     public Rezervacija dohvatiRezervaciju(Long id, Long korisnikId) {
-        var rezervacija = rezervacijaRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Rezervacija ne postoji"));
-        var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
+        var rezervacija = getRezervacija(id);
+        var korisnik = korisnikService.getKorisnik(korisnikId);
         if (!rezervacija.getKorisnik().equals(korisnik)) {
             throw new IllegalArgumentException("Rezervacija ne pripada korisniku");
         }
@@ -139,7 +136,7 @@ public class RezervacijaServiceImpl implements RezervacijaService {
 
     @Override
     public List<Rezervacija> dohvatiSveKorisnikoveRezervacije(Long korisnikId) {
-        var korisnik = korisnikService.dohvatiKorisnika(korisnikId);
+        var korisnik = korisnikService.getKorisnik(korisnikId);
         return rezervacijaRepository.findByKorisnik(korisnik);
     }
 }

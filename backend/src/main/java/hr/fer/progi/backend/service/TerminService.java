@@ -10,7 +10,7 @@ public interface TerminService {
 
     Integer dohvatiBrojSlobodnihMjesta(Termin termin);
 
-    Termin dohvatiTermin(Long id);
+    Termin getTermin(Long id);
 
     List<Termin> dohvatiSveTermine();
 

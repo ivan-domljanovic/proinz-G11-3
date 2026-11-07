@@ -8,8 +8,8 @@ import hr.fer.progi.backend.exception.RecenzijaAlreadyExistsException;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.model.RecenzijaIzleta;
 import hr.fer.progi.backend.repository.RecenzijaIzletaRepository;
-import hr.fer.progi.backend.repository.RezervacijaRepository;
 import hr.fer.progi.backend.service.RecenzijaIzletaService;
+import hr.fer.progi.backend.service.RezervacijaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +22,10 @@ import java.util.List;
 public class RecenzijaIzletaServiceImpl implements RecenzijaIzletaService {
 
     private final RecenzijaIzletaRepository recenzijaIzletaRepository;
-    private final RezervacijaRepository rezervacijaRepository;
+    private final RezervacijaService rezervacijaService;
 
     @Override
-    public RecenzijaIzleta dohvatiRecenziju(Long id) {
+    public RecenzijaIzleta getRecenzija(Long id) {
         return recenzijaIzletaRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Recenzija s tim id ne postoji"));
     }
@@ -39,8 +39,7 @@ public class RecenzijaIzletaServiceImpl implements RecenzijaIzletaService {
     @Transactional
     public RecenzijaIzleta azurirajRecenzijuIzleta(Long id, Long autorId,
                                                    RIzletaUpdateRequest request) {
-        var recenzija = recenzijaIzletaRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Recenzija s tim id ne postoji"));
+        var recenzija = getRecenzija(id);
 
 
         if (!recenzija.getRezervacija().getKorisnik().getId().equals(autorId)) {
@@ -59,8 +58,7 @@ public class RecenzijaIzletaServiceImpl implements RecenzijaIzletaService {
     @Transactional
     public RecenzijaIzleta dodajRecenzijuIzleta(Long rezervacijaId, Long autorId,
                                                 RIzletaCreateRequest request) {
-        var rezervacija = rezervacijaRepository.findById(rezervacijaId).orElseThrow(
-                () -> new ResourceNotFoundException("Rezervacija s tim id ne postoji"));
+        var rezervacija = rezervacijaService.getRezervacija(rezervacijaId);
 
         if (rezervacija.getStatus() != Status.REALIZIRANO) {
             throw new IllegalArgumentException("Taj termin izleta se nije jos odrzao");
@@ -93,8 +91,7 @@ public class RecenzijaIzletaServiceImpl implements RecenzijaIzletaService {
     @Override
     @Transactional
     public void obrisiRecenzijuIzleta(Long id, Long autorId) {
-        var recenzija = recenzijaIzletaRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Recenzija s tim id ne postoji"));
+        var recenzija = getRecenzija(id);
 
         if (!recenzija.getRezervacija().getKorisnik().getId().equals(autorId)) {
             throw new ForbiddenOperationException(

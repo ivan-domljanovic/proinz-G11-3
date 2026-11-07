@@ -6,20 +6,22 @@ import hr.fer.progi.backend.service.KorisnikService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class KorisnikServiceImpl implements KorisnikService {
     private final KorisnikRepository korisnikRepository;
 
     @Override
-    public Korisnik dohvatiKorisnika(Long id) {
+    public Korisnik getKorisnik(Long id) {
         return korisnikRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Korisnik ne postoji"));
     }
 
     @Override
-    public Korisnik dohvatiKorisnika(String sub) {
-        return korisnikRepository.findBySub(sub).orElseThrow(
-                () -> new IllegalArgumentException("Korisnik ne postoji"));
+    public Set<Korisnik> dohvatiSveKorisnikePoId(Collection<Long> ids) {
+        return korisnikRepository.findAllByIdIn(ids);
     }
 }

@@ -32,7 +32,7 @@ public class TerminController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TerminResponse> dohvatiTermin(@PathVariable Long id) {
-        var data = terminService.dohvatiTermin(id);
+        var data = terminService.getTermin(id);
         return ResponseEntity.ok(terminMapper.toResponse(data));
     }
 

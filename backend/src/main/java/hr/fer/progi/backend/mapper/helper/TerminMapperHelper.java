@@ -15,5 +15,4 @@ public class TerminMapperHelper {
     public Integer brojSlobodnihMjesta(Termin termin) {
         return terminService.dohvatiBrojSlobodnihMjesta(termin);
     }
-
 }
