@@ -1,6 +1,7 @@
 package hr.fer.progi.backend.security;
 
 import hr.fer.progi.backend.enums.Uloga;
+import hr.fer.progi.backend.repository.KorisnikRepository;
 import hr.fer.progi.backend.service.impl.GoogleOidcUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,16 +11,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChainDev(HttpSecurity http,
-                                                      GoogleOidcUserService googleOidcUserService) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   GoogleOidcUserService googleOidcUserService,
+                                                   KorisnikRepository korisnikRepository) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new AktivneUlogeFilter(korisnikRepository),
+                        AuthorizationFilter.class)
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/oauth2/authorization/**",
@@ -43,6 +48,9 @@ public class SecurityConfig {
                                         "/api/dodatne-usluge", "/api/dodatne-usluge/**").hasAnyRole(
                                         Uloga.ADMINISTRATOR.name(),
                                         Uloga.ORGANIZATOR.name())
+
+                                .requestMatchers("/api/admin", "/api/admin/**").hasRole(
+                                        Uloga.ADMINISTRATOR.name())
 
                                 .anyRequest().denyAll()
                 )
