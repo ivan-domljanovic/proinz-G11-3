@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/dodatneUsluge")
+@RequestMapping("/api/dodatne-usluge")
 public class DodatnaUslugaController {
 
     private final DodatnaUslugaService dodatnaUslugaService;

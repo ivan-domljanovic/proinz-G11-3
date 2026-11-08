@@ -39,6 +39,6 @@ public class GoogleOidcUserService extends OidcUserService {
                     return korisnikRepository.save(novi);
                 });
 
-        return new AppOidcUser(googleUser, korisnik.getId());
+        return new AppOidcUser(googleUser, korisnik.getId(), korisnik.getUloge());
     }
 }

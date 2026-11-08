@@ -17,7 +17,7 @@ public class AuthController {
     private final KorisnikService korisnikService;
     private final KorisnikMapper korisnikMapper;
 
-    @GetMapping("/me")
+    @GetMapping("/api/me")
     public KorisnikResponse me(@AuthenticationPrincipal AppOidcUser user) {
         return korisnikMapper.toResponse(korisnikService.getKorisnik(user.getUserId()));
     }
