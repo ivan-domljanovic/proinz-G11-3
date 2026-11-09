@@ -18,12 +18,13 @@ const pocetniFilteri={
 
 
 export default function PonudaIzleta(){ 
-    const paket=useIzleti(); //podaci s backenda
+    const [filteri, setFilteri]=useState(pocetniFilteri);
+
+    const paket=useIzleti(filteri); //podaci s backenda
     const izleti=paket.izleti;
     const ucitavanje=paket.ucitavanje;
     const greska=paket.greska;
 
-    const [filteri, setFilteri]=useState(pocetniFilteri);
     const [pretraga, setPretragu]=useState("");
 
     const [prozorZaFiltre, setProzorZaFiltre]=useState(false); //kada pritisnem ostali filtri da se otvori i namjeste ostali filtri
@@ -31,23 +32,10 @@ export default function PonudaIzleta(){
 
 
 
-    //trenutno su rez isto sto i izleti
-    //dodati da se mogu filtrirati kasnije pa da rez!=izleti
+    //sada su rez!=izleti    
     const rezultati=izleti.filter((i)=>( 
         i.naziv.toLowerCase().includes(pretraga.toLowerCase())
     )); 
-
-    if (ucitavanje){
-        return <p className="poruka">
-            Učitavanje izleta...
-            </p>;
-    }
-
-    if (greska){
-        return <p className="poruka greska">
-            {greska}
-            </p>;
-    }
 
     return (
         <>
@@ -107,32 +95,35 @@ export default function PonudaIzleta(){
               </span>
             </div>
 
-        
-
-            {rezultati.length === 0 ? (
+        {ucitavanje ? (<p className="poruka">Učitavanje izleta...</p>) : 
+        greska ? (<p className="poruka greska">{greska}</p>) : 
+        rezultati.length === 0 ? (
                 <div className="poruka" role="status">
                     <h3>
-                        {izleti.length===0 ? "Trenutačno nema izleta u ponudi."
-                            :"Nema izleta koji odgovara odabranim kriterijima."}
+                        {izleti.length === 0
+                            ? "Trenutačno nema izleta u ponudi."
+                            : "Nema izleta koji odgovara odabranim kriterijima."}
                     </h3>
                     {izleti.length > 0 && (
-                        <p>Promjeni kriterije ili očisti filtere.</p>
+                        <p>Promijeni kriterije ili očisti filtere.</p>
                     )}
+                </div>) : 
+                (
+                <div className="popis-izleta">
+                    {rezultati.map((izlet) => (
+                        <div className="rezultat-izleta" key={izlet.id}>
+                            <KarticaIzleta izlet={izlet} />
+                            <Link
+                                to={`/izleti/${izlet.id}`}
+                                className="gumb-detalji"
+                                aria-label={`Prikaži detalje: ${izlet.naziv}`}
+                            >
+                                Pogledaj detalje
+                            </Link>
+                        </div>
+                    ))}
                 </div>
-                ) :
-            (<div className="popis-izleta">
-                {rezultati.map((izlet) => (
-                    <div className="rezultat-izleta" key={izlet.id}>
-                        <KarticaIzleta izlet={izlet} />
-                        <Link
-                            to={`/izleti/${izlet.id}`}
-                            className="gumb-detalji"
-                            aria-label={`Prikaži detalje: ${izlet.naziv}`}
-                        >Pogledaj detalje</Link>
-                    </div>
-                ))}
-            </div>)
-            }
+        )}   
 
         </section>
 

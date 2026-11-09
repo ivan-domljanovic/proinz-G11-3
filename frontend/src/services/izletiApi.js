@@ -1,6 +1,14 @@
 // Dohvat svih izleta za početnu stranicu
-export async function dohvatiIzlete(signal) {
-  const odgovor = await fetch("/api/izleti", { signal });
+export async function dohvatiIzlete(filteri, signal) {
+  const param=new URLSearchParams();
+
+  //ide po parovima [[kljuc, vrijednost], [brojOsoba, 2]] npr.
+  for (const[kljuc, vrijednost] of Object.entries(filteri)) {
+    if (vrijednost!==""){ //samo  ako ima vrijednost
+      param.append(kljuc, vrijednost);
+    } 
+  }
+  const odgovor=await fetch(`/api/izleti?${param}`, {signal});
 
   if (!odgovor.ok) {
     throw new Error(`Dohvat nije uspio (HTTP ${odgovor.status}).`);
