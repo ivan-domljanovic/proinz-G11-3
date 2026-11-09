@@ -31,6 +31,7 @@ const kategorije = [
 ];
 
 const MAX_CIJENA=300; //ovdje neki broj koji će bit max cijena svih izleta 
+const MAX_OSOBA=50;
 
 export default function PonudaIzleta(){ 
     const [filteri, setFilteri]=useState(pocetniFilteri);
@@ -40,6 +41,9 @@ export default function PonudaIzleta(){
 
     const cijenaOd=Number(privremeniFilteri.cijenaOd || 0);
     const cijenaDo=Number(privremeniFilteri.cijenaDo || MAX_CIJENA);
+
+    const brojOsoba=Number(privremeniFilteri.brojOsoba || 1);
+
 
     const paket=useIzleti(filteri); //podaci s backenda
     const izleti=paket.izleti;
@@ -298,6 +302,38 @@ export default function PonudaIzleta(){
                                         </button>
                                     );
                                 })}
+                            </div>
+                        </section>
+
+                        <section className="odjeljak-brojOsoba">
+                            <h3>Broj osoba</h3>
+                            <div className="brojac-osoba">
+                                <button
+                                    type="button"
+                                    aria-label="Manje-osoba"
+                                    disabled={brojOsoba<=1}
+                                    onClick={()=>{
+                                        const novi=brojOsoba-1;
+                                        promijeni("brojOsoba", novi===1 ? "": String(novi))
+                                    }}
+                                >
+                                    -
+                                </button>
+
+                                <span aria-live="polite">{brojOsoba}</span>
+
+                                <button
+                                    type="button"
+                                    aria-label="Više osoba"
+                                    disabled={brojOsoba >= MAX_OSOBA}
+                                    onClick={() => {
+                                        const novi=brojOsoba+1;
+                                        promijeni("brojOsoba", String(novi));
+                                    }}
+                                >
+                                    +
+                                </button>
+                                                        
                             </div>
                         </section>                                                        
                         

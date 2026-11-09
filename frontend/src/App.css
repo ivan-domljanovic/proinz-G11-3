@@ -912,7 +912,9 @@ html {
 .odjeljak-lokacija h3,
 .odjeljak-kategorija h3,
 .odjeljak-cijena h3,
-.odjeljak-datum h3 {
+.odjeljak-datum h3,
+.odjeljak-trajanje h3, 
+.odjeljak-brojOsoba h3 {
   margin: 0 0 12px;
   font-size: 1rem;
 }
@@ -1080,4 +1082,43 @@ html {
   background: #fff;
   box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
   cursor: pointer;
+}
+
+/* ---------- brojač osoba ---------- */
+.brojac-osoba {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* okrugli gumbi − i + */
+.brojac-osoba button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #dce2d8;
+  border-radius: 50%;
+  background: #fff;
+  color: #203b32;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.brojac-osoba button:hover:not(:disabled) {
+  background: #edf3e9;
+}
+
+/* gumb kad se ne može kliknuti (npr. − na 1) */
+.brojac-osoba button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* broj između gumba */
+.brojac-osoba span {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
