@@ -27,6 +27,8 @@ export default function PonudaIzleta(){
     const [filteri, setFilteri]=useState(pocetniFilteri);
     const [privremeniFilteri, setPrivremeniFilteri]=useState(pocetniFilteri);
 
+    const danas=new Date().toLocaleDateString("sv-SE");
+
     const paket=useIzleti(filteri); //podaci s backenda
     const izleti=paket.izleti;
     const ucitavanje=paket.ucitavanje;
@@ -184,13 +186,34 @@ export default function PonudaIzleta(){
                                     </button>
                                 ))}
                             </div>
+                        </section>
 
+                        <section className="odjeljak-datum">
+                            <h3>Datum</h3>
+                            <div className="dva-polja">
+                                    <label>
+                                        Od
+                                        <input
+                                            type="date"
+                                            value={privremeniFilteri.datumOd}
+                                            min={danas}
+                                            onChange={(p) => promijeni("datumOd", p.target.value)}
+                                        />
+                                    </label>
+                                    <label>
+                                        Do
+                                        <input
+                                            type="date"
+                                            min={privremeniFilteri.datumOd || danas}
+                                            value={privremeniFilteri.datumDo}
+                                            onChange={(p)=> promijeni("datumDo", p.target.value)}
+                                        />
+                                    </label>
+                                </div>                            
                         </section>
 
                         
                     </div>
-
-
 
 
                     <footer className="prozor-dno">
