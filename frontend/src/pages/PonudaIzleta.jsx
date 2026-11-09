@@ -16,6 +16,13 @@ const pocetniFilteri={
     brojOsoba: ""
 };
 
+const opcijeTrajanja = [
+    { tekst: "Do 3 h",        od: "",    do: "180" },
+    { tekst: "3 – 6 h",       od: "180", do: "360" },
+    { tekst: "6 – 12 h",      od: "360", do: "720" },
+    { tekst: "Više od 12 h",  od: "720", do: ""    },
+];
+
 
 //dodati sve kategorije koje ce jos postojati kasnije!
 const kategorije = [
@@ -266,7 +273,33 @@ export default function PonudaIzleta(){
                                     }}
                                 />
                             </div>                           
-                        </section>                                    
+                        </section>   
+
+                        <section className="odjeljak-trajanje">
+                            <h3>Trajanje</h3>
+                            <div className="cipovi">
+                                {opcijeTrajanja.map((t) => {
+                                    const odabran =privremeniFilteri.trajanjeOd===t.od && privremeniFilteri.trajanjeDo===t.do;
+                                    
+                                    return (
+                                        <button
+                                            key={t.tekst}
+                                            type="button"
+                                            className={odabran ? "cip odabran" : "cip"}
+                                            onClick={()=>
+                                                setPrivremeniFilteri({
+                                                    ...privremeniFilteri,
+                                                    trajanjeDo: odabran ? "" : t.do,
+                                                    trajanjeOd: odabran ? "" : t.od
+                                                })
+                                            }
+                                        >
+                                            {t.tekst}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </section>                                                        
                         
                     </div>
 
