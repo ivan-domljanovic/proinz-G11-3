@@ -19,6 +19,7 @@ const pocetniFilteri={
 
 export default function PonudaIzleta(){ 
     const [filteri, setFilteri]=useState(pocetniFilteri);
+    const [privremeniFilteri, setPrivremeniFilteri]=useState(pocetniFilteri);
 
     const paket=useIzleti(filteri); //podaci s backenda
     const izleti=paket.izleti;
@@ -30,6 +31,10 @@ export default function PonudaIzleta(){
     const [prozorZaFiltre, setProzorZaFiltre]=useState(false); //kada pritisnem ostali filtri da se otvori i namjeste ostali filtri
     const brojAktivnihFiltera=Object.values(filteri).filter((v)=>v!="").length; 
 
+    //mijenja jedan filter u radnoj kopiji (funkc da ne moram 9 puta pisat)
+    function promijeni(kljuc, vrijednost) {
+        setPrivremeniFilteri({ ...privremeniFilteri, [kljuc]: vrijednost });
+    }
 
 
     //sada su rez!=izleti    
@@ -70,7 +75,9 @@ export default function PonudaIzleta(){
                 <button
                     type="button"
                     className="gumb-filteri"
-                    onClick={()=>setProzorZaFiltre(true)}
+                    onClick={()=>{
+                        setPrivremeniFilteri(filteri);
+                        setProzorZaFiltre(true)}}
                 >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -147,21 +154,31 @@ export default function PonudaIzleta(){
                     </header>
 
                     <div className="prozor-sadrzaj">
-                        <p>Ovdje ce bit filtri ???</p>
+                        <section className="odjeljak-filtera">
+                            <h3>Lokacija</h3>
+                            <input 
+                                type="text"
+                                placeholder="Pretraži lokaciju"
+                                value={privremeniFilteri.lokacija}
+                                onChange={(p) => promijeni("lokacija", p.target.value)}
+                            />
+                        </section>
                     </div>
 
                     <footer className="prozor-dno">
                         <button
                             type="button"
                             className="gumb-ocisti"
-                            onClick={()=>setFilteri(pocetniFilteri)}
+                            onClick={()=>setPrivremeniFilteri(pocetniFilteri)}
                         >
                             Očisti
                         </button>
                         <button
                             type="button"
                             className="gumb-primijeni"
-                            onClick={()=>setProzorZaFiltre(false)}
+                            onClick={()=>{
+                                setFilteri(privremeniFilteri);
+                                setProzorZaFiltre(false)}}
                         >
                             Prikaži rezultate
                         </button>
