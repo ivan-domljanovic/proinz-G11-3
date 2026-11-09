@@ -897,3 +897,65 @@ html {
 .gumb-primijeni:hover {
   background: #355747;
 }
+
+
+/* ---------- sadržaj prozora s filterima ---------- */
+
+/* svaki odjeljak osim prvog ima crtu i razmak iznad */
+.prozor-sadrzaj > section + section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #edf0e9;
+}
+
+/* naslovi odjeljaka */
+.odjeljak-lokacija h3,
+.odjeljak-kategorija h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+/* polje za lokaciju */
+.odjeljak-lokacija input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #dce2d8;
+  border-radius: 10px;
+  font: inherit;
+  color: #203b32;
+}
+
+.odjeljak-lokacija input:focus {
+  outline: none;
+  border-color: #52705c;
+  box-shadow: 0 0 0 3px #edf3e9;
+}
+
+/* čipovi za kategorije */
+.cipovi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cip {
+  padding: 8px 16px;
+  border: 1px solid #dce2d8;
+  border-radius: 999px;
+  background: #fff;
+  color: #203b32;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.cip:hover {
+  background: #edf3e9;
+}
+
+.cip.odabran {
+  border-color: #203b32;
+  background: #203b32;
+  color: #fff;
+}

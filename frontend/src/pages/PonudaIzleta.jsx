@@ -16,6 +16,12 @@ const pocetniFilteri={
     brojOsoba: ""
 };
 
+//dodati sve kategorije koje ce jos postojati kasnije!
+const kategorije = [
+    { vrijednost: "PLANINARENJE", tekst: "Planinarenje" },
+    { vrijednost: "PRIRODA", tekst: "Priroda" },
+];
+
 
 export default function PonudaIzleta(){ 
     const [filteri, setFilteri]=useState(pocetniFilteri);
@@ -154,7 +160,7 @@ export default function PonudaIzleta(){
                     </header>
 
                     <div className="prozor-sadrzaj">
-                        <section className="odjeljak-filtera">
+                        <section className="odjeljak-lokacija">
                             <h3>Lokacija</h3>
                             <input 
                                 type="text"
@@ -163,7 +169,29 @@ export default function PonudaIzleta(){
                                 onChange={(p) => promijeni("lokacija", p.target.value)}
                             />
                         </section>
+
+                        <section className="odjeljak-kategorija">
+                            <h3>Vrsta aktivnosti</h3>
+                            <div className="cipovi">
+                                {kategorije.map((k) => (
+                                    <button
+                                        key={k.vrijednost}
+                                        type="button"
+                                        className={privremeniFilteri.kategorija===k.vrijednost ? "cip odabran" : "cip"}
+                                        onClick={() => promijeni("kategorija", privremeniFilteri.kategorija===k.vrijednost?"":k.vrijednost)}
+                                    >
+                                        {k.tekst}
+                                    </button>
+                                ))}
+                            </div>
+
+                        </section>
+
+                        
                     </div>
+
+
+
 
                     <footer className="prozor-dno">
                         <button
