@@ -16,18 +16,23 @@ const pocetniFilteri={
     brojOsoba: ""
 };
 
+
 //dodati sve kategorije koje ce jos postojati kasnije!
 const kategorije = [
     { vrijednost: "PLANINARENJE", tekst: "Planinarenje" },
     { vrijednost: "PRIRODA", tekst: "Priroda" },
 ];
 
+const MAX_CIJENA=300; //ovdje neki broj koji će bit max cijena svih izleta 
 
 export default function PonudaIzleta(){ 
     const [filteri, setFilteri]=useState(pocetniFilteri);
     const [privremeniFilteri, setPrivremeniFilteri]=useState(pocetniFilteri);
 
     const danas=new Date().toLocaleDateString("sv-SE");
+
+    const cijenaOd=Number(privremeniFilteri.cijenaOd || 0);
+    const cijenaDo=Number(privremeniFilteri.cijenaDo || MAX_CIJENA);
 
     const paket=useIzleti(filteri); //podaci s backenda
     const izleti=paket.izleti;
@@ -212,6 +217,56 @@ export default function PonudaIzleta(){
                                 </div>                            
                         </section>
 
+                        <section className="odjeljak-cijena">
+                            <h3>Cijena po osobi €</h3>
+                            <div className="dva-polja">
+                                    <input
+                                        type="number"
+                                        placeholder="0 €"
+                                        value={privremeniFilteri.cijenaOd}
+                                        min={0}
+                                        onChange={(p) => promijeni("cijenaOd", p.target.value)}
+                                    />
+                                    <input
+                                        type="number"
+                                        value={privremeniFilteri.cijenaDo}
+                                        placeholder={`${MAX_CIJENA} €`}
+                                        min={privremeniFilteri.cijenaOd || 0}
+                                        onChange={(p)=> promijeni("cijenaDo", p.target.value)}
+                                    />
+                            </div> 
+
+                            <div className="lenta">
+                                <div className="lenta-ispuna"
+                                        style={{
+                                            left: `${(cijenaOd / MAX_CIJENA) * 100}%`,
+                                            right: `${100 - (cijenaDo / MAX_CIJENA) * 100}%`,
+                                        }}
+                                />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={MAX_CIJENA}
+                                    step="5"
+                                    value={cijenaOd}
+                                    aria-label="Najniža cijena"
+                                    onChange={(p) => {const v = Math.min(Number(p.target.value), cijenaDo - 5);
+                                            promijeni("cijenaOd", v === 0 ? "" : String(v));
+                                    }}
+                                />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={MAX_CIJENA}
+                                    step="5"
+                                    value={cijenaDo}
+                                    aria-label="Najviša cijena"
+                                    onChange={(p) => {const v = Math.max(Number(p.target.value), cijenaOd + 5);
+                                            promijeni("cijenaDo", v === MAX_CIJENA ? "" : String(v));
+                                    }}
+                                />
+                            </div>                           
+                        </section>                                    
                         
                     </div>
 
