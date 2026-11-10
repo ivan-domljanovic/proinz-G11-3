@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { dohvatiIzlete } from "../services/izletiApi.js";
 
-export default function useIzleti() {
+export default function useIzleti(filteri) {
   const [izleti, setIzleti] = useState([]);
   const [ucitavanje, setUcitavanje] = useState(true);
   const [greska, setGreska] = useState("");
@@ -11,8 +11,10 @@ export default function useIzleti() {
     const controller = new AbortController();
 
     async function ucitaj() {
+      setUcitavanje(true);
+      setGreska("");
       try {
-        const podaci = await dohvatiIzlete(controller.signal);
+        const podaci = await dohvatiIzlete(filteri, controller.signal);
         if (!controller.signal.aborted) setIzleti(podaci);
       } catch (error) {
         if (!controller.signal.aborted) setGreska(error.message);
@@ -23,7 +25,7 @@ export default function useIzleti() {
 
     ucitaj();
     return () => controller.abort();
-  }, []);
+  }, [filteri]);
 
   return { izleti, ucitavanje, greska };
 }

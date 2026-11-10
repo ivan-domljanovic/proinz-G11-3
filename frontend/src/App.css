@@ -897,3 +897,228 @@ html {
 .gumb-primijeni:hover {
   background: #355747;
 }
+
+
+/* ---------- sadržaj prozora s filterima ---------- */
+
+/* svaki odjeljak osim prvog ima crtu i razmak iznad */
+.prozor-sadrzaj > section + section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #edf0e9;
+}
+
+/* naslovi odjeljaka */
+.odjeljak-lokacija h3,
+.odjeljak-kategorija h3,
+.odjeljak-cijena h3,
+.odjeljak-datum h3,
+.odjeljak-trajanje h3, 
+.odjeljak-brojOsoba h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+/* polje za lokaciju */
+.odjeljak-lokacija input,
+.odjeljak-cijena input[type="number"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #dce2d8;
+  border-radius: 10px;
+  font: inherit;
+  color: #203b32;
+}
+
+.odjeljak-lokacija input:focus,
+.odjeljak-cijena input[type="number"]:focus  {
+  outline: none;
+  border-color: #52705c;
+  box-shadow: 0 0 0 3px #edf3e9;
+}
+
+/* čipovi za kategorije */
+.cipovi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cip {
+  padding: 8px 16px;
+  border: 1px solid #dce2d8;
+  border-radius: 999px;
+  background: #fff;
+  color: #203b32;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.cip:hover {
+  background: #edf3e9;
+}
+
+.cip.odabran {
+  border-color: #203b32;
+  background: #203b32;
+  color: #fff;
+}
+
+/* naslov i polja za datum (isto kao lokacija) */
+
+
+.odjeljak-datum input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #dce2d8;
+  border-radius: 10px;
+  font: inherit;
+  color: #203b32;
+}
+
+.odjeljak-datum input:focus {
+  outline: none;
+  border-color: #52705c;
+  box-shadow: 0 0 0 3px #edf3e9;
+}
+
+/* dva polja jedno do drugog (Od | Do) */
+.dva-polja {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.dva-polja label {
+  display: grid;
+  gap: 6px;
+  color: #647268;
+  font-size: 0.8rem;
+}
+
+  /* ---------- lenta za cijenu ---------- */
+.lenta {
+  position: relative;
+  height: 28px;
+  margin-top: 18px;
+}
+
+/* siva pozadinska crta cijelom širinom */
+.lenta::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: #dce2d8;
+  transform: translateY(-50%);
+}
+
+/* tamna crta između dva kružića */
+.lenta-ispuna {
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  border-radius: 2px;
+  background: #203b32;
+  transform: translateY(-50%);
+}
+
+/* oba klizača jedan preko drugoga, bez vlastitog izgleda */
+.prozor-sadrzaj .lenta input {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  transform: translateY(-50%);
+  pointer-events: none;   /* klikovi prolaze kroz klizač... */
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.lenta input::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+}
+
+.lenta input::-moz-range-track {
+  height: 4px;
+  background: transparent;
+}
+
+/* bijeli kružići sa sjenom */
+.lenta input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: auto;   /* ...ali kružić se može uhvatiti */
+  width: 24px;
+  height: 24px;
+  margin-top: -10px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
+  cursor: pointer;
+}
+
+.lenta input::-moz-range-thumb {
+  pointer-events: auto;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
+  cursor: pointer;
+}
+
+/* ---------- brojač osoba ---------- */
+.brojac-osoba {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* okrugli gumbi − i + */
+.brojac-osoba button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #dce2d8;
+  border-radius: 50%;
+  background: #fff;
+  color: #203b32;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.brojac-osoba button:hover:not(:disabled) {
+  background: #edf3e9;
+}
+
+/* gumb kad se ne može kliknuti (npr. − na 1) */
+.brojac-osoba button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* broj između gumba */
+.brojac-osoba span {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}

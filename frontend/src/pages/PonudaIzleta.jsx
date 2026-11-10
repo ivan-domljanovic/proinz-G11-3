@@ -16,38 +16,55 @@ const pocetniFilteri={
     brojOsoba: ""
 };
 
+const opcijeTrajanja = [
+    { tekst: "Do 3 h",        od: "",    do: "180" },
+    { tekst: "3 – 6 h",       od: "180", do: "360" },
+    { tekst: "6 – 12 h",      od: "360", do: "720" },
+    { tekst: "Više od 12 h",  od: "720", do: ""    },
+];
+
+
+//dodati sve kategorije koje ce jos postojati kasnije!
+const kategorije = [
+    { vrijednost: "PLANINARENJE", tekst: "Planinarenje" },
+    { vrijednost: "PRIRODA", tekst: "Priroda" },
+];
+
+const MAX_CIJENA=300; //ovdje neki broj koji će bit max cijena svih izleta 
+const MAX_OSOBA=50;
 
 export default function PonudaIzleta(){ 
-    const paket=useIzleti(); //podaci s backenda
+    const [filteri, setFilteri]=useState(pocetniFilteri);
+    const [privremeniFilteri, setPrivremeniFilteri]=useState(pocetniFilteri);
+
+    const danas=new Date().toLocaleDateString("sv-SE");
+
+    const cijenaOd=Number(privremeniFilteri.cijenaOd || 0);
+    const cijenaDo=Number(privremeniFilteri.cijenaDo || MAX_CIJENA);
+
+    const brojOsoba=Number(privremeniFilteri.brojOsoba || 1);
+
+
+    const paket=useIzleti(filteri); //podaci s backenda
     const izleti=paket.izleti;
     const ucitavanje=paket.ucitavanje;
     const greska=paket.greska;
 
-    const [filteri, setFilteri]=useState(pocetniFilteri);
     const [pretraga, setPretragu]=useState("");
 
     const [prozorZaFiltre, setProzorZaFiltre]=useState(false); //kada pritisnem ostali filtri da se otvori i namjeste ostali filtri
     const brojAktivnihFiltera=Object.values(filteri).filter((v)=>v!="").length; 
 
+    //mijenja jedan filter u radnoj kopiji (funkc da ne moram 9 puta pisat)
+    function promijeni(kljuc, vrijednost) {
+        setPrivremeniFilteri({ ...privremeniFilteri, [kljuc]: vrijednost });
+    }
 
 
-    //trenutno su rez isto sto i izleti
-    //dodati da se mogu filtrirati kasnije pa da rez!=izleti
+    //sada su rez!=izleti    
     const rezultati=izleti.filter((i)=>( 
         i.naziv.toLowerCase().includes(pretraga.toLowerCase())
     )); 
-
-    if (ucitavanje){
-        return <p className="poruka">
-            Učitavanje izleta...
-            </p>;
-    }
-
-    if (greska){
-        return <p className="poruka greska">
-            {greska}
-            </p>;
-    }
 
     return (
         <>
@@ -82,7 +99,9 @@ export default function PonudaIzleta(){
                 <button
                     type="button"
                     className="gumb-filteri"
-                    onClick={()=>setProzorZaFiltre(true)}
+                    onClick={()=>{
+                        setPrivremeniFilteri(filteri);
+                        setProzorZaFiltre(true)}}
                 >
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -107,32 +126,35 @@ export default function PonudaIzleta(){
               </span>
             </div>
 
-        
-
-            {rezultati.length === 0 ? (
+        {ucitavanje ? (<p className="poruka">Učitavanje izleta...</p>) : 
+        greska ? (<p className="poruka greska">{greska}</p>) : 
+        rezultati.length === 0 ? (
                 <div className="poruka" role="status">
                     <h3>
-                        {izleti.length===0 ? "Trenutačno nema izleta u ponudi."
-                            :"Nema izleta koji odgovara odabranim kriterijima."}
+                        {izleti.length === 0
+                            ? "Trenutačno nema izleta u ponudi."
+                            : "Nema izleta koji odgovara odabranim kriterijima."}
                     </h3>
                     {izleti.length > 0 && (
-                        <p>Promjeni kriterije ili očisti filtere.</p>
+                        <p>Promijeni kriterije ili očisti filtere.</p>
                     )}
+                </div>) : 
+                (
+                <div className="popis-izleta">
+                    {rezultati.map((izlet) => (
+                        <div className="rezultat-izleta" key={izlet.id}>
+                            <KarticaIzleta izlet={izlet} />
+                            <Link
+                                to={`/izleti/${izlet.id}`}
+                                className="gumb-detalji"
+                                aria-label={`Prikaži detalje: ${izlet.naziv}`}
+                            >
+                                Pogledaj detalje
+                            </Link>
+                        </div>
+                    ))}
                 </div>
-                ) :
-            (<div className="popis-izleta">
-                {rezultati.map((izlet) => (
-                    <div className="rezultat-izleta" key={izlet.id}>
-                        <KarticaIzleta izlet={izlet} />
-                        <Link
-                            to={`/izleti/${izlet.id}`}
-                            className="gumb-detalji"
-                            aria-label={`Prikaži detalje: ${izlet.naziv}`}
-                        >Pogledaj detalje</Link>
-                    </div>
-                ))}
-            </div>)
-            }
+        )}   
 
         </section>
 
@@ -156,21 +178,182 @@ export default function PonudaIzleta(){
                     </header>
 
                     <div className="prozor-sadrzaj">
-                        <p>Ovdje ce bit filtri ???</p>
+                        <section className="odjeljak-lokacija">
+                            <h3>Lokacija</h3>
+                            <input 
+                                type="text"
+                                placeholder="Pretraži lokaciju"
+                                value={privremeniFilteri.lokacija}
+                                onChange={(p) => promijeni("lokacija", p.target.value)}
+                            />
+                        </section>
+
+                        <section className="odjeljak-kategorija">
+                            <h3>Vrsta aktivnosti</h3>
+                            <div className="cipovi">
+                                {kategorije.map((k) => (
+                                    <button
+                                        key={k.vrijednost}
+                                        type="button"
+                                        className={privremeniFilteri.kategorija===k.vrijednost ? "cip odabran" : "cip"}
+                                        onClick={() => promijeni("kategorija", privremeniFilteri.kategorija===k.vrijednost?"":k.vrijednost)}
+                                    >
+                                        {k.tekst}
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="odjeljak-datum">
+                            <h3>Datum</h3>
+                            <div className="dva-polja">
+                                    <label>
+                                        Od
+                                        <input
+                                            type="date"
+                                            value={privremeniFilteri.datumOd}
+                                            min={danas}
+                                            onChange={(p) => promijeni("datumOd", p.target.value)}
+                                        />
+                                    </label>
+                                    <label>
+                                        Do
+                                        <input
+                                            type="date"
+                                            min={privremeniFilteri.datumOd || danas}
+                                            value={privremeniFilteri.datumDo}
+                                            onChange={(p)=> promijeni("datumDo", p.target.value)}
+                                        />
+                                    </label>
+                                </div>                            
+                        </section>
+
+                        <section className="odjeljak-cijena">
+                            <h3>Cijena po osobi €</h3>
+                            <div className="dva-polja">
+                                    <input
+                                        type="number"
+                                        placeholder="0 €"
+                                        value={privremeniFilteri.cijenaOd}
+                                        min={0}
+                                        onChange={(p) => promijeni("cijenaOd", p.target.value)}
+                                    />
+                                    <input
+                                        type="number"
+                                        value={privremeniFilteri.cijenaDo}
+                                        placeholder={`${MAX_CIJENA} €`}
+                                        min={privremeniFilteri.cijenaOd || 0}
+                                        onChange={(p)=> promijeni("cijenaDo", p.target.value)}
+                                    />
+                            </div> 
+
+                            <div className="lenta">
+                                <div className="lenta-ispuna"
+                                        style={{
+                                            left: `${(cijenaOd / MAX_CIJENA) * 100}%`,
+                                            right: `${100 - (cijenaDo / MAX_CIJENA) * 100}%`,
+                                        }}
+                                />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={MAX_CIJENA}
+                                    step="5"
+                                    value={cijenaOd}
+                                    aria-label="Najniža cijena"
+                                    onChange={(p) => {const v = Math.min(Number(p.target.value), cijenaDo - 5);
+                                            promijeni("cijenaOd", v === 0 ? "" : String(v));
+                                    }}
+                                />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={MAX_CIJENA}
+                                    step="5"
+                                    value={cijenaDo}
+                                    aria-label="Najviša cijena"
+                                    onChange={(p) => {const v = Math.max(Number(p.target.value), cijenaOd + 5);
+                                            promijeni("cijenaDo", v === MAX_CIJENA ? "" : String(v));
+                                    }}
+                                />
+                            </div>                           
+                        </section>   
+
+                        <section className="odjeljak-trajanje">
+                            <h3>Trajanje</h3>
+                            <div className="cipovi">
+                                {opcijeTrajanja.map((t) => {
+                                    const odabran =privremeniFilteri.trajanjeOd===t.od && privremeniFilteri.trajanjeDo===t.do;
+                                    
+                                    return (
+                                        <button
+                                            key={t.tekst}
+                                            type="button"
+                                            className={odabran ? "cip odabran" : "cip"}
+                                            onClick={()=>
+                                                setPrivremeniFilteri({
+                                                    ...privremeniFilteri,
+                                                    trajanjeDo: odabran ? "" : t.do,
+                                                    trajanjeOd: odabran ? "" : t.od
+                                                })
+                                            }
+                                        >
+                                            {t.tekst}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </section>
+
+                        <section className="odjeljak-brojOsoba">
+                            <h3>Broj osoba</h3>
+                            <div className="brojac-osoba">
+                                <button
+                                    type="button"
+                                    aria-label="Manje-osoba"
+                                    disabled={brojOsoba<=1}
+                                    onClick={()=>{
+                                        const novi=brojOsoba-1;
+                                        promijeni("brojOsoba", novi===1 ? "": String(novi))
+                                    }}
+                                >
+                                    -
+                                </button>
+
+                                <span aria-live="polite">{brojOsoba}</span>
+
+                                <button
+                                    type="button"
+                                    aria-label="Više osoba"
+                                    disabled={brojOsoba >= MAX_OSOBA}
+                                    onClick={() => {
+                                        const novi=brojOsoba+1;
+                                        promijeni("brojOsoba", String(novi));
+                                    }}
+                                >
+                                    +
+                                </button>
+                                                        
+                            </div>
+                        </section>                                                        
+                        
                     </div>
+
 
                     <footer className="prozor-dno">
                         <button
                             type="button"
                             className="gumb-ocisti"
-                            onClick={()=>setFilteri(pocetniFilteri)}
+                            onClick={()=>setPrivremeniFilteri(pocetniFilteri)}
                         >
                             Očisti
                         </button>
                         <button
                             type="button"
                             className="gumb-primijeni"
-                            onClick={()=>setProzorZaFiltre(false)}
+                            onClick={()=>{
+                                setFilteri(privremeniFilteri);
+                                setProzorZaFiltre(false)}}
                         >
                             Prikaži rezultate
                         </button>
