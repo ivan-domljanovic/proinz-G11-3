@@ -5,6 +5,7 @@ import hr.fer.progi.backend.enums.Uloga;
 import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.exception.ResursAlreadyAllocatedException;
 import hr.fer.progi.backend.model.Korisnik;
+import hr.fer.progi.backend.model.Resurs;
 import hr.fer.progi.backend.model.Termin;
 import hr.fer.progi.backend.model.TerminResurs;
 import hr.fer.progi.backend.repository.TerminRepository;
@@ -17,10 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -78,7 +77,15 @@ public class TerminServiceImpl implements TerminService {
     @Override
     @Transactional
     public Termin azurirajTermin(Long id, TerminUpdateRequest request) {
-        var termin = getTermin(id);
+        var termin = terminRepository.findByIdForUpdate(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Termin s tim id ne postoji"));
+
+        int zauzetaMjesta = termin.getKapacitet() - dohvatiBrojSlobodnihMjesta(termin);
+        if (request.kapacitet() < zauzetaMjesta) {
+            throw new IllegalArgumentException(
+                    "Kapacitet ne može biti manji od broja zauzetih mjesta"
+            );
+        }
 
         termin.setCijena(request.cijena());
         termin.setDatumVrijeme(request.datumVrijeme());
@@ -122,6 +129,13 @@ public class TerminServiceImpl implements TerminService {
         var termin = getTermin(id);
 
         var ids = new HashSet<>(request.vodici());
+
+        if (ids.size() > termin.getPotrebanBrojVodica()) {
+            throw new IllegalArgumentException(
+                    "Broj dodijeljenih vodiča ne može biti veći od potrebnog broja"
+            );
+        }
+
         var korisnici = korisnikService.dohvatiSveKorisnikePoId(ids);
 
         if (korisnici.size() != ids.size()) {
@@ -169,6 +183,8 @@ public class TerminServiceImpl implements TerminService {
                     "Resurs je vec dodijeljen tom terminu");
         }
 
+        provjeriRaspolozivostResursa(termin, resurs, request.kolicina());
+
         var terminResurs = new TerminResurs(termin, resurs, request.kolicina());
         return (terminResursRepository.save(terminResurs));
     }
@@ -185,6 +201,15 @@ public class TerminServiceImpl implements TerminService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Taj resurs nije dodijeljen tom terminu"));
 
+        if (request.kolicina() > terminResurs.getResurs().getKolicina()) {
+            throw new IllegalArgumentException(
+                    "Količina dodjele ne može biti veća od ukupne zalihe resursa"
+            );
+        }
+
+        provjeriRaspolozivostResursa(terminResurs.getTermin(), terminResurs.getResurs(),
+                request.kolicina());
+
         terminResurs.setKolicina(request.kolicina());
 
         return terminResurs;
@@ -194,4 +219,41 @@ public class TerminServiceImpl implements TerminService {
         return korisnici.stream().allMatch(vodic -> vodic.getUloge().contains(Uloga.VODIC));
     }
 
+    private void provjeriRaspolozivostResursa(Termin termin, Resurs resurs, int kolicina) {
+        if (kolicina > resurs.getKolicina()) {
+            throw new IllegalArgumentException("Količina dodjele prelazi ukupnu zalihu resursa");
+        }
+
+        var pocetak = termin.getDatumVrijeme();
+        var kraj = pocetak.plusMinutes(termin.getTrajanjeMinuta());
+        var promjene = new TreeMap<LocalDateTime, Long>();
+
+        var dodjele = terminResursRepository.findAllByResurs_IdAndTermin_IdNot(
+                resurs.getId(), termin.getId()
+        );
+
+        for (var dodjela : dodjele) {
+            var drugi = dodjela.getTermin();
+            var drugiPocetak = drugi.getDatumVrijeme();
+            var drugiKraj = drugiPocetak.plusMinutes(drugi.getTrajanjeMinuta());
+
+            var od = pocetak.isAfter(drugiPocetak) ? pocetak : drugiPocetak;
+            var doKada = kraj.isBefore(drugiKraj) ? kraj : drugiKraj;
+
+            if (od.isBefore(doKada)) {
+                promjene.merge(od, dodjela.getKolicina().longValue(), Long::sum);
+                promjene.merge(doKada, -dodjela.getKolicina().longValue(), Long::sum);
+            }
+        }
+
+        long zauzeto = kolicina;
+        for (long promjena : promjene.values()) {
+            zauzeto += promjena;
+            if (zauzeto > resurs.getKolicina()) {
+                throw new IllegalArgumentException(
+                        "Nema dovoljno raspoloživih resursa za taj termin"
+                );
+            }
+        }
+    }
 }

@@ -12,7 +12,7 @@ public interface TerminResursRepository extends JpaRepository<TerminResurs, Long
 
     List<TerminResurs> findAllByTermin_Id(Long terminId);
 
-    boolean existsByTermin_Id(Long terminId);
-
     Optional<TerminResurs> findByTermin_IdAndResurs_Id(Long terminId, Long resursId);
+
+    List<TerminResurs> findAllByResurs_IdAndTermin_IdNot(Long resursId, Long terminId);
 }

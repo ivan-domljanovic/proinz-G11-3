@@ -2,9 +2,11 @@ package hr.fer.progi.backend.service.impl;
 
 import hr.fer.progi.backend.dto.request.RezervacijaRequest;
 import hr.fer.progi.backend.enums.Status;
+import hr.fer.progi.backend.exception.ResourceNotFoundException;
 import hr.fer.progi.backend.model.DodatnaUsluga;
 import hr.fer.progi.backend.model.Rezervacija;
 import hr.fer.progi.backend.repository.RezervacijaRepository;
+import hr.fer.progi.backend.repository.TerminRepository;
 import hr.fer.progi.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,15 +24,30 @@ public class RezervacijaServiceImpl implements RezervacijaService {
     private final TerminService terminService;
     private final RezervacijaRepository rezervacijaRepository;
     private final MailService mailService;
+    private final TerminRepository terminRepository;
 
     @Override
+    @Transactional
     public Rezervacija rezerviraj(RezervacijaRequest request, Long korisnikId) {
         Rezervacija rezervacija;
         var korisnik = korisnikService.getKorisnik(korisnikId);
-        var termin = terminService.getTermin(request.terminId());
+        var termin = terminRepository.findByIdForUpdate(request.terminId())
+                .orElseThrow(() -> new ResourceNotFoundException("Termin s tim id ne postoji"));
+
         var dodatneUsluge = new ArrayList<DodatnaUsluga>();
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
-            dodatneUsluge.add(dodatnaUslugaService.getDodatnaUsluga(dodatnaUslugaId));
+            var usluga = dodatnaUslugaService.getDodatnaUsluga(dodatnaUslugaId);
+
+            boolean pripadaIzletu = termin.getIzlet().getDodatneUsluge().stream()
+                    .anyMatch(u -> u.getId().equals(usluga.getId()));
+
+            if (!pripadaIzletu) {
+                throw new IllegalArgumentException(
+                        "Dodatna usluga ne pripada izletu odabranog termina"
+                );
+            }
+
+            dodatneUsluge.add(usluga);
         }
         if (termin.getDatumVrijeme().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Termin je već prošao");
@@ -70,16 +87,17 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         for (Long dodatnaUslugaId : request.dodatneUslugeId()) {
             dodatneUsluge.add(dodatnaUslugaService.getDodatnaUsluga(dodatnaUslugaId));
         }
+        var brojSlobodnihMjesta = terminService.dohvatiBrojSlobodnihMjesta(termin);
         trenutnaRezervacija.setBrojMjesta(request.brojMjesta());
         trenutnaRezervacija.setDodatneUsluge(dodatneUsluge);
-        var brojSlobodnihMjesta = terminService.dohvatiBrojSlobodnihMjesta(termin);
+
         if (noviBrojPotrebnihMjesta > brojSlobodnihMjesta) {
             trenutnaRezervacija.setStatus(Status.ZAHTJEV);
             return rezervacijaRepository.save(trenutnaRezervacija);
         }
         trenutnaRezervacija.setStatus(Status.POTVRDENO);
         trenutnaRezervacija = rezervacijaRepository.save(trenutnaRezervacija);
-        potvrdiZahtjeve(brojSlobodnihMjesta - noviBrojPotrebnihMjesta);
+        potvrdiZahtjeve(termin.getId(), brojSlobodnihMjesta - noviBrojPotrebnihMjesta);
         mailService.posaljiPotvrduRezervacije(trenutnaRezervacija);
         return trenutnaRezervacija;
     }
@@ -98,15 +116,27 @@ public class RezervacijaServiceImpl implements RezervacijaService {
         if (rezervacija.getStatus().equals(Status.REALIZIRANO)) {
             throw new IllegalStateException("Rezervacija je već realizirana");
         }
-        rezervacijaRepository.otkazi(rezervacija);
-        potvrdiZahtjeve(rezervacija.getBrojMjesta());
+
+        boolean oslobadaMjesta = rezervacija.getStatus() == Status.POTVRDENO;
+        rezervacija.setStatus(Status.OTKAZANO);
+
+        if (oslobadaMjesta) {
+            rezervacijaRepository.flush();
+            var termin = rezervacija.getTermin();
+            int slobodnaMjesta = terminService.dohvatiBrojSlobodnihMjesta(termin);
+
+            if (slobodnaMjesta > 0) {
+                potvrdiZahtjeve(termin.getId(), slobodnaMjesta);
+            }
+        }
+
         mailService.posaljiOtkazivanjeRezervacije(rezervacija);
     }
 
     @Override
     @Transactional
-    public void potvrdiZahtjeve(Integer brojMjesta) {
-        List<Rezervacija> rezervacije = rezervacijaRepository.dohvatiZahtjeveSortiranoPoVremenuRezervacije();
+    public void potvrdiZahtjeve(Long terminId, Integer brojMjesta) {
+        List<Rezervacija> rezervacije = rezervacijaRepository.dohvatiZahtjeveZaTermin(terminId);
         List<Rezervacija> potvrdeneRezervacije = new ArrayList<>();
         for (Rezervacija rezervacija : rezervacije) {
             if (rezervacija.getBrojMjesta() <= brojMjesta) {

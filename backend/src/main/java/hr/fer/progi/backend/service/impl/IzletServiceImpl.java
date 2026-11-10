@@ -49,6 +49,14 @@ public class IzletServiceImpl implements IzletService {
         var atrakcije = atrakcijaRepository.findAllById(request.atrakcije());
         var dodatneUsluge = dodatnaUslugaRepository.findAllById(request.dodatneUsluge());
 
+        if (atrakcije.size() != request.atrakcije().stream().distinct().count()) {
+            throw new ResourceNotFoundException("Jedna ili više atrakcija ne postoji");
+        }
+
+        if (dodatneUsluge.size() != request.dodatneUsluge().stream().distinct().count()) {
+            throw new ResourceNotFoundException("Jedna ili više dodatnih usluga ne postoji");
+        }
+
         var izlet = new Izlet(request.naziv(), request.opis(), request.kategorijaAktivnosti(),
                 request.lokacija(), atrakcije,
                 dodatneUsluge);
@@ -139,13 +147,11 @@ public class IzletServiceImpl implements IzletService {
                 Status.OTKAZANO
         );
 
-        Map<Long, List<Termin>> poIzletu = termini.stream()
+        return termini.stream()
                 .collect(Collectors.groupingBy(
                         termin -> termin.getIzlet().getId(),
                         LinkedHashMap::new,
                         Collectors.toList()
                 ));
-
-        return poIzletu;
     }
 }

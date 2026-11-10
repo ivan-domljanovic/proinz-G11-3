@@ -12,7 +12,7 @@ public interface RezervacijaService {
 
     void otkazi(Long id, Long korisnikId);
 
-    void potvrdiZahtjeve(Integer brojMjesta);
+    void potvrdiZahtjeve(Long terminId, Integer brojMjesta);
 
     Rezervacija getRezervacija(Long id);
 
