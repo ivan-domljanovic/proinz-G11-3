@@ -1,5 +1,5 @@
 //zaglavlje s logom i navigacijom koje će biti na svakoj stranici app
-import { Link } from "react-router";
+import { Link, useNavigate    } from "react-router";
 import { useEffect, useState } from "react";
 
 export default function Zaglavlje() {
@@ -7,6 +7,32 @@ export default function Zaglavlje() {
   const [ucitavanje, setUcitavanje] = useState(true);
   const [greskaSlike, setGreskaSlike] = useState(false);
 
+  const navigate = useNavigate();
+  const [odjavaUTijeku, setOdjavaUTijeku] = useState(false);
+  const [greskaOdjave, setGreskaOdjave] = useState("");
+
+  async function odjaviSe(){
+    setOdjavaUTijeku(true);
+    setGreskaOdjave("");
+
+    try{
+      const odgovor = await fetch("/api/logout", {
+        method:"POST",
+        credentials: "include",
+        redirect: "error"
+      });
+
+      if(odgovor.status!==204){
+        throw new Error("Odjava nije uspjela.");
+      }
+      setKorisnik(null);
+      navigate("/",{replace:true});
+    }catch{
+      setGreskaOdjave("Odjava nije uspjela. Pokusaj ponovo.");
+    } finally {
+      setOdjavaUTijeku(false);
+    }
+  }
   useEffect(() => {
     const controller = new AbortController();
 
@@ -73,6 +99,14 @@ export default function Zaglavlje() {
             <span className="korisnik-ime">
               {korisnik.ime || korisnik.email || "Korisnik"}
             </span>
+            <button
+                type="button"
+                className="gumb-natrag"
+                onClick={odjaviSe}
+                disabled={odjavaUTijeku}
+            >
+              {odjavaUTijeku ? "Odjava..." : "Odjava"}
+            </button>
           </div>
         ) : (
           <Link className="gumb-prijava" to="/login">
@@ -80,6 +114,9 @@ export default function Zaglavlje() {
           </Link>
         )}
       </div>
+      {greskaOdjave && (
+          <p className="kontejner" role="alert">{greskaOdjave}</p>
+      )}
     </header>
   );
 }
