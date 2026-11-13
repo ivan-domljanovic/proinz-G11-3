@@ -13,10 +13,10 @@ Očekivana korist: turist na jednom mjestu rezervira izlet i dobije potvrdu e-po
 | Skupina korisnika ili dionika               | Potreba ili interes relevantan za ovaj projekt                                                                                                                                                                |
 | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Neprijavljeni posjetitelj                   | Pregledati i pretražiti ponudu izleta prema terminu, lokaciji, vrsti aktivnosti, trajanju, cijeni i broju sudionika.                                                                                          |
-| Korisnik (prijavljeni)                      | Rezervirati izlet za određeni broj osoba, odabrati dodatne usluge, pratiti status rezervacije, pregledati podatke o rezervaciji i dobiti potvrdu e-poštom. Ocjenjivati izlete i vodiče, prijaviti se na listu čekanja te tijekom izleta koristiti digitalni vodič s kartom. |
-| Administrator                               | Dodavati i mijenjati izlete, termine, cijene, kapacitete, dodatne usluge i točke interesa te upravljati rezervacijama.                                                                                        |
-| Organizator                                 | Dodjeljivati vodiče izletima i pratiti raspoloživost resursa (prijevoz, oprema) te pregledavati statistiku rezervacija, popunjenosti, prihoda i popularnosti aktivnosti i dodatnih usluga.                                                                                                                              |
-| Vodič (dionik)                              |Pravovremeno dobiti informacije o dodijeljenim izletima i terminima.                                                                                                                                                                   |
+| Korisnik (prijavljeni) | Rezervirati izlet za određeni broj osoba, odabrati dodatne usluge, pratiti status rezervacije, pregledati, izmijeniti i otkazati rezervaciju te dobiti potvrdu e-poštom. Ako nema slobodnih mjesta, rezervacija čeka na listi čekanja i automatski se potvrđuje kad se mjesta oslobode. Ocjenjivati izlete i vodiče te tijekom izleta koristiti digitalni vodič s kartom. |
+| Administrator | Dodavati i mijenjati izlete, termine, cijene, kapacitete, dodatne usluge, resurse i točke interesa, upravljati rezervacijama te korisnicima dodjeljivati uloge. |
+| Organizator | Objavljivati i uređivati izlete i njihove termine, dodjeljivati vodiče terminima i pratiti raspoloživost resursa (prijevoz, oprema) te pregledavati statistiku rezervacija, popunjenosti, prihoda i popularnosti aktivnosti i dodatnih usluga. |
+| Vodič (dionik) | Biti dodijeljen terminima izleta i dobivati ocjene i recenzije korisnika koji su sudjelovali na izletu. |
 
 
 ## 1.3 Granice projekta
@@ -25,10 +25,10 @@ Očekivana korist: turist na jednom mjestu rezervira izlet i dobije potvrdu e-po
 
 - pregled i pretraživanje izleta prema terminu, lokaciji, vrsti aktivnosti, trajanju, cijeni i broju sudionika;
 - rezervacija izleta za određeni broj osoba s odabirom dodatnih usluga, pri čemu sustav sprječava prekoračenje raspoloživog kapaciteta;
-- statusi rezervacije (zahtjev, potvrđena, otkazana, realizirana), pregled podataka o rezervaciji i potvrda e-poštom;
+- statusi rezervacije (zahtjev, potvrđena, otkazana, realizirana), pregled, izmjena i otkazivanje vlastite rezervacije te potvrda e-poštom;
 - upravljanje izletima, terminima, cijenama, kapacitetima, dodatnim uslugama i rezervacijama;
 - definiranje točaka interesa (naziv, opis, lokacija) za pojedini izlet;
-- dodjela vodiča izletima i praćenje raspoloživosti resursa (prijevoz, oprema);
+- dodjela vodiča terminima izleta i praćenje raspoloživosti resursa (prijevoz, oprema);
 - pregled statistike rezervacija, popunjenosti, prihoda, najtraženijih aktivnosti i dodatnih usluga te izvoz izvještaja u CSV formatu;
 - digitalni vodič na mobitelu koji prema GPS lokaciji prikazuje informacije o unaprijed definiranim točkama interesa u blizini korisnika te kartu s položajem korisnika i točaka interesa;
 - prijava putem vanjskog pružatelja identiteta i različite uloge korisnika s odgovarajućim ovlastima;
@@ -39,7 +39,7 @@ Očekivana korist: turist na jednom mjestu rezervira izlet i dobije potvrdu e-po
 **Izvan opsega ili odgođeno:**
 - **Push obavijesti na mobitel** – aplikacija ne šalje mobilne obavijesti ni automatske podsjetnike o nadolazećim izletima. Potvrda rezervacije šalje se e-poštom.
 - **Preporuke izleta** – aplikacija ne preporučuje izlete prema prethodnim rezervacijama korisnika.
-- **Online plaćanje** - korisnici mogu rezervirati izlet, ali ga ne mogu platiti putem aplikacije.
+- **Online plaćanje** – korisnici mogu rezervirati izlet, ali ga ne mogu platiti putem aplikacije.
   
 **Vanjske ovisnosti:**
 
