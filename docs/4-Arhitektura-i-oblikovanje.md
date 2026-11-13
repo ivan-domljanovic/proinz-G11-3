@@ -1,70 +1,29 @@
 # 4. Arhitektura i oblikovanje
 
-**Cilj:** Definirati arhitekturni stil, dekompoziciju programa na podsustave i module, organizaciju podataka te dinamičko ponašanje tijekom izvođenja. Arhitektura predstavlja temelj za implementaciju i ažurira se pri svakoj važnijoj promjeni projektnih odluka.
+## 4.1 Ključne arhitekturne odluke
 
-| Arhitekturni pogled      | Ključno inženjersko pitanje                           | Primijenjeni model ili dijagram    |
-| :----------------------- | :---------------------------------------------------- | :--------------------------------- |
-| **Strategija rješenja**  | Koji stil i temeljne odluke određuju program?         | Tablica odluka (odjeljak 4.1)      |
-| **Struktura podsustava** | Koji su glavni dijelovi i kako komuniciraju?          | Dijagram komponenata               |
-| **Model podataka**       | Kako su strukturirani trajni podaci programa?         | Relacijski ER dijagram             |
-| **Struktura koda**       | Kako su dodijeljene odgovornosti i ključne klase?     | Reprezentativni dijagram razreda   |
-| **Dinamičko ponašanje**  | Kako moduli surađuju pri obradi ključnih transakcija? | sekvencijski dijagram              |
-| **Stanja sustava**       | Kako ključni domenski objekt mijenja svoja stanja?    | Dijagram stanja                    |
-| **Fizički razmještaj**   | Na kojim se izvršnim čvorovima program izvodi?        | Dijagram razmještaja (poglavlje 6) |
-
----
-
-Za svaki UML dijagram čuvajte čitljivu sliku i PlantUML izvor, kako je opisano na stranici [Home](./Home.md). U dovršenoj stranici koristite vlastite projektne odluke i modele.
-
-<details>
-<summary><strong>Primjer arhitekturnih odluka i kompromisa</strong></summary>
-
-**Primjer — CrisisMap:**
-
-| Odluka                                           | Razmatrana alternativa                           | Projektno specifično obrazloženje i kompromis                                                                                                                                                                                |
-| ------------------------------------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Klijent u pregledniku i jedan poslužiteljski API | Više zasebno postavljenih poslužiteljskih usluga | Klijent prikazuje kartu, dok poslužiteljski sustav provjerava i pohranjuje prijave. Jedan poslužiteljski sustav upravljiv je za ovaj opseg; njegov kvar može privremeno prekinuti rad s prijavama. Obrazloženje je u ADR-01. |
-| Relacijska pohrana prijava                       | Dokumentno orijentirana pohrana                  | Prijave imaju prepoznatljive veze s korisnicima i lokacijama. Relacijska shema te veze čini eksplicitnima, ali zahtijeva migracije kada se shema promijeni.                                                                  |
-
-**Analiza primjera:** Obje odluke navode razlog vezan uz aplikaciju za prijavljivanje kriznih događaja i priznaju kompromis. Odluka o poslužiteljskom sustavu upućuje na ADR-01 umjesto ponavljanja cijele usporedbe. Moduli unutar jedne aplikacije koja se postavlja kao cjelina nisu zasebne mikrousluge. U vlastitoj tablici navedite alternative koje je tim doista razmatrao.
-
-</details>
-
-| Odluka                                                                                                                         | Razmatrana alternativa                   | Projektno specifično obrazloženje i kompromis                                                                                                                                                                                                 |
-| ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Jedna Spring Boot poslužiteljska aplikacija s REST API-jem, podijeljena na module (izleti, rezervacije, korisnici, statistika) | Zasebno postavljene usluge| Za opseg projekta i jedan semestar jedna aplikacija jednostavnija je za razvoj i postavljanje. Moduli su odvojeni po odgovornostima, ali kvar poslužitelja zaustavlja sve funkcije odjednom.                                                  |
-| React web-klijent u pregledniku, responzivan, koji uključuje i digitalni vodič                                                 | Zasebna mobilna aplikacija       | Jedan klijent radi na računalu, tabletu i mobitelu. Lokacija se dohvaća preko preglednika, što zahtijeva HTTPS i internetsku vezu.                                                                                                            |
-| Relacijska baza PostgreSQL                                                                                                     | Dokumentna baza           | Podaci su usko povezani (izlet – termin – rezervacija – korisnik), a transakcije omogućuju sigurnu provjeru kapaciteta (NF-02).                                                                         |
-| Prijava isključivo putem Googlea (OAuth 2.0 / OpenID Connect)                                                                  | Vlastita registracija s lozinkom         | Zahtjev kolegija (C-01); aplikacija ne pohranjuje lozinke. Korisnik bez Google računa ne može se prijaviti.                                                                                                                                   |
-| Provjera slobodnih mjesta na poslužitelju unutar transakcije                                                                   | Provjera samo u korisničkom sučelju      | Klijent može imati zastarjele podatke, pa samo poslužitelj može jamčiti da se kapacitet ne premaši kod istodobnih rezervacija (F-005, NF-02). Istodobne rezervacije istog termina obrađuju se jedna za drugom. <-- POTVRDITI S BACKENDOM --> |
-| OpenStreetMap za prikaz karte                                                                                                  | Google Maps                              | Besplatno, bez obaveznog ključa ili kartice za naplatu; nudi manje dodatnih mogućnosti od Google Mapsa. <-- POTVRDITI S FRONTENDOM -->                                                                                                       |
+| Odluka | Razmatrana alternativa | Projektno specifično obrazloženje i kompromis |
+| --- | --- | --- |
+| Jedna Spring Boot poslužiteljska aplikacija s REST API-jem, slojevito podijeljena na kontrolere, servise i repozitorije | Zasebno postavljene usluge | Za opseg projekta i jedan semestar jedna aplikacija jednostavnija je za razvoj i postavljanje. Odgovornosti su odvojene po slojevima i domenskim cjelinama (izleti, termini, rezervacije, korisnici, recenzije), ali kvar poslužitelja zaustavlja sve funkcije odjednom. |
+| React web-klijent u pregledniku, responzivan, koji će uključivati i digitalni vodič | Zasebna mobilna aplikacija | Jedan klijent radi na računalu, tabletu i mobitelu (NF-02). Lokacija za digitalni vodič dohvaća se preko preglednika, što zahtijeva HTTPS i dopuštenje korisnika (AS-03). |
+| Relacijska baza PostgreSQL | Dokumentna baza | Podaci su usko povezani (izlet – termin – rezervacija – korisnik), a transakcije omogućuju sigurnu provjeru kapaciteta (F-005, NF-01). |
+| Prijava isključivo putem Googlea (OAuth 2.0 / OpenID Connect) uz sesiju na poslužitelju | Vlastita registracija s lozinkom | Zahtjev kolegija (C-01); aplikacija ne pohranjuje lozinke. Nakon prijave poslužitelj pamti korisnika u sesiji (kolačić `JSESSIONID`), a uloge provjerava za svaki zahtjev. Korisnik bez Google računa ne može se prijaviti. |
+| Provjera slobodnih mjesta na poslužitelju unutar transakcije, uz zaključavanje termina | Provjera samo u korisničkom sučelju | Klijent može imati zastarjele podatke, pa samo poslužitelj može jamčiti da se kapacitet ne premaši (F-005, NF-01). Pri stvaranju rezervacije termin se zaključava u bazi (`PESSIMISTIC_WRITE`), pa se istodobne rezervacije istog termina obrađuju jedna za drugom. Kompromis je kratko čekanje drugog zahtjeva. |
+| Shemu baze stvara Hibernate iz JPA entiteta pri svakom pokretanju | Ručno pisane SQL skripte za stvaranje i izmjenu tablica | Tijekom razvoja model se često mijenja pa automatsko stvaranje sheme ubrzava rad. Kompromis je da se pri svakom pokretanju podaci brišu i ponovno pune testnim podacima, što prije produkcije treba zamijeniti trajnim rješenjem. |
+| OpenStreetMap za prikaz karte | Google Maps | Besplatno, bez obaveznog ključa ili kartice za naplatu; nudi manje dodatnih mogućnosti od Google Mapsa. |
 
 ## 4.2 Gradivni blokovi i UML dijagram komponenata
 
 **Cilj:** Prikazati logičku podjelu programa na komponente, njihova sučelja i vanjske integracije. Dijagram komponenata prikazuje logičku organizaciju, dok dijagram razmještaja prikazuje fizičko izvođenje. Ovaj prikaz ažurirajte kako sustav poprima konačan oblik.
 
-   ![Dijagram komponenata aplikacije za upravljanje izletima](./assets/diagrams/4-1-sustav-CMP.svg)
+**Dijagram komponenata:** [Ugradite čitljiv UML dijagram komponenata.]  
+**PlantUML izvor:** [Poveznica na odgovarajuću `.puml` datoteku.]
 
-   **Slika 4.1. Dijagram komponenata aplikacije za upravljanje izletima**
-
-   **PlantUML izvor:** [izvor](./puml/4-1-sustav-CMP.puml)
-
-   Web-klijent i poslužiteljska aplikacija su unutar granice sustava, zajedno s bazom PostgreSQL. Google, usluga e-pošte i OpenStreetMap su vanjske usluge. Moduli unutar poslužiteljske aplikacije su logičke cjeline jedne Spring Boot aplikacije koja se postavlja kao cjelina, a ne zasebne usluge. Modul Statistika još nije implementiran.
-| Komponenta                 | Odgovornost                                                                                                                                                                                                  | Razlog za ovu granicu                                                                                                               |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Web-klijent (React)        | Prikazuje korisničko sučelje u pregledniku na računalu, tabletu i mobitelu: pretragu izleta, rezervacije, administraciju, statistiku i digitalni vodič s kartom. Dohvaća lokaciju uređaja preko preglednika. | Prikaz i interakcija s korisnikom odvojeni su od pohrane podataka, koji su na poslužitelju.                     |
-| Modul Autentikacija        | Provodi prijavu putem Googlea, stvara korisnički račun pri prvoj prijavi i provjerava ulogu korisnika za svaki zaštićeni zahtjev.                                                                            | Sigurnosna pravila nalaze se na jednom mjestu i primjenjuju se na sve ostale module (F-018).                                        |
-| Modul Izleti               | Upravlja izletima, terminima, kapacitetima, dodatnim uslugama i točkama interesa te omogućuje njihovu pretragu.                                                                                              | Ponuda izleta mijenja se neovisno o rezervacijama i ima vlastita pravila (npr. organizator mijenja samo svoje izlete).              |
-| Modul Rezervacije          | Stvara rezervacije, provjerava slobodna mjesta, mijenja status rezervacije i vraća mjesta pri otkazivanju.                                                                                                   | Pravila kapaciteta i statusa rezervacije imaju jasno mjesto odgovornosti, što je važno za sprječavanje prebukiranja (F-005, NF-01). |
-| Modul Resursi              | Vodi evidenciju vodiča, prijevoza i opreme te njihovu dodjelu i zauzetost po terminima.                                                                                                                      | Raspoloživost resursa je zasebna briga organizatora i ne utječe na rad rezervacija.                                                 |
-| Modul Statistika           | Izračunava broj rezervacija, popunjenost, prihod i najtraženije aktivnosti te izvozi podatke u CSV.                                                                                                          | Izvještavanje samo čita podatke drugih modula i ne mijenja ih.                                                                      |
-| Modul Obavijesti           | Šalje potvrdu rezervacije e-poštom putem vanjske usluge.                                                                                                                                                     | Komunikacija s vanjskom uslugom odvojena je od rezervacije, pa neuspješno slanje ne poništava rezervaciju (UC-003, 8a).             |
-| Baza podataka (PostgreSQL) | Trajno pohranjuje korisnike, izlete, termine, rezervacije, resurse i točke interesa.                                                                                                                         | Podacima pristupa samo poslužiteljska aplikacija, nikada izravno web-klijent.                                                       |
+| Komponenta | Odgovornost | Razlog za ovu granicu |
+| --- | --- | --- |
+|  |  |  |
 
 Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dijelove s različitim odgovornostima; planiranu bazu podataka aplikacije smjestite unutar granice, a usluge trećih strana izvan nje. Važne veze označite podatkom ili uslugom koja njima prolazi. Logička komponenta može biti modul unutar jedne poslužiteljske aplikacije: zaseban pravokutnik ne znači zasebno postavljenu uslugu. Tijekom implementacije ažurirajte dijagram kada se promijene odgovornosti ili veze. U završnoj inačici čitatelj treba moći povezati njegove dijelove s kodom. Dijagram razmještaja odgovara na pitanje gdje se ti dijelovi stvarno izvode.
-
-**Dijagram komponenata:** <! DODATI DIJAGRAM >
-**PlantUML izvor:** <!>
 
 <details>
 <summary><strong>Granica sustava, odgovornosti i vanjske ovisnosti</strong></summary>
@@ -77,11 +36,11 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **PlantUML izvor:** [izvor](./puml/4-1-crisismap-system-CMP.puml)
 
-| Dio                  | Odgovornost                                                                                     | Razlog za ovu granicu                                                          |
-| -------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Web-klijent          | Prikazuje prijave i prikuplja podatke za novu prijavu.                                          | Korisnička interakcija odvojena je od pravila prijave i trajne pohrane.        |
-| API za prijave       | Prihvaća zahtjeve za rad s prijavama i vraća odgovore.                                          | Odgovornosti izložene putem HTTP-a odvojene su od obrade prijava.              |
-| Usluga za prijave    | Primjenjuje pravila prijave i pristupa pohranjenim prijavama.                                   | Pravila provjere valjanosti i pohrane prijava imaju jasno mjesto odgovornosti. |
+| Dio | Odgovornost | Razlog za ovu granicu |
+| --- | --- | --- |
+| Web-klijent | Prikazuje prijave i prikuplja podatke za novu prijavu. | Korisnička interakcija odvojena je od pravila prijave i trajne pohrane. |
+| API za prijave | Prihvaća zahtjeve za rad s prijavama i vraća odgovore. | Odgovornosti izložene putem HTTP-a odvojene su od obrade prijava. |
+| Usluga za prijave | Primjenjuje pravila prijave i pristupa pohranjenim prijavama. | Pravila provjere valjanosti i pohrane prijava imaju jasno mjesto odgovornosti. |
 | Proces za obavijesti | Određuje korisnike koji trebaju primiti obavijest i traži od vanjskog pružatelja da je pošalje. | Obrada obavijesti odvojena je od odgovaranja na korisnikov zahtjev za prijavu. |
 
 **Analiza primjera:** Vanjska granica odvaja predloženi sustav od pružatelja kartografskih usluga i pružatelja obavijesti. Unutarnja granica grupira API za prijave, uslugu za prijave i proces za obavijesti unutar jedne poslužiteljske aplikacije; njihovi zasebni simboli prikazuju predložene odgovornosti, a ne neovisno postavljene usluge. PostgreSQL pohranjuje podatke aplikacije, dok pružatelj kartografskih usluga osigurava kartografske pločice. Strelice sažimaju ovisnosti, a ne redoslijed transakcije; taj redoslijed prikazuje sekvencijski dijagram. Izostavite proces za obavijesti i Firebase Cloud Messaging ako obavijesti nisu dio odobrenog opsega. Pružatelja prijave u sustav uključite samo ako to zahtijeva odobreni zadatak. Kako implementacija napreduje, ispravite svaku predloženu granicu koja se pokaže netočnom; završni dijagram mora odgovarati onome što je tim izgradio. Jedan koherentan prikaz komponenata korisniji je od nekoliko gotovo jednakih inačica s proturječnim vezama.
@@ -90,13 +49,9 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 ## 4.3 Model podataka i oblikovanje razreda
 
-**Cilj:** Objasniti važne informacije koje aplikacija pohranjuje i jedno reprezentativno područje oblikovanja na razini razreda. Model podataka i UML dijagram razreda odgovaraju na različita pitanja; jedno ne zamjenjuje drugo.
-
 ### 4.3.1 ER dijagram i model podataka
 
-**Cilj:** Prikazati važne pohranjene entitete, njihove identifikatore i veze te dovoljno atributa za razumijevanje podataka aplikacije. ER dijagram odvojen je od reprezentativnog UML dijagrama razreda u nastavku.
-
-![ER dijagram aplikacije za upravljanje izletima](./assets/4-2-podaci-ERD.png).
+![ER dijagram aplikacije za upravljanje izletima](./assets/4-2-podaci-ERD.png)
 
 **Slika 4.2. ER dijagram aplikacije za upravljanje izletima**
 
@@ -104,25 +59,9 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Implementacija:** JPA entiteti u `backend/src/main/java/hr/fer/progi/backend/model/`; Hibernate iz njih stvara shemu `turisticka-agencija`.
 
-Izlet ima više termina, a svaki termin ima vlastitu cijenu, kapacitet, mjesto polaska i potreban broj vodiča (odjeljak 2.5). Rezervacija pripada jednom terminu i jednom korisniku i može uključivati više dodatnih usluga. Uloge korisnika spremaju se u tablicu `korisnik_uloga`, pa jedan korisnik može imati više uloga (AS-06). Vodiči se terminu dodjeljuju preko tablice `termin_vodic`, a resursi preko `termin_resurs`, koja pamti dodijeljenu količinu (npr. 2 od 3 kombija). Točke interesa spremaju se u tablicu `atrakcije`. Broj slobodnih mjesta ne sprema se, nego se računa iz kapaciteta termina i potvrđenih rezervacija.Veze više-prema-više ostvarene su vezničkim tablicama `izleti_atrakcije`, `izleti_dodatne_usluge` i `rezervacije_dodatne_usluge`. Tablice `recenzije_izleta` i `recenzije_vodica` postoje u bazi, ali recenzije još nisu dio zahtjeva iz poglavlja 2.
-<details>
-<summary><strong>Jedna prijava poplave i povezani podaci</strong></summary>
-
-**Primjer — CrisisMap:** Ana putem svojeg korisničkog računa podnosi prijavu poplave `R-104`. Odabire lokaciju na karti i označava razinu ozbiljnosti kao visoku. Građanin može podnijeti više prijava; svaka prijava pripada jednoj kategoriji kriznog događaja, primjerice _Poplava_. Aplikacija pohranjuje prijavu i njezine koordinate. Kartografske pločice dolaze od vanjskog pružatelja i nisu entiteti u modelu podataka aplikacije.
-
-![ER dijagram podataka sustava CrisisMap](./assets/diagrams/4-2-crisismap-data-ERD.svg)
-
-**Slika 4.2. ER dijagram podataka sustava CrisisMap**
-
-**PlantUML izvor:** [izvor](./puml/4-2-crisismap-data-ERD.puml)
-
-**Analiza primjera:** `R-104` ima jednog autora i jednu kategoriju; Ana i kategorija _Poplava_ mogu biti povezane s više prijava. Dijagram prikazuje veze bez prepisivanja svih stupaca baze podataka ili pisanja drugog tabličnog opisa za svaki entitet. Ako aplikacija prihvaća i **anonimne** prijave, tu mogućnost prikažite u vezi s entitetom `Citizen`. Ako su kategorije fiksne vrijednosti, a ne pohranjeni zapisi, nemojte izmišljati tablicu kategorija. Završni ER dijagram usporedite s modelom trajne pohrane i objasnite samo razlike važne za razumijevanje projekta.
-
-</details>
+Izlet ima više termina, a svaki termin ima vlastiti datum i vrijeme, trajanje, cijenu, kapacitet, mjesto polaska i potreban broj vodiča (odjeljak 2.5). Dodatne usluge i točke interesa vežu se uz izlet preko vezničkih tablica `izleti_dodatne_usluge` i `izleti_atrakcije`. Rezervacija pripada jednom terminu i jednom korisniku i može uključivati više dodatnih usluga (`rezervacije_dodatne_usluge`). Uloge korisnika spremaju se u tablicu `korisnik_uloga`, pa jedan korisnik može imati više uloga (AS-05). Vodiči su korisnici s ulogom vodiča i terminu se dodjeljuju preko tablice `termin_vodic` (AS-04), a resursi preko `termin_resurs`, koja pamti dodijeljenu količinu (npr. 2 od 3 kombija). Točke interesa spremaju se u tablicu `atrakcije` s geografskom širinom i dužinom. Broj slobodnih mjesta ne sprema se, nego se računa iz kapaciteta termina umanjenog za mjesta potvrđenih i realiziranih rezervacija; rezervacije sa statusom `ZAHTJEV` ne zauzimaju mjesta. Recenzija izleta vezana je uz jednu rezervaciju (`recenzije_izleta`, najviše jedna po rezervaciji), a recenzija vodiča uz rezervaciju i vodiča (`recenzije_vodica`, najviše jedna po paru rezervacija–vodič) (F-019, F-020).
 
 ### 4.3.2 Reprezentativni UML dijagram razreda
-
-**Cilj:** Prije implementacije reprezentativnog dijela sustava modelirati i prikazati razrede ili sučelja potrebna za dodjelu odgovornosti, operacija i veza. Oblikovanje ažurirajte kada se te odluke promijene.
 
 ![Dijagram razreda za rezervacije](./assets/diagrams/4-3-rezervacije-CD.svg)
 
@@ -130,24 +69,9 @@ Izlet ima više termina, a svaki termin ima vlastitu cijenu, kapacitet, mjesto p
 
 **PlantUML izvor:** [izvor](./puml/4-3-rezervacije-CD.puml)
 
-**Referenca na kod:** `controller/RezervacijaController.java`, `service/impl/RezervacijaServiceImpl.java`, `repository/RezervacijaRepository.java`
+**Referenca na kod:** `controller/RezervacijaController.java`, `service/impl/RezervacijaServiceImpl.java`, `repository/RezervacijaRepository.java`, `repository/TerminRepository.java`
 
-Kao reprezentativni dio odabrane su rezervacije jer sadrže najvažnije poslovno pravilo: ne smije se rezervirati više mjesta nego što ih termin ima. `RezervacijaController` samo prima HTTP zahtjeve i prosljeđuje ih servisu. `RezervacijaServiceImpl` provodi pravila: provjerava slobodna mjesta preko `TerminService`, određuje status rezervacije i preko `MailService` šalje potvrdu. `RezervacijaRepository` definira operacije pohrane, uključujući dohvat rezervacija na čekanju poredanih po vremenu. Servisi su definirani kao sučelja pa se u testovima mogu zamijeniti.
-
-<details>
-<summary><strong>Oblikovanje odgovornosti prijave i dopuštenih promjena</strong></summary>
-
-**Primjer — CrisisMap:** Prijava sadrži pravila za promjenu vlastitog statusa. Razred tijeka rada koordinira podnošenje i pregled, dok sučelje repozitorija opisuje potrebne operacije trajne pohrane. Dijagram predlaže te odgovornosti prije implementacije.
-
-![Dijagram razreda za obradu prijava kriznih događaja](./assets/diagrams/4-3-crisismap-domain-CD.svg)
-
-**Slika 4.3. Dijagram razreda za obradu prijava kriznih događaja**
-
-**PlantUML izvor:** [izvor](./puml/4-3-crisismap-domain-CD.puml)
-
-**Analiza primjera:** `DisasterReport` sadrži dopuštena pravila promjene stanja pa tijek rada ne može prešutno odobriti već odbijenu prijavu. `ReportWorkflow` koordinira operaciju bez preuzimanja pravila prijelaza stanja same prijave; `ReportRepository` definira potrebne operacije pohrane. Kompozicija `Location` i odabrani tipovi prikazuju veze korisne za oblikovanje. Dijagram namjerno izostavlja stupce baze podataka i nepovezane razrede: ER model objašnjava pohranjene podatke, dok ovaj dijagram dodjeljuje programske odgovornosti i operacije. Ti su razredi odluka oblikovanja, a ne obavezni slojevi za svaki tim. Završnu implementaciju usporedite s početnim oblikovanjem i ažurirajte dijagram tamo gdje su se odluke promijenile; generiranje dijagrama iz koda tek na kraju ne može zamijeniti ovo početno modeliranje.
-
-</details>
+Kao reprezentativni dio odabrane su rezervacije jer sadrže najvažnije poslovno pravilo: ne smije se rezervirati više mjesta nego što ih termin ima. `RezervacijaController` samo prima HTTP zahtjeve i prosljeđuje ih servisu. `RezervacijaServiceImpl` provodi pravila: pri stvaranju rezervacije zaključava termin preko `TerminRepository.findByIdForUpdate`, provjerava slobodna mjesta preko `TerminService` i određuje status `POTVRDENO` ili `ZAHTJEV`. Nakon otkazivanja ili smanjenja broja sudionika poziva `potvrdiZahtjeve`, koji preko `RezervacijaRepository.dohvatiZahtjeveZaTermin` dohvaća zahtjeve redoslijedom podnošenja i potvrđuje one koji stanu u slobodna mjesta. Potvrde se šalju preko `MailService`, čija implementacija još nije dovršena. Servisi su definirani kao sučelja pa se u testovima mogu zamijeniti.
 
 ## 4.4 Ponašanje tijekom izvođenja
 
@@ -159,13 +83,9 @@ Kao reprezentativni dio odabrane su rezervacije jer sadrže najvažnije poslovno
 
 **Scenarij:** Rezervacija izleta (UC-003)
 
-![Sekvencijski dijagram rezervacije izleta](./assets/diagrams/4-4-rezervacija-SD.svg)
-
 **Slika 4.4. Sekvencijski dijagram rezervacije izleta**
 
-**PlantUML izvor:** [izvor](./puml/4-4-rezervacija-SD.puml)
-
-Korisnik rezervira 3 mjesta. Zahtjev neprijavljenog korisnika zaustavlja Spring Security i preusmjerava ga na prijavu putem Googlea (UC-001, 1a). Za prijavljenog korisnika servis dohvaća termin i iz baze računa broj slobodnih mjesta. Ako ima dovoljno mjesta, rezervacija se sprema sa statusom POTVRDENO i šalje se potvrda e-poštom; ako slanje ne uspije, rezervacija ostaje potvrđena (UC-003, 8a). Ako mjesta nema dovoljno (npr. traži se 3, a slobodna su 2), rezervacija se sprema sa statusom ZAHTJEV i čeka da se mjesta oslobode.
+**PlantUML izvor:** 
 
 <details>
 <summary><strong>Odabir lokacije, provjera valjanosti i podnošenje prijave</strong></summary>
