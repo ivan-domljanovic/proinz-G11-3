@@ -4,31 +4,37 @@ skinparam shadowing false
 hide empty members
 
 class RezervacijaController {
-  +dohvatiSve() : List<RezervacijaResponse>
+  +dohvatiSveKorisnikoveRezervacije() : List<RezervacijaResponse>
+  +dohvatiRezervaciju(id : Long) : RezervacijaResponse
   +rezerviraj(request : RezervacijaRequest) : RezervacijaResponse
-  +azuriraj(id : Long, request : RezervacijaRequest) : RezervacijaResponse
-  +otkazi(id : Long) : void
+  +azurirajRezervaciju(id : Long, request : RezervacijaRequest) : RezervacijaResponse
+  +otkaziRezervaciju(id : Long) : void
 }
 interface RezervacijaService {
-  +rezerviraj(request, korisnikId) : Rezervacija
-  +azurirajRezervaciju(id, request, korisnikId) : Rezervacija
-  +otkazi(id, korisnikId) : void
-  +potvrdiZahtjeve(brojMjesta : Integer) : void
+  +rezerviraj(request : RezervacijaRequest, korisnikId : Long) : Rezervacija
+  +azurirajRezervaciju(id : Long, request : RezervacijaRequest, korisnikId : Long) : Rezervacija
+  +otkazi(id : Long, korisnikId : Long) : void
+  +potvrdiZahtjeve(terminId : Long, brojMjesta : Integer) : void
+  +dohvatiSveKorisnikoveRezervacije(korisnikId : Long) : List<Rezervacija>
 }
 class RezervacijaServiceImpl
 interface TerminService {
-  +dohvatiTermin(id) : Termin
-  +dohvatiBrojSlobodnihMjesta(termin) : Integer
+  +getTermin(id : Long) : Termin
+  +dohvatiBrojSlobodnihMjesta(termin : Termin) : Integer
 }
 interface MailService {
   +posaljiPotvrduRezervacije(r : Rezervacija) : void
+  +posaljiPotvrdeRezervacija(r : Collection<Rezervacija>) : void
   +posaljiOtkazivanjeRezervacije(r : Rezervacija) : void
 }
 interface RezervacijaRepository <<JpaRepository>> {
   +findByKorisnik(k : Korisnik) : List<Rezervacija>
-  +otkazi(r : Rezervacija) : void
   +potvrdi(r : Rezervacija) : void
-  +dohvatiZahtjeveSortiranoPoVremenuRezervacije() : List<Rezervacija>
+  +dohvatiZahtjeveZaTermin(terminId : Long) : List<Rezervacija>
+}
+interface TerminRepository <<JpaRepository>> {
+  +findByIdForUpdate(id : Long) : Optional<Termin>
+  +getNumberOfAvailableSpots(t : Termin) : Integer
 }
 class Rezervacija <<Entity>> {
   -id : Long
@@ -38,6 +44,7 @@ class Rezervacija <<Entity>> {
 }
 class Termin <<Entity>> {
   -datumVrijeme : LocalDateTime
+  -trajanjeMinuta : Integer
   -kapacitet : Integer
   -cijena : Double
 }
@@ -53,9 +60,11 @@ enum Status {
 RezervacijaController --> RezervacijaService
 RezervacijaServiceImpl ..|> RezervacijaService
 RezervacijaServiceImpl --> TerminService
+RezervacijaServiceImpl --> TerminRepository
 RezervacijaServiceImpl --> MailService
 RezervacijaServiceImpl --> RezervacijaRepository
 RezervacijaRepository ..> Rezervacija
+TerminRepository ..> Termin
 Rezervacija --> "1" Termin
 Rezervacija --> "0..1" Korisnik
 Rezervacija --> "0..*" DodatnaUsluga
