@@ -1,3 +1,6 @@
+
+const API_URL = import.meta.env.VITE_API_URL ?? "";
+
 export class PotrebnaPrijava extends Error {
   constructor() {
     super("Za rezervaciju termina trebate se prijaviti.");
@@ -17,7 +20,7 @@ function provjeriPrijavu(odgovor) {
 
 async function provjeriSesiju(signal) {
   // Provjera sesije prije slanja rezervacije, uključujući dev profil.
-  const sesija = await fetch("/api/me", {
+  const sesija = await fetch(`${API_URL}/api/me`, {
     credentials: "include",
     redirect: "manual",
     signal,
@@ -28,7 +31,7 @@ async function provjeriSesiju(signal) {
   // Vite za ugašeni backend vraća grešku bez tog JSON odgovora.
   if (
     sesija.status === 500 &&
-    korisnik?.path === "/api/me" &&
+    korisnik?.path === `${API_URL}/api/me` &&
     korisnik?.status === 500
   ) {
     throw new PotrebnaPrijava();
@@ -47,7 +50,7 @@ async function provjeriSesiju(signal) {
 
 export async function dohvatiRezervacije(signal) {
   await provjeriSesiju(signal);
-  const odgovor = await fetch("/api/rezervacije", {
+  const odgovor = await fetch(`${API_URL}/api/rezervacije`, {
     credentials: "include",
     redirect: "manual",
     signal,
@@ -63,7 +66,7 @@ export async function dohvatiRezervacije(signal) {
 
 export async function otkaziRezervaciju(id) {
   await provjeriSesiju();
-  const odgovor = await fetch(`/api/rezervacije/${encodeURIComponent(id)}`, {
+  const odgovor = await fetch(`${API_URL}/api/rezervacije/${encodeURIComponent(id)}`, {
     method: "DELETE",
     credentials: "include",
     redirect: "manual",
@@ -80,7 +83,7 @@ export async function otkaziRezervaciju(id) {
 export async function rezervirajTermin(podaci) {
   await provjeriSesiju();
 
-  const odgovor = await fetch("/api/rezervacije", {
+  const odgovor = await fetch(`${API_URL}//api/rezervacije`, {
     method: "POST",
     credentials: "include",
     redirect: "manual",

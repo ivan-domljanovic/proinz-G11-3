@@ -1,4 +1,7 @@
 // Dohvat svih izleta za početnu stranicu
+
+const API_URL = import.meta.env.VITE_API_URL ?? "";
+
 export async function dohvatiIzlete(filteri, signal) {
   const param=new URLSearchParams();
 
@@ -8,7 +11,7 @@ export async function dohvatiIzlete(filteri, signal) {
       param.append(kljuc, vrijednost);
     } 
   }
-  const odgovor=await fetch(`/api/izleti?${param}`, {signal});
+  const odgovor=await fetch(`${API_URL}/api/izleti?${param}`, {signal});
 
   if (!odgovor.ok) {
     throw new Error(`Dohvat nije uspio (HTTP ${odgovor.status}).`);
@@ -32,7 +35,7 @@ export async function dohvatiIzlete(filteri, signal) {
 // Dohvat jednog izleta za stranicu detalja
 export async function dohvatiIzlet(id, signal) {
   const odgovor = await fetch(
-      `/api/izleti/${encodeURIComponent(id)}`,
+      `${API_URL}//api/izleti/${encodeURIComponent(id)}`,
       { signal }
   );
 
