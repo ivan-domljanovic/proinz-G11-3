@@ -1,6 +1,7 @@
 //zaglavlje s logom i navigacijom koje će biti na svakoj stranici app
 import { Link, useNavigate    } from "react-router";
 import { useEffect, useState } from "react";
+import { API_URL } from "../config";
 
 export default function Zaglavlje() {
   const [korisnik, setKorisnik] = useState(null);
@@ -16,7 +17,7 @@ export default function Zaglavlje() {
     setGreskaOdjave("");
 
     try{
-      const odgovor = await fetch("/api/logout", {
+      const odgovor = await fetch(`${API_URL}/api/logout`, {
         method:"POST",
         credentials: "include",
         redirect: "error"
@@ -38,7 +39,7 @@ export default function Zaglavlje() {
 
     async function ucitajKorisnika() {
       try {
-        const odgovor = await fetch("/api/me", {
+        const odgovor = await fetch(`${API_URL}/api/me`, {
           credentials: "include",
           redirect: "manual",
           signal: controller.signal,
