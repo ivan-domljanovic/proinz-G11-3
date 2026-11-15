@@ -632,7 +632,26 @@ body:has(.rezervacija-modal[open]) {
   background: #e3ecdd;
   border-color: #8aa180;
 }
+.gumb-prijava-rezervacije {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 46px;
+  margin-top: 8px;
+  padding: 12px 24px;
+  border: 1px solid #203b32;
+  border-radius: 12px;
+  background: #203b32;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
 
+.gumb-prijava-rezervacije:hover {
+  background: #355747;
+}
 /* ---------- zaglavlje ---------- */
 html {
   scroll-behavior: smooth;
