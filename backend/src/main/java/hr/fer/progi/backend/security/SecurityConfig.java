@@ -26,7 +26,7 @@ public class SecurityConfig {
                                                    GoogleOidcUserService googleOidcUserService,
                                                    KorisnikRepository korisnikRepository) throws Exception {
         http
-                .http.cors(Customizer.withDefaults())
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new AktivneUlogeFilter(korisnikRepository),
                         AuthorizationFilter.class)
