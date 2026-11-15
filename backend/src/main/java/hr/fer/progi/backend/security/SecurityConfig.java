@@ -3,6 +3,7 @@ package hr.fer.progi.backend.security;
 import hr.fer.progi.backend.enums.Uloga;
 import hr.fer.progi.backend.repository.KorisnikRepository;
 import hr.fer.progi.backend.service.impl.GoogleOidcUserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,8 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.web.cors.*;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +26,7 @@ public class SecurityConfig {
                                                    GoogleOidcUserService googleOidcUserService,
                                                    KorisnikRepository korisnikRepository) throws Exception {
         http
+                .http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new AktivneUlogeFilter(korisnikRepository),
                         AuthorizationFilter.class)
@@ -71,5 +76,18 @@ public class SecurityConfig {
                                         HttpStatus.NO_CONTENT.value()))
                 );
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(
+        @Value("${app.cors.allowed-origin}") String origin) {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of(origin));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
