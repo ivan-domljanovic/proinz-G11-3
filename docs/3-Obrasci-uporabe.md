@@ -8,7 +8,9 @@
 
 **PlantUML izvor:** [izvor](./puml/3-1-sustav-UC.puml)
 
-Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske sustave s desne strane. Posjetitelj (neprijavljeni) može samo pretraživati i pregledavati izlete. Korisnik nasljeđuje posjetitelja i uz to se prijavljuje, rezervira izlete, pregledava i otkazuje rezervacije te koristi digitalni vodič. Organizator, administrator i voditelj turističke agencije nasljeđuju korisnika jer svaki prijavljeni korisnik ima ulogu korisnika, a ostale uloge mu dodjeljuje administrator (AS-06). Slanje potvrde e-poštom (UC-012) uvijek je dio rezervacije pa je s njom povezano odnosom «include». Izvoz u CSV (UC-013) opcionalno proširuje pregled statistike odnosom «extend» kada voditelj odabere izvoz. Google sudjeluje u prijavi, usluga e-pošte u slanju potvrde, a usluga karte u digitalnom vodiču i definiranju točaka interesa.
+Dijagram prikazuje granicu aplikacije, primarne aktere s lijeve strane i vanjske sustave s desne strane. Uz svaki obrazac uporabe navedeni su funkcijski zahtjevi koje pokriva. Neprijavljeni posjetitelj može se prijaviti te pretraživati i pregledavati izlete. Prijavljeni korisnik nasljeđuje posjetitelja i uz to rezervira izlete, pregledava, mijenja i otkazuje svoje rezervacije, koristi digitalni vodič te ocjenjuje izlete i vodiče. Organizator i administrator nasljeđuju prijavljenog korisnika jer svaki korisnik ima osnovnu ulogu KORISNIK, a ostale uloge dodjeljuje administrator (AS-05). Organizator i administrator upravljaju izletima, terminima, dodatnim uslugama, vodičima, resursima i točkama interesa; organizator pregledava statistiku, a administrator upravlja rezervacijama i korisničkim ulogama. Turistički vodič (D-01) nije zaseban akter jer u aplikaciji nema vlastitih funkcionalnosti.
+
+Slanje obavijesti e-poštom (UC-012) proširuje rezervaciju (UC-003), pregled i izmjenu rezervacije (UC-004) i upravljanje rezervacijama (UC-008) odnosom «extend», jer se izvodi samo kada je rezervacija potvrđena ili otkazana. Izvoz statistike u CSV (UC-013) proširuje pregled statistike (UC-011) odnosom «extend» kada organizator odabere izvoz. Pružatelj identiteta Google sudjeluje u prijavi, usluga e-pošte u slanju obavijesti, a kartografska usluga u digitalnom vodiču i definiranju točaka interesa.
 
 ## 3.2 Specifikacije obrazaca uporabe
 
@@ -57,12 +59,12 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 | Element specifikacije | Opis |
 | :-- | :-- |
 | **Primarni akter** | Korisnik (A-01) |
-| **Povezani zahtjevi** | F-006, F-022, F-023 |
+| **Sekundarni akter** | Usluga e-pošte (A-05), putem UC-012. |
+| **Povezani zahtjevi** | F-006, F-007, F-022, F-023 |
 | **Preduvjeti** | Korisnik je prijavljen u aplikaciju (UC-001). |
-| **Glavni uspješni tok** | 1. Korisnik otvara „Moje rezervacije”.<br>2. Aplikacija prikazuje popis korisnikovih rezervacija sa statusima (`ZAHTJEV`, `POTVRDENO`, `OTKAZANO`, `REALIZIRANO`).<br>3. Korisnik odabire jednu rezervaciju.<br>4. Aplikacija prikazuje podatke rezervacije: izlet, termin, broj sudionika, dodatne usluge, ukupnu cijenu i status.<br>5. Korisnik odabire mogućnost izmjene rezervacije.<br>6. Korisnik mijenja broj sudionika i/ili dodatne usluge te potvrđuje izmjenu. Termin rezervacije ne može se promijeniti.<br>7. Aplikacija provjerava raspoloživost kapaciteta, ažurira podatke rezervacije i ponovno izračunava ukupnu cijenu. Ako ima dovoljno mjesta, rezervacija dobiva ili zadržava status `POTVRDENO`.<br>8. Aplikacija prikazuje ažurirane podatke i status rezervacije. |
-| **Alternativni tokovi / Iznimke** | **2a — Nema rezervacija:** Aplikacija prikazuje poruku da korisnik još nema rezervacija.<br>**5a — Samo pregled rezervacije:** Korisnik ne odabire izmjenu ni otkazivanje; podaci ostaju nepromijenjeni.<br>**5b — Otkazivanje rezervacije:** Korisnik odabire „Otkaži rezervaciju”. Aplikacija traži potvrdu otkazivanja. Nakon potvrde status se mijenja u `OTKAZANO`. Ako je rezervacija bila potvrđena, oslobađaju se zauzeta mjesta i sustav obrađuje listu čekanja (F-021).<br>**5c — Rezervaciju nije moguće mijenjati ili otkazati:** Rezervacija je već otkazana ili realizirana; aplikacija ne dopušta izmjenu ni otkazivanje.<br>**6a — Korisnik odustaje od izmjene:** Rezervacija ostaje nepromijenjena.<br>**6b — Neispravan broj sudionika:** Korisnik unosi nevaljan broj sudionika; aplikacija prikazuje pogrešku i traži ispravak.<br>**7a — Nema dovoljno slobodnih mjesta:** Aplikacija sprema izmijenjenu rezervaciju sa statusom `ZAHTJEV`, bez zauzimanja mjesta, i prikazuje korisniku da je rezervacija na listi čekanja.<br>**7b — Oslobađanje mjesta nakon izmjene:** Ako se smanjenjem broja sudionika oslobode mjesta, sustav automatski obrađuje rezervacije s liste čekanja (F-021). |
-| **Posljedice (ishod)** | Korisnik može pregledati svoje rezervacije, izmijeniti broj sudionika i dodatne usluge ili otkazati rezervaciju. Nakon izmjene ažuriraju se podaci, ukupna cijena i status rezervacije te zauzetost kapaciteta. Oslobađanjem mjesta sustav automatski obrađuje listu čekanja. |
-
+| **Glavni uspješni tok** | 1. Korisnik otvara „Moje rezervacije”.<br>2. Aplikacija prikazuje popis korisnikovih rezervacija sa statusima (`ZAHTJEV`, `POTVRDENO`, `OTKAZANO`, `REALIZIRANO`).<br>3. Korisnik odabire jednu rezervaciju.<br>4. Aplikacija prikazuje podatke rezervacije: izlet, termin, broj sudionika, dodatne usluge, ukupnu cijenu i status.<br>5. Korisnik odabire mogućnost izmjene rezervacije.<br>6. Korisnik mijenja broj sudionika i/ili dodatne usluge te potvrđuje izmjenu. Termin rezervacije ne može se promijeniti.<br>7. Aplikacija provjerava raspoloživost kapaciteta, ažurira podatke rezervacije i ponovno izračunava ukupnu cijenu. Ako ima dovoljno mjesta, rezervacija dobiva ili zadržava status `POTVRDENO`.<br>8. Aplikacija prikazuje ažurirane podatke i status rezervacije te, ako je rezervacija potvrđena, šalje potvrdu e-poštom (UC-012). |
+| **Alternativni tokovi / Iznimke** | **2a — Nema rezervacija:** Aplikacija prikazuje poruku da korisnik još nema rezervacija.<br>**5a — Samo pregled rezervacije:** Korisnik ne odabire izmjenu ni otkazivanje; podaci ostaju nepromijenjeni.<br>**5b — Otkazivanje rezervacije:** Korisnik odabire „Otkaži rezervaciju”. Aplikacija traži potvrdu otkazivanja. Nakon potvrde status se mijenja u `OTKAZANO`. Ako je rezervacija bila potvrđena, oslobađaju se zauzeta mjesta i sustav obrađuje listu čekanja (F-021). Aplikacija šalje korisniku obavijest o otkazivanju e-poštom (UC-012).<br>**5c — Rezervaciju nije moguće mijenjati ili otkazati:** Rezervacija je već otkazana ili realizirana; aplikacija ne dopušta izmjenu ni otkazivanje.<br>**6a — Korisnik odustaje od izmjene:** Rezervacija ostaje nepromijenjena.<br>**6b — Neispravan broj sudionika:** Korisnik unosi nevaljan broj sudionika; aplikacija prikazuje pogrešku i traži ispravak.<br>**7a — Nema dovoljno slobodnih mjesta:** Aplikacija sprema izmijenjenu rezervaciju sa statusom `ZAHTJEV`, bez zauzimanja mjesta, i prikazuje korisniku da je rezervacija na listi čekanja.<br>**7b — Oslobađanje mjesta nakon izmjene:** Ako se smanjenjem broja sudionika oslobode mjesta, sustav automatski obrađuje rezervacije s liste čekanja (F-021). |
+| **Posljedice (ishod)** | Korisnik može pregledati svoje rezervacije, izmijeniti broj sudionika i dodatne usluge ili otkazati rezervaciju. Nakon izmjene ažuriraju se podaci, ukupna cijena i status rezervacije te zauzetost kapaciteta. Oslobađanjem mjesta sustav automatski obrađuje listu čekanja. Za potvrđenu izmijenjenu rezervaciju šalje se potvrda e-poštom, a za otkazanu obavijest o otkazivanju. |
 
 ### UC-005: Korištenje digitalnog vodiča
 
@@ -72,9 +74,9 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 | **Sekundarni akter** | Kartografska usluga (A-07). |
 | **Povezani zahtjevi** | F-008 |
 | **Preduvjeti** | Korisnik je prijavljen u aplikaciju (UC-001), otvorio je izlet za koji su definirane točke interesa (UC-010) i koristi aplikaciju na mobilnom uređaju. |
-| **Glavni uspješni tok** | 1. Korisnik otvara odabrani izlet i odabire „Digitalni vodič”.<br>2. Aplikacija traži dopuštenje za pristup lokaciji uređaja.<br>3. Korisnik dopušta pristup lokaciji.<br>4. Aplikacija prikazuje kartu s trenutačnim položajem korisnika i točkama interesa izleta.<br>5. Korisnik se kreće, a aplikacija ažurira njegov položaj na karti.<br>6. Kada se korisnik približi točki interesa, aplikacija automatski prikazuje njezin naziv, opis, značaj i zanimljivosti.<br>7. Korisnik zatvara informacije i nastavlja izlet; postupak se ponavlja od koraka 5. |
-| **Alternativni tokovi / Iznimke** | **3a — Pristup lokaciji odbijen:** Aplikacija prikazuje kartu s točkama interesa bez položaja korisnika. Korisnik može ručno odabrati točku interesa i pregledati njezine informacije.<br>**4a — Karta nije dostupna:** Aplikacija prikazuje popis točaka interesa s pripadajućim informacijama.<br>**5a — Lokacija nije dostupna:** Ako uređaj ne može odrediti trenutačni položaj, aplikacija prikazuje odgovarajuću poruku. Korisnik i dalje može pregledavati točke interesa na karti. |
-| **Posljedice (ishod)** | Podaci se ne mijenjaju. Korisnik tijekom izleta može pratiti svoj položaj na karti i dobivati informacije o obližnjim točkama interesa. |
+| **Glavni uspješni tok** | 1. Korisnik otvara odabrani izlet i odabire „Digitalni vodič”.<br>2. Aplikacija traži dopuštenje za pristup lokaciji uređaja.<br>3. Korisnik dopušta pristup lokaciji.<br>4. Aplikacija prikazuje kartu s trenutačnim položajem korisnika i točkama interesa izleta.<br>5. Korisnik se kreće, a aplikacija ažurira njegov položaj na karti.<br>6. Kada je korisnik na manje od 50 m od točke interesa, aplikacija automatski prikazuje njezin naziv, opis, značaj i zanimljivosti.<br>7. Korisnik zatvara informacije i nastavlja izlet; postupak se ponavlja od koraka 5. |
+| **Alternativni tokovi / Iznimke** | **3a — Pristup lokaciji odbijen:** Aplikacija prikazuje kartu s točkama interesa bez položaja korisnika. Korisnik može ručno odabrati točku interesa i pregledati njezine informacije.<br>**4a — Karta nije dostupna:** Aplikacija prikazuje popis točaka interesa s pripadajućim informacijama.<br>**5a — Lokacija nije dostupna:** Ako uređaj ne može odrediti trenutačni položaj, aplikacija prikazuje poruku da lokacija nije dostupna. Korisnik i dalje može pregledavati točke interesa na karti. |
+| **Posljedice (ishod)** | Podaci se ne mijenjaju. Korisnik tijekom izleta može pratiti svoj položaj na karti i dobivati informacije o točkama interesa u svojoj blizini. |
 
 
 ### UC-006: Upravljanje izletima
@@ -107,11 +109,12 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 | Element specifikacije | Opis |
 | :-- | :-- |
 | **Primarni akter** | Administrator (A-03). |
-| **Povezani zahtjevi** | F-011, F-021 |
+| **Sekundarni akter** | Usluga e-pošte (A-05), putem UC-012. |
+| **Povezani zahtjevi** | F-007, F-011, F-021 |
 | **Preduvjeti** | Administrator je prijavljen u aplikaciju (UC-001). |
 | **Glavni uspješni tok** | 1. Administrator otvara pregled rezervacija.<br>2. Aplikacija prikazuje popis rezervacija s podacima o izletu, terminu, korisniku, broju sudionika i statusu.<br>3. Administrator filtrira rezervacije prema izletu, terminu ili statusu.<br>4. Administrator odabire rezervaciju i mijenja njezin status, npr. iz `POTVRDENO` u `REALIZIRANO` nakon održanog izleta.<br>5. Aplikacija provjerava dopuštenost promjene, sprema novi status i prikazuje ga administratoru.<br>6. Korisnik može vidjeti ažurirani status u svojim rezervacijama (UC-004). |
-| **Alternativni tokovi / Iznimke** | **3a — Nema rezultata:** Nijedna rezervacija ne odgovara odabranim kriterijima; aplikacija prikazuje odgovarajuću poruku.<br>**4a — Otkazivanje rezervacije:** Administrator mijenja status rezervacije u `OTKAZANO`. Ako je rezervacija bila potvrđena, aplikacija oslobađa zauzeta mjesta i automatski obrađuje listu čekanja (F-021).<br>**4b — Nedopuštena promjena statusa:** Administrator pokušava napraviti nedopuštenu promjenu, npr. iz `OTKAZANO` u `REALIZIRANO`. Aplikacija odbija promjenu i prikazuje poruku o pogrešci.<br>**5a — Nema dovoljno slobodnih mjesta za potvrdu:** Ako administrator pokušava potvrditi rezervaciju sa statusom `ZAHTJEV`, a nema dovoljno mjesta, aplikacija ne dopušta potvrdu i zadržava postojeći status. |
-| **Posljedice (ishod)** | Status rezervacije ažuriran je i vidljiv korisniku. Otkazivanjem potvrđene rezervacije oslobađaju se mjesta, a sustav automatski obrađuje listu čekanja. Nijedna promjena statusa ne smije uzrokovati prekoračenje kapaciteta termina. |
+| **Alternativni tokovi / Iznimke** | **3a — Nema rezultata:** Nijedna rezervacija ne odgovara odabranim kriterijima; aplikacija prikazuje poruku da nema rezultata.<br>**4a — Otkazivanje rezervacije:** Administrator mijenja status rezervacije u `OTKAZANO`. Ako je rezervacija bila potvrđena, aplikacija oslobađa zauzeta mjesta i automatski obrađuje listu čekanja (F-021). Aplikacija šalje korisniku obavijest o otkazivanju e-poštom (UC-012).<br>**4b — Potvrda zahtjeva:** Administrator mijenja status rezervacije iz `ZAHTJEV` u `POTVRDENO`. Ako ima dovoljno slobodnih mjesta, aplikacija sprema promjenu i šalje korisniku potvrdu e-poštom (UC-012).<br>**4c — Nedopuštena promjena statusa:** Administrator pokušava napraviti nedopuštenu promjenu, npr. iz `OTKAZANO` u `REALIZIRANO`. Aplikacija odbija promjenu i prikazuje poruku o pogrešci.<br>**5a — Nema dovoljno slobodnih mjesta za potvrdu:** Ako administrator pokušava potvrditi rezervaciju sa statusom `ZAHTJEV`, a nema dovoljno mjesta, aplikacija ne dopušta potvrdu i zadržava postojeći status. |
+| **Posljedice (ishod)** | Status rezervacije ažuriran je i vidljiv korisniku. Otkazivanjem potvrđene rezervacije oslobađaju se mjesta, a sustav automatski obrađuje listu čekanja. Nijedna promjena statusa ne smije uzrokovati prekoračenje kapaciteta termina. Korisnik prima obavijest e-poštom o potvrdi ili otkazivanju rezervacije. |
 
                                                                                                                                                                                          
 ### UC-009: Dodjela vodiča i evidencija resursa
@@ -146,23 +149,21 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 | **Primarni akter** | Organizator (A-02). |
 | **Povezani zahtjevi** | F-016 |
 | **Preduvjeti** | Organizator je prijavljen u aplikaciju (UC-001). |
-| **Glavni uspješni tok** | 1. Organizator otvara pregled statistike.<br>2. Aplikacija prikazuje mogućnost odabira razdoblja za koje se želi pregledati statistika.<br>3. Organizator odabire razdoblje, npr. svibanj 2027.<br>4. Aplikacija prikazuje statistiku njegovih izleta za odabrano razdoblje: broj rezervacija, popunjenost termina, ostvareni prihod te najpopularnije aktivnosti i dodatne usluge.<br>5. Organizator pregledava prikazane podatke i po potrebi odabire izvoz izvještaja u CSV formatu (UC-013). |
-| **Alternativni tokovi / Iznimke** | **4a — Nema podataka:** Za odabrano razdoblje nema podataka o rezervacijama. Aplikacija prikazuje odgovarajuću poruku, a organizator može odabrati drugo razdoblje.<br>**4b — Neispravno razdoblje:** Organizator odabire neispravan vremenski raspon. Aplikacija prikazuje pogrešku i traži ispravak. |
+| **Glavni uspješni tok** | 1. Organizator otvara pregled statistike.<br>2. Aplikacija prikazuje mogućnost odabira razdoblja za koje se želi pregledati statistika.<br>3. Organizator odabire razdoblje, npr. svibanj 2027.<br>4. Aplikacija prikazuje statistiku njegovih izleta za odabrano razdoblje: broj rezervacija, popunjenost termina, ostvareni prihod te najtraženije aktivnosti i dodatne usluge.<br>5. Organizator pregledava prikazane podatke i po potrebi odabire izvoz statistike u CSV formatu (UC-013). |
+| **Alternativni tokovi / Iznimke** | **4a — Nema podataka:** Za odabrano razdoblje nema podataka o rezervacijama. Aplikacija prikazuje poruku da nema podataka, a organizator može odabrati drugo razdoblje.<br>**4b — Neispravno razdoblje:** Organizator odabire neispravan vremenski raspon, npr. početni datum nakon završnog. Aplikacija prikazuje pogrešku i traži ispravak. |
 | **Posljedice (ishod)** | Podaci se ne mijenjaju. Organizator ima pregled statistike vlastitih izleta za odabrano razdoblje te mogućnost izvoza podataka u CSV formatu (UC-013). |
 
-
-### UC-012: Slanje potvrde e-poštom
+### UC-012: Slanje obavijesti e-poštom
 
 | Element specifikacije | Opis |
 | :-- | :-- |
-| **Primarni akter** | Nema izravnog primarnog aktera; slanje se pokreće nakon potvrde rezervacije (UC-003) ili automatskog potvrđivanja s liste čekanja (F-021). |
+| **Primarni akter** | Nema izravnog primarnog aktera; slanje se pokreće nakon potvrde rezervacije (UC-003, UC-004, UC-008), automatskog potvrđivanja s liste čekanja (F-021) ili otkazivanja rezervacije (UC-004, UC-008). |
 | **Sekundarni akter** | Usluga e-pošte (A-05). |
 | **Povezani zahtjevi** | F-007, F-021 |
-| **Preduvjeti** | Rezervacija je spremljena i ima status `POTVRDENO`. |
-| **Glavni uspješni tok** | 1. Nakon potvrde rezervacije aplikacija priprema poruku s podacima o izletu, terminu, broju sudionika, dodatnim uslugama, ukupnoj cijeni i statusu rezervacije.<br>2. Aplikacija šalje poruku na e-adresu korisnika putem usluge e-pošte.<br>3. Usluga e-pošte prihvaća poruku za slanje.<br>4. Aplikacija završava postupak slanja potvrde. |
-| **Alternativni tokovi / Iznimke** | **2a — Usluga e-pošte nije dostupna:** Aplikacija ne uspijeva poslati poruku. Rezervacija ostaje potvrđena i korisnik je može pregledati u svojim rezervacijama (UC-004).<br>**2b — Nedostaje e-adresa korisnika:** Aplikacija ne može poslati potvrdu, ali rezervacija ostaje spremljena i potvrđena. |
-| **Posljedice (ishod)** | Potvrda rezervacije poslana je putem usluge e-pošte. Status rezervacije ne mijenja se zbog uspjeha ili neuspjeha slanja poruke. |
-
+| **Preduvjeti** | Rezervacija je potvrđena ili otkazana. |
+| **Glavni uspješni tok** | 1. Aplikacija priprema poruku: za potvrđenu rezervaciju potvrdu s podacima o izletu, terminu, broju sudionika, dodatnim uslugama, ukupnoj cijeni i statusu, a za otkazanu rezervaciju obavijest o otkazivanju s podacima o rezervaciji.<br>2. Aplikacija šalje poruku na e-adresu korisnika putem usluge e-pošte.<br>3. Usluga e-pošte prihvaća poruku za slanje.<br>4. Aplikacija završava postupak slanja obavijesti. |
+| **Alternativni tokovi / Iznimke** | **2a — Usluga e-pošte nije dostupna:** Aplikacija ne uspijeva poslati poruku. Status rezervacije se ne mijenja i korisnik ga može pregledati u svojim rezervacijama (UC-004).<br>**2b — Nedostaje e-adresa korisnika:** Aplikacija ne može poslati poruku, a status rezervacije se ne mijenja. |
+| **Posljedice (ishod)** | Obavijest o potvrdi ili otkazivanju rezervacije poslana je putem usluge e-pošte. Status rezervacije ne mijenja se zbog uspjeha ili neuspjeha slanja poruke. |
 
 ### UC-013: Izvoz statistike u CSV
 
@@ -184,7 +185,7 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 | **Povezani zahtjevi** | F-018 |
 | **Preduvjeti** | Administrator je prijavljen u aplikaciju (UC-001). Korisnik kojem se dodjeljuje uloga već ima račun u sustavu. |
 | **Glavni uspješni tok** | 1. Administrator otvara upravljanje korisnicima.<br>2. Aplikacija prikazuje popis registriranih korisnika i njihovih uloga.<br>3. Administrator odabire korisnika kojem želi promijeniti ovlasti.<br>4. Aplikacija prikazuje njegove trenutačne uloge.<br>5. Administrator dodjeljuje ili uklanja ulogu vodiča, organizatora ili administratora.<br>6. Aplikacija sprema promjene i ažurira korisničke ovlasti.<br>7. Korisniku su dostupne funkcionalnosti u skladu s dodijeljenim ulogama. |
-| **Alternativni tokovi / Iznimke** | **3a — Korisnik ne postoji:** Aplikacija ne pronalazi odabranog korisnika i prikazuje odgovarajuću poruku.<br>**5a — Administrator odustaje:** Promjene korisničkih uloga ne spremaju se.<br>**5b — Uklanjanje osnovne uloge:** Osnovna uloga KORISNIK ne može se ukloniti; aplikacija je zadržava uz ostale odabrane uloge.<br>**6a — Neovlašten pristup:** Korisnik bez administratorskih ovlasti pokušava promijeniti uloge. Aplikacija odbija radnju i ne mijenja podatke. |
+| **Alternativni tokovi / Iznimke** | **3a — Korisnik ne postoji:** Aplikacija ne pronalazi odabranog korisnika i prikazuje poruku da korisnik ne postoji.<br>**5a — Administrator odustaje:** Promjene korisničkih uloga ne spremaju se.<br>**5b — Uklanjanje osnovne uloge:** Osnovna uloga KORISNIK ne može se ukloniti; aplikacija je zadržava uz ostale odabrane uloge.<br>**6a — Neovlašten pristup:** Korisnik bez administratorskih ovlasti pokušava promijeniti uloge. Aplikacija odbija radnju i ne mijenja podatke. |
 | **Posljedice (ishod)** | Korisnik ima ažurirane uloge i pripadajuće ovlasti. Funkcionalnosti sustava dostupne su samo korisnicima s odgovarajućim ovlastima. |
 
 
@@ -215,8 +216,6 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 
 ## 3.3 Provjera dosljednosti obrazaca uporabe
 
-**Cilj:** Provjeriti međusobnu usklađenost obrazaca uporabe, aktera, zahtjeva i ispitnih slučajeva. Cjelovito mapiranje održava se isključivo u **[matrici sljedivosti zahtjeva](2-Analiza-zahtjeva.md#26-sljedivost-zahtjeva)**.
-
 | Provjera   | Pitanje za tim                                                                                                              |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------- |
 | Zahtjev    | Je li svaki važan obrazac uporabe povezan s postojećim zahtjevom?                                                           |
@@ -227,33 +226,9 @@ Dijagram prikazuje granicu aplikacije, ljudske aktere s lijeve strane i vanjske 
 
 | Provjera | Rezultat |
 | --- | --- |
-| Zahtjev | Svih 13 obrazaca uporabe poziva se na postojeće zahtjeve iz odjeljka 2.1, a svaki funkcijski zahtjev F-001 do F-017 pokriven je barem jednim obrascem uporabe. |
-| Akter | Akteri u obrascima uporabe i na dijagramu 3.1 odgovaraju akterima A-01 do A-06 iz odjeljka 2.3. |
-| Aplikacija | Poslužitelj trenutačno ostvaruje pregled i upravljanje izletima i terminima (UC-002, UC-006, UC-007), stvaranje rezervacije s provjerom slobodnih mjesta (UC-003) i upravljanje resursima (UC-009). Ostali obrasci uporabe opisuju trenutačno oblikovanje. |
+| Zahtjev | Svih 16 obrazaca uporabe poziva se na postojeće zahtjeve iz odjeljka 2.1, a svaki funkcijski zahtjev F-001 do F-023 pokriven je barem jednim obrascem uporabe. |
+| Akter | Akteri u obrascima uporabe i na dijagramu 3.1 odgovaraju akterima A-01 do A-07 iz odjeljka 2.3. Turistički vodič (D-01) je dionik bez zasebnih obrazaca uporabe. |
+| Aplikacija | Poslužitelj trenutačno ostvaruje pregled i pretraživanje izleta (UC-002), upravljanje izletima, terminima i dodatnim uslugama (UC-006, UC-007), stvaranje, izmjenu i otkazivanje rezervacija s listom čekanja (UC-003, UC-004), dodjelu vodiča i resursa (UC-009), unos točaka interesa (UC-010), upravljanje ulogama (UC-014) i recenzije (UC-015, UC-016). Ostali obrasci uporabe (UC-005, UC-008, UC-011, UC-012, UC-013) opisuju trenutačno oblikovanje. |
 
-Povezivanje zahtjev → obrazac uporabe → ispitivanje održavajte **samo jednom, u [tablici sljedivosti zahtjeva](./2-Analiza-zahtjeva.md)**. Ovdje nemojte održavati drugu projektnu tablicu mapiranja ni stupac sa statusom implementacije. Ako važan zahtjev nema interakciju s ljudskim akterom, objasnite gdje se obrađuje umjesto izmišljanja aktera.
 
-<details>
-<summary><strong>Provjera pokrivenosti zahtjeva</strong></summary>
 
-**Primjer — CrisisMap:** Tablica pokrivenosti obrazaca uporabe koju treba analizirati:
-
-| Broj obrasca uporabe | Naziv obrasca uporabe    | Obuhvaćeni funkcijski zahtjevi                  |
-| -------------------- | ------------------------ | ----------------------------------------------- |
-| UC-001               | Registracija računa      | F-001: Registracija računa putem e-pošte        |
-| UC-002               | Prijava kriznog događaja | F-022: Prijava i provjera kriznog događaja      |
-| UC-003               | Sustav upozorenja        | F-045: Slanje upozorenja korisnicima i timovima |
-| UC-004               | Koordinacija spašavanja  | F-067: Koordinacija s hitnim službama           |
-
----
-
-**Problemi pokrivenosti koje treba riješiti:**
-
-- **Pogrešan ID zahtjeva:** ova tablica povezuje UC-002 s F-022, dok se opis UC-002 u odjeljku 3.2 poziva na F-004, zahtjev za podnošenje prijave iz odjeljka 2.1.
-- **Zahtjevi koji ne postoje:** F-022, F-045 i F-067 nisu definirani u oglednim zahtjevima u 2.1.
-- **Obrasci uporabe bez opisa:** UC-003 i UC-004 nemaju opis u 3.2. UC-004 (koordinacija s hitnim službama) ujedno je mogućnost s vanjskim posljedicama koju opseg dopušta samo ako je uključena u odobreni zadatak.
-- **Nesklad aktera:** primjer aktera u odjeljku 2.3 navodi da koordinator pomoći podnosi prijave (F-004), dok UC-002 kao primarnog aktera navodi građanina.
-
-</details>
-
-**Završna provjera:** Dijagram, specifikacije obrazaca uporabe i matrica sljedivosti međusobno su usklađeni. Svaki važan obrazac uporabe povezan je s postojećim zahtjevom, akteri odgovaraju stvarnim ulogama u aplikaciji, a opisani glavni i alternativni tijekovi odgovaraju ponašanju koje sustav stvarno podržava.
