@@ -1,78 +1,128 @@
 @startuml 3-1-sustav-UC
-title Aplikacija za upravljanje izletima - obrasci uporabe
 left to right direction
+skinparam shadowing false
 skinparam packageStyle rectangle
+skinparam ArrowColor #333333
 skinparam usecase {
   BackgroundColor #EAF2FD
   BorderColor #6FA8DC
 }
-skinparam shadowing false
-skinparam ArrowColor #333333
 skinparam actor {
   BackgroundColor #FFFFFF
   BorderColor #555555
 }
-skinparam actor<<external system>> {
+skinparam rectangle<<actor>> {
   BackgroundColor #FFF2CC
   BorderColor #C9A227
 }
-
-' ===== Ljudski akteri =====
-actor "Posjetitelj\n(neprijavljeni)" as P
-actor "Korisnik\n(A-01)" as K
-actor "Organizator\n(A-02)" as O
-actor "Administrator\n(A-03)" as A
-actor "Voditelj turističke\nagencije (A-04)" as V
-
-' ===== Vanjski sustavi =====
-actor "Google\n(A-05)" as G <<external system>>
-actor "Usluga e-pošte\n(A-06)" as E <<external system>>
-actor "Usluga karte\n(A-06)" as M <<external system>>
-
-rectangle "Aplikacija za upravljanje izletima" {
-  usecase "UC-001\nPrijava u sustav" as UC1
-  usecase "UC-002\nPretraživanje i\npregled izleta" as UC2
-  usecase "UC-003\nRezervacija izleta" as UC3
-  usecase "UC-012\nSlanje potvrde\ne-poštom" as UC12
-  usecase "UC-004\nPregled i otkazivanje\nrezervacije" as UC4
-  usecase "UC-005\nKorištenje\ndigitalnog vodiča" as UC5
-  usecase "UC-006\nUpravljanje izletima" as UC6
-  usecase "UC-007\nUpravljanje terminima\ni dodatnim uslugama" as UC7
-  usecase "UC-008\nUpravljanje\nrezervacijama" as UC8
-  usecase "UC-009\nDodjela vodiča i\nevidencija resursa" as UC9
-  usecase "UC-010\nDefiniranje\ntočaka interesa" as UC10
-  usecase "UC-011\nPregled statistike" as UC11
-  usecase "UC-013\nIzvoz u CSV" as UC13
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #999999
 }
 
-' ===== Nasljeđivanje uloga =====
+frame "uc UC-DIJ-01 Obrasci uporabe aplikacije za upravljanje izletima (v1.1, status K)" {
+
+' ===== Primarni akteri (lijevo) =====
+actor "Neprijavljeni posjetitelj\n(A-06)" as P
+actor "Prijavljeni korisnik\n(A-01)" as K
+actor "Organizator\n(A-02)" as O
+actor "Administrator\n(A-03)" as A
+
+' ===== Granica sustava =====
+rectangle "Aplikacija za upravljanje izletima" {
+  usecase "UC-001 Prijava u sustav\n(F-001)" as UC1
+  usecase "UC-002 Pretraživanje\ni pregled izleta\n(F-002, F-003)" as UC2
+  usecase UC3 as "UC-003 Rezervacija izleta
+(F-004, F-005, F-021)
+--
+točke proširenja:
+Potvrda rezervacije"
+  usecase UC4 as "UC-004 Pregled, izmjena\ni otkazivanje rezervacije
+(F-006, F-022, F-023)
+--
+točke proširenja:
+Promjena statusa"
+  usecase "UC-005 Korištenje\ndigitalnog vodiča\n(F-008)" as UC5
+  usecase "UC-015 Ocjenjivanje i\nrecenziranje izleta\n(F-019)" as UC15
+  usecase "UC-016 Ocjenjivanje i\nrecenziranje vodiča\n(F-020)" as UC16
+  usecase "UC-006 Upravljanje izletima\n(F-009, F-012)" as UC6
+  usecase "UC-007 Upravljanje terminima\ni dodatnim uslugama\n(F-010)" as UC7
+  usecase "UC-009 Dodjela vodiča\ni evidencija resursa\n(F-013, F-014)" as UC9
+  usecase "UC-010 Definiranje\ntočaka interesa\n(F-015)" as UC10
+  usecase UC11 as "UC-011 Pregled statistike
+(F-016)
+--
+točke proširenja:
+Izvoz"
+  usecase "UC-013 Izvoz statistike u CSV\n(F-017)" as UC13
+  usecase UC8 as "UC-008 Upravljanje\nrezervacijama
+(F-011, F-021)
+--
+točke proširenja:
+Promjena statusa"
+  usecase "UC-014 Upravljanje\nkorisničkim ulogama\n(F-018)" as UC14
+  usecase "UC-012 Slanje obavijesti\ne-poštom\n(F-007)" as UC12
+}
+
+' ===== Sekundarni akteri - vanjski sustavi (desno) =====
+rectangle "Pružatelj identiteta\nGoogle (A-04)" as G <<actor>>
+rectangle "Usluga e-pošte\n(A-05)" as E <<actor>>
+rectangle "Kartografska usluga\n(A-07)" as M <<actor>>
+
+' ===== Poopćenje aktera =====
 K -|> P
 O -|> K
 A -|> K
-V -|> K
 
-' ===== Veze aktera i obrazaca uporabe =====
+' ===== Pridruživanje: primarni akteri =====
+P -- UC1
 P -- UC2
-K -- UC1
+
 K -- UC3
 K -- UC4
 K -- UC5
+K -- UC15
+K -- UC16
+
 O -- UC6
+O -- UC7
 O -- UC9
 O -- UC10
+O -- UC11
+
 A -- UC6
 A -- UC7
 A -- UC8
+A -- UC9
 A -- UC10
-V -- UC11
+A -- UC14
 
-' ===== include / extend =====
-UC3 ..> UC12 : <<include>>
-UC13 ..> UC11 : <<extend>>\n[voditelj odabere izvoz]
+' ===== extend: proširenje -> osnovni =====
+UC3 <.. UC12 : <<extend>>
+note on link
+  uvjet: rezervacija
+  je potvrđena
+end note
+UC4 <.. UC12 : <<extend>>
+note on link
+  uvjet: rezervacija je
+  potvrđena ili otkazana
+end note
+UC8 <.. UC12 : <<extend>>
+note on link
+  uvjet: rezervacija je
+  potvrđena ili otkazana
+end note
+UC11 <.. UC13 : <<extend>>
+note on link
+  uvjet: organizator
+  odabere izvoz u CSV
+end note
 
-' ===== Vanjski sustavi =====
+' ===== Pridruživanje: sekundarni akteri =====
 UC1 -- G
 UC12 -- E
 UC5 -- M
 UC10 -- M
+}
 @enduml
