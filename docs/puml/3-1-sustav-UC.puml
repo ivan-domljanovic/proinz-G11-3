@@ -20,7 +20,7 @@ skinparam note {
   BorderColor #999999
 }
 
-frame "uc UC-DIJ-01 Obrasci uporabe aplikacije za upravljanje izletima (v1.1, status K)" {
+frame "uc UC-DIJ-01 Obrasci uporabe aplikacije za upravljanje izletima (v1.2, status K)" {
 
 ' ===== Primarni akteri (lijevo) =====
 actor "Neprijavljeni posjetitelj\n(A-06)" as P
@@ -37,7 +37,8 @@ rectangle "Aplikacija za upravljanje izletima" {
 --
 točke proširenja:
 Potvrda rezervacije"
-  usecase UC4 as "UC-004 Pregled, izmjena\ni otkazivanje rezervacije
+  usecase UC4 as "UC-004 Pregled, izmjena
+i otkazivanje rezervacije
 (F-006, F-022, F-023)
 --
 točke proširenja:
@@ -55,7 +56,8 @@ Promjena statusa"
 točke proširenja:
 Izvoz"
   usecase "UC-013 Izvoz statistike u CSV\n(F-017)" as UC13
-  usecase UC8 as "UC-008 Upravljanje\nrezervacijama
+  usecase UC8 as "UC-008 Upravljanje
+rezervacijama
 (F-011, F-021)
 --
 točke proširenja:
@@ -74,28 +76,28 @@ K -|> P
 O -|> K
 A -|> K
 
-' ===== Pridruživanje: primarni akteri =====
-P -- UC1
-P -- UC2
+' ===== Pridruživanje: primarni akteri (strelica = inicijator) =====
+P --> UC1
+P --> UC2
 
-K -- UC3
-K -- UC4
-K -- UC5
-K -- UC15
-K -- UC16
+K --> UC3
+K --> UC4
+K --> UC5
+K --> UC15
+K --> UC16
 
-O -- UC6
-O -- UC7
-O -- UC9
-O -- UC10
-O -- UC11
+O --> UC6
+O --> UC7
+O --> UC9
+O --> UC10
+O --> UC11
 
-A -- UC6
-A -- UC7
-A -- UC8
-A -- UC9
-A -- UC10
-A -- UC14
+A --> UC6
+A --> UC7
+A --> UC8
+A --> UC9
+A --> UC10
+A --> UC14
 
 ' ===== extend: proširenje -> osnovni =====
 UC3 <.. UC12 : <<extend>>
@@ -120,9 +122,9 @@ note on link
 end note
 
 ' ===== Pridruživanje: sekundarni akteri =====
-UC1 -- G
-UC12 -- E
-UC5 -- M
-UC10 -- M
+UC1 --> G
+UC12 --> E
+UC5 --> M
+UC10 --> M
 }
 @enduml
