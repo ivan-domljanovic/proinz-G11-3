@@ -8,9 +8,9 @@
 
 **PlantUML izvor:** [izvor](./puml/3-1-sustav-UC.puml)
 
-Dijagram prikazuje granicu aplikacije, primarne aktere s lijeve strane i vanjske sustave s desne strane. Uz svaki obrazac uporabe navedeni su funkcijski zahtjevi koje pokriva. Neprijavljeni posjetitelj može se prijaviti te pretraživati i pregledavati izlete. Prijavljeni korisnik nasljeđuje posjetitelja i uz to rezervira izlete, pregledava, mijenja i otkazuje svoje rezervacije, koristi digitalni vodič te ocjenjuje izlete i vodiče. Organizator i administrator nasljeđuju prijavljenog korisnika jer svaki korisnik ima osnovnu ulogu KORISNIK, a ostale uloge dodjeljuje administrator (AS-05). Organizator i administrator upravljaju izletima, terminima, dodatnim uslugama, vodičima, resursima i točkama interesa, pregledavaju statistiku, a administrator upravlja rezervacijama i korisničkim ulogama. Turistički vodič (D-01) nije zaseban akter jer u aplikaciji nema vlastitih funkcionalnosti.
+Dijagram prikazuje granicu aplikacije, primarne aktere s lijeve strane i vanjske sustave s desne strane; strelica na pridruživanju označava tko pokreće komunikaciju. Uz svaki obrazac uporabe navedeni su funkcijski zahtjevi koje pokriva. Neprijavljeni posjetitelj može se prijaviti te pretraživati i pregledavati izlete. Prijavljeni korisnik nasljeđuje posjetitelja i uz to rezervira izlete, pregledava, mijenja i otkazuje svoje rezervacije, koristi digitalni vodič te ocjenjuje izlete i vodiče. Organizator i administrator nasljeđuju prijavljenog korisnika jer svaki korisnik ima osnovnu ulogu KORISNIK, a ostale uloge dodjeljuje administrator (AS-05). Organizator i administrator upravljaju izletima, terminima, dodatnim uslugama, vodičima, resursima i točkama interesa, pregledavaju i izvoze statistiku, a administrator upravlja rezervacijama i korisničkim ulogama. Turistički vodič (D-01) nije zaseban akter jer u aplikaciji nema vlastitih funkcionalnosti.
 
-Slanje obavijesti e-poštom (UC-012) proširuje rezervaciju (UC-003), pregled i izmjenu rezervacije (UC-004) i upravljanje rezervacijama (UC-008) odnosom «extend», jer se izvodi samo kada je rezervacija potvrđena ili otkazana. Izvoz statistike u CSV (UC-013) proširuje pregled statistike (UC-011) odnosom «extend» kada organizator odabere izvoz. Pružatelj identiteta Google sudjeluje u prijavi, usluga e-pošte u slanju obavijesti, a kartografska usluga u digitalnom vodiču i definiranju točaka interesa.
+Slanje obavijesti e-poštom (UC-012) proširuje rezervaciju (UC-003), pregled i izmjenu rezervacije (UC-004) i upravljanje rezervacijama (UC-008) odnosom «extend», jer se izvodi samo kada je rezervacija potvrđena ili otkazana. Izvoz statistike u CSV (UC-013) proširuje pregled statistike (UC-011) odnosom «extend» kada organizator ili administrator odabere izvoz. Pružatelj identiteta Google sudjeluje u prijavi, usluga e-pošte u slanju obavijesti, a kartografska usluga u digitalnom vodiču i definiranju točaka interesa.
 
 ## 3.2 Specifikacije obrazaca uporabe
 
@@ -168,12 +168,12 @@ Slanje obavijesti e-poštom (UC-012) proširuje rezervaciju (UC-003), pregled i 
 
 | Element specifikacije | Opis |
 | :-- | :-- |
-| **Primarni akter** | Organizator (A-02). |
+| **Primarni akter** | Organizator (A-02), administrator (A-03). |
 | **Povezani zahtjevi** | F-017 |
-| **Preduvjeti** | Organizator je prijavljen u aplikaciju (UC-001) i pregledava statistiku svojih izleta za odabrano razdoblje (UC-011). |
-| **Glavni uspješni tok** | 1. Organizator odabire mogućnost „Izvezi u CSV”.<br>2. Aplikacija priprema CSV datoteku sa statističkim podacima za odabrano razdoblje, uključujući broj rezervacija, popunjenost, ostvareni prihod te popularnost aktivnosti i dodatnih usluga.<br>3. Aplikacija omogućuje preuzimanje datoteke.<br>4. Organizator preuzima CSV datoteku na svoj uređaj. |
-| **Alternativni tokovi / Iznimke** | **1a — Nema podataka:** Za odabrano razdoblje nema podataka za izvoz. Aplikacija prikazuje odgovarajuću poruku.<br>**3a — Izvoz nije uspio:** Aplikacija ne uspijeva pripremiti datoteku i prikazuje poruku o pogrešci. Organizator može ponovno pokušati. |
-| **Posljedice (ishod)** | Organizator je preuzeo CSV datoteku sa statistikom vlastitih izleta. Podaci u sustavu ostaju nepromijenjeni. |
+| **Preduvjeti** | Akter je prijavljen u aplikaciju (UC-001) i pregledava statistiku za odabrano razdoblje (UC-011). |
+| **Glavni uspješni tok** | 1. Akter odabire mogućnost „Izvezi u CSV”.<br>2. Aplikacija priprema CSV datoteku s istim statističkim podacima koji su akteru prikazani za odabrano razdoblje: organizatoru za njegove izlete, a administratoru za sve izlete. Datoteka uključuje broj rezervacija, popunjenost, ostvareni prihod te najtraženije aktivnosti i dodatne usluge.<br>3. Aplikacija omogućuje preuzimanje datoteke.<br>4. Akter preuzima CSV datoteku na svoj uređaj. |
+| **Alternativni tokovi / Iznimke** | **1a — Nema podataka:** Za odabrano razdoblje nema podataka za izvoz. Aplikacija prikazuje poruku da nema podataka za izvoz.<br>**3a — Izvoz nije uspio:** Aplikacija ne uspijeva pripremiti datoteku i prikazuje poruku o pogrešci. Akter može ponovno pokušati. |
+| **Posljedice (ishod)** | Akter je preuzeo CSV datoteku sa statistikom koja mu je prikazana. Podaci u sustavu ostaju nepromijenjeni. |
 
 
 ### UC-014: Upravljanje korisničkim ulogama
