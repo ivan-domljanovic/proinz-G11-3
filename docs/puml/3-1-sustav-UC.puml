@@ -20,7 +20,7 @@ skinparam note {
   BorderColor #999999
 }
 
-frame "uc UC-DIJ-01 Obrasci uporabe aplikacije za upravljanje izletima (v1.2, status K)" {
+frame "uc UC-DIJ-01 Obrasci uporabe aplikacije za upravljanje izletima (v1.3, status K)" {
 
 ' ===== Primarni akteri (lijevo) =====
 actor "Neprijavljeni posjetitelj\n(A-06)" as P
@@ -97,6 +97,7 @@ A --> UC7
 A --> UC8
 A --> UC9
 A --> UC10
+A --> UC11
 A --> UC14
 
 ' ===== extend: proširenje -> osnovni =====
@@ -117,8 +118,8 @@ note on link
 end note
 UC11 <.. UC13 : <<extend>>
 note on link
-  uvjet: organizator
-  odabere izvoz u CSV
+  uvjet: akter odabere
+  izvoz u CSV
 end note
 
 ' ===== Pridruživanje: sekundarni akteri =====
