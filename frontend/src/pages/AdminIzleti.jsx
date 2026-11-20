@@ -13,7 +13,7 @@ export default function AdminIzleti(){
     const [korisnik, setKorisnik] = useState(null);
     const [izleti,setIzleti] = useState([])
     const [ucitavanje, setUcitavanje] = useState(true);
-    
+
     useEffect(()=>{
         const controller = new AbortController();
         async function ucitaj(){
