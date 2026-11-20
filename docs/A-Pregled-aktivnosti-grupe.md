@@ -50,8 +50,8 @@
 | Stranica za Google prijavu, odjava korisnika, izgled gumba za prijavu i početak sučelja za administratora | DČ | [h] | Commitovi 2., 10. i 15. 11. |
 | Kartica za prijavu (zatvaranje klikom izvan nje), korisnički izbornik s odjavom i profilnom slikom, prikaz ovisan o statusu prijave, uklanjanje probnih podataka | MK | 3 | Grana `feature/prijava`; `KarticaPrijave.jsx`, `KorisnickiIzbornik.jsx`; commitovi 28. i 29. 10. |
 | Gumb za rezervaciju u pregledu izleta, kartica „Moje rezervacije”, gumb za otkazivanje, poruka neprijavljenom korisniku i prikaz zaglavlja prijavljenom korisniku | MK | 6 | Grana `feature/pregled-rezervacije`; `MojeRezervacije.jsx`, `PregledRezervacije.jsx`, `rezervacijeApi.js`; commitovi 5. 11. |
-| Zaglavlje kao zasebna komponenta s navigacijom, pretraga po nazivu, prozor za filtere i prikaz samo nadolazećih termina | LŠ | [h] | `Zaglavlje.jsx`, `PonudaIzleta.jsx`; commitovi 28. 10. i 5. 11. |
-| Filtri (datum od–do, lokacija, vrsta aktivnosti, cijena, trajanje, broj osoba) s radnom kopijom i slanjem backendu | LŠ | [h] | `izletiApi.js`, `useIzleti.js`; commitovi 9. 11. |
+| Zaglavlje kao zasebna komponenta s navigacijom, pretraga po nazivu, prozor za filtere i prikaz samo nadolazećih termina | LŠ | 5h | `Zaglavlje.jsx`, `PonudaIzleta.jsx`; commitovi 28. 10. i 5. 11. |
+| Filtri (datum od–do, lokacija, vrsta aktivnosti, cijena, trajanje, broj osoba) s radnom kopijom i slanjem backendu | LŠ | 7h | `izletiApi.js`, `useIzleti.js`; commitovi 9. 11. |
 | Priprema za postavljanje na Azure: Dockerfile za backend, URL baze kao env varijabla, usmjeravanje API poziva klijenta prema backendu, CORS u `SecurityConfig` | ID | [h] | Grana `deplyoment/testing`; `backend/Dockerfile`, `frontend/src/config.js`; commitovi 14. i 15. 11. |
 
 ## A.4 Pregled promjena u repozitoriju
