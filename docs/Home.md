@@ -10,7 +10,7 @@
 
 <!--**Cilj:** Omogućiti čitatelju koji prvi put vidi projekt da u dvije ili tri rečenice prepozna aplikaciju, njezine ciljane korisnike i glavnu svrhu.-->
 
-Aplikacija je namijenjena organizatorima turističkih aktivnosti i izleta te njihovim korisnicima. Omogućuje jednostavnu organizaciju upravljanjem izleta, vodiča i ostalih resursa. Korisnicima pojednostavljuje pregled dostupnih aktivnosti i rezervaciju termina. (iz [README](../README.md), promijeniti)
+Aplikacija je namijenjena organizatorima turističkih aktivnosti i izleta te njihovim korisnicima. Omogućuje jednostavnu organizaciju upravljanjem izleta, vodiča i ostalih resursa. Korisnicima pojednostavljuje pregled dostupnih aktivnosti i rezervaciju termina.
 
 <!--
 <details>
