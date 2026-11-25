@@ -24,6 +24,10 @@ public class SecurityConfig {
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
+    String baseUrl = frontendUrl.endsWith("/")
+        ? frontendUrl.substring(0, frontendUrl.length() - 1)
+        : frontendUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    GoogleOidcUserService googleOidcUserService,
@@ -63,12 +67,12 @@ public class SecurityConfig {
                                 .anyRequest().denyAll()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/oauth2/authorization/google") // iskljucuje springov login html
+                        .loginPage(baseUrl + "/login") // iskljucuje springov login html // pokazuje prema stranici za prijavu
                         .userInfoEndpoint(info -> info
                                 .oidcUserService(googleOidcUserService)
                         )
-                        .defaultSuccessUrl(frontendUrl, true)
-                        .failureUrl(frontendUrl + "/login")
+                        .defaultSuccessUrl(baseUrl, true)
+                        .failureUrl(baseUrl + "/login?error")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
