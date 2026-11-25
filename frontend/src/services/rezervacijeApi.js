@@ -83,7 +83,7 @@ export async function otkaziRezervaciju(id) {
 export async function rezervirajTermin(podaci) {
   await provjeriSesiju();
 
-  const odgovor = await fetch(`${API_URL}//api/rezervacije`, {
+  const odgovor = await fetch(`${API_URL}/api/rezervacije`, {
     method: "POST",
     credentials: "include",
     redirect: "manual",
