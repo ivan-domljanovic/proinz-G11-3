@@ -24,14 +24,14 @@ public class SecurityConfig {
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
-    String baseUrl = frontendUrl.endsWith("/")
-        ? frontendUrl.substring(0, frontendUrl.length() - 1)
-        : frontendUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    GoogleOidcUserService googleOidcUserService,
                                                    KorisnikRepository korisnikRepository) throws Exception {
+        String baseUrl = frontendUrl.endsWith("/")
+                ? frontendUrl.substring(0, frontendUrl.length() - 1)
+                : frontendUrl;
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
