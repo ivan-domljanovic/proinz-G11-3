@@ -35,7 +35,7 @@ export async function dohvatiIzlete(filteri, signal) {
 // Dohvat jednog izleta za stranicu detalja
 export async function dohvatiIzlet(id, signal) {
   const odgovor = await fetch(
-      `${API_URL}//api/izleti/${encodeURIComponent(id)}`,
+      `${API_URL}/api/izleti/${encodeURIComponent(id)}`,
       { signal }
   );
 
