@@ -68,6 +68,11 @@ export default function Zaglavlje() {
         <nav className="glavni-izbornik" aria-label="Glavni izbornik">
           <Link to="/">Izleti</Link>
           <Link to="/moje-rezervacije">Moje rezervacije</Link>
+          {korisnik?.uluge?.includes("ADMINISTRATOR") && (
+              <Link to="/administracija/izleti">
+                Administracija
+              </Link>
+          )}
         </nav>
 
         {ucitavanje ? (

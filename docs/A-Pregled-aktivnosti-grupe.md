@@ -1,117 +1,77 @@
 # A. Pregled aktivnosti grupe
 
-**Cilj:** Prikazati kako je tim organizirao projekt, raspodijelio rad, reagirao na važne probleme i pridonio rezultatu. Zapisi trebaju opisivati ishode, a ne samo navoditi da je sastanak održan ili da se o nekoj temi raspravljalo.
-
 ## A.1 Evidencija sastanaka
 
-**Cilj:** Voditi kratak zapis projektnih sastanaka i tjedne koordinacije: tko je sudjelovao, što je odlučeno i koja je radnja uslijedila. Raspravu koja nije dovela do odluke zabilježite samo ako je važno pitanje ostalo otvoreno.
+`ID = Ivan Domljanović; AŽ = Anita Živković; DČ = Deni Čerkez; LŠ = Lucija Šestić; MK = Mate Knežević; MB = Matej Bašić; TA = Tomislav Andrić`
 
->Definirati prije prve uporabe:
-`[Inicijali/Kratica] = [Ime i prezime]` (npr. *AK = Ana Kovač; LM = Luka Marić; EP = Ema Petrović; NK = Nika Kralj*).																														
-
-| Datum i sudionici | Glavna tema | Donesena odluka ili zadatak  | Poveznica na zadatak ili  rezultat, ako postoji |
+| Datum i sudionici | Glavna tema | Donesena odluka ili zadatak | Poveznica na zadatak ili rezultat, ako postoji |
 | --- | --- | --- | --- |
-|  |  |  |  |
-
-Za svaki relevantan sastanak ili zapis tjedne koordinacije upišite jedan sažet redak. Dodijeljeni zadatak treba imati odgovornu osobu; za neriješeno pitanje treba navesti tko će ga dalje obraditi. Sam naslov sastanka ne pokazuje što se promijenilo. U ovu evidenciju nemojte kopirati cijeli popis issuea ni prijepis razgovora.
-
-<details>
-<summary><strong>Primjer evidencije sastanaka (CrisisMap)</strong></summary>
-
-**Primjer — CrisisMap:**
-
-**Kratice članova tima:** AK = Ana Kovač; LM = Luka Marić; EP = Ema Petrović; NK = Nika Kralj.
-
-| Datum i sudionici | Glavna tema | Odluka, radnja ili otvoreno pitanje | Poveznica na zadatak ili nastali rezultat, ako postoji |
-| --- | --- | --- | --- |
-| 15. 11. 2025.; AK, LM, EP | Lokacija kada je pristup preglednika odbijen | Dodati ručni odabir položaja na karti u obrazac za prijavu. AK obrađuje obrazac; LM provjerava valjanost lokacije. | Zadataka #21 i #23. |
-| 22. 11. 2025.; AK, EP | Usklađivanje formata lokacijskih podataka | klijentski dio i poslužiteljski API koriste neusklađene formate koordinata. EP će uskladiti format zahtjeva i demonstrira spremanje na sljedećem pregledu. | Zadatak #25. |
-
-**Ishod i odgovornost:** Zapisi jasno definiraju tko je odgovoran za koji dio posla i koji je provjerljivi rezultat dogovoren. npr Rečenica „Raspravljali smo o obradi lokacije” prikrila bi je li se itko obvezao na promjenu. Ovi redci navode odluku ili otvorenu radnju, odgovornu osobu i rezultat koji se može pregledati.
-
-</details>
-
+| 12. 10. 2026. (Discord); svi | Pokretanje projekta i podjela uloga | Dogovorena podjela: ID voditelj; AŽ dokumentacija u prvom ciklusu, a u drugom ciklusu i backend; DČ, LŠ i MK frontend; MB i TA backend. ID postavlja repozitorij i strukturu prema predlošku. | Inicijalni commitovi 12.–13. 10.; [PR #1](https://github.com/ivan-domljanovic/proinz-G11-3/pull/1) |
+| 15. 10. 2026. (konzultacije nakon labosa); svi | Odabir tehnologija i početak dokumentacije | Frontend u Reactu, backend u Spring Bootu, baza PostgreSQL. Podjela dokumentacije do poglavlja 4 za predstavljanje na labosu 22. 10.: LŠ i AŽ zajedno pišu zahtjeve i aktere (2.1–2.4); AŽ uz to opseg projekta (1), obrasce uporabe s dijagramom (3) i arhitekturu (4). | Grane `docs-zahtjevi`, `docs/projekt`, `docs/obrasci`, `docs/arhitektura` |
+| 19. 10. 2026. (Discord); svi | Priprema za predstavljanje dokumentacije | DČ postavlja početnu React aplikaciju, a TA Spring Boot backend, kako bi se arhitektura mogla opisati prema stvarnoj strukturi projekta. Dokumentacija se predaje preko pull requestova 22. 10. | React init 20. 10.; Spring Boot init 21. 10.; [PR #6](https://github.com/ivan-domljanovic/proinz-G11-3/pull/6)–[PR #11](https://github.com/ivan-domljanovic/proinz-G11-3/pull/11) |
+| 22. 10. 2026. (labos); svi | Predstavljanje dokumentacije (poglavlja 1–4) i početak implementacije | MB dodaje tipove podataka i bazu, Lombok i MapStruct, servise i mapere za dodatne usluge, korisnike i termine, rezervaciju sa statusom „Zahtjev” i zajedničku obradu grešaka (`ErrorResponse`). Kapacitet, cijena, mjesto polaska i potreban broj vodiča premještaju se iz Izleta u Termin (MB). TA proširuje shemu baze, dodaje repozitorije, entitete s probnim podacima, DTO mapere i prve endpointe (izleti, resursi). DČ izrađuje početni prikaz izleta i dizajn. AŽ usklađuje aktere, zahtjeve i obrasce uporabe s kodom. | Grane `feat/rezervacije`, `feat/endpoints`; commitovi 23.–25. 10. |
+| 26. 10. 2026. (Discord); svi | Naziv aplikacije, raspodjela frontenda i nastavak backenda | Aplikacija dobiva ime Waypoint. Podjela frontenda: DČ prikaz i detalji izleta, MK prijava i korisnički izbornik, LŠ zaglavlje i pretraga. DČ razdvaja frontend u više datoteka. AŽ dodaje UC-012 i UC-013, dopunjuje README (funkcionalnosti, pokretanje, tehnologije). MB dodaje korisniku Googleov ID (`sub`), dohvat rezervacija (po ID-u i svih rezervacija prijavljenog korisnika) i otkazivanje rezervacije. TA implementira ažuriranje izleta, termine i dodjelu vodiča, upravljanje resursima termina, atrakcije i osnovnu validaciju. | Ažurirane uloge u README-u ([PR #12](https://github.com/ivan-domljanovic/proinz-G11-3/pull/12), [PR #13](https://github.com/ivan-domljanovic/proinz-G11-3/pull/13)); grana `feature/prijava` (MK); commitovi 26.–29. 10. |
+| 29. 10. 2026. (konzultacije nakon labosa); svi | Prijava putem Googlea i preostali endpointi | TA dodaje registraciju novih korisnika u bazu, CRUD dodatnih usluga, filtriranje izleta preko URL parametara, recenzije vodiča i izleta te preusmjeravanje na frontend nakon prijave. DČ izrađuje stranicu za opis izleta, rute (`react-router`) i stranicu za Google prijavu. MB omogućuje izmjenu rezervacije (broj mjesta i dodatne usluge), povezuje je s prijavljenim korisnikom (`AppOidcUser`) i dodaje sučelje `MailService` za potvrde e-poštom (još neimplementirano). | Commitovi 30. 10.–2. 11. |
+| 2. 11. 2026. (Discord); svi | Rezervacije i pretraga na klijentskoj strani | MK dodaje gumb za rezervaciju, karticu „Moje rezervacije” i gumb za otkazivanje te prilagođava zaglavlje prijavljenom korisniku. LŠ izrađuje pretragu po nazivu, prozor za filtere i prikaz samo nadolazećih termina. Otvoreno pitanje: otkazivanje rezervacije s klijenta vraća grešku 500; MB provjerava backend. | Grana `feature/pregled-rezervacije`; commitovi 5. 11. |
+| 5. 11. 2026. (konzultacije nakon labosa); svi | Povratne informacije profesora; greška pri otkazivanju rezervacije | Razdvajanje uloga i ovlasti prebacuje se iz nefunkcijskih u funkcijske zahtjeve, a organizator i voditelj agencije spajaju se u jednu ulogu (AŽ). AŽ izrađuje dijagram komponenata, dijagram razreda i ER dijagram. MB popravlja otkazivanje rezervacije, spaja granu `feature/pregled-rezervacije`, zamjenjuje `PUT` s `POST`, proširuje `/me` ulogama korisnika i ujednačuje nazive metoda. TA dodaje provjeru ovlasti na backendu, `/api/me` i admin endpoint za dodjelu uloga. | Ažurirani zahtjevi i poglavlje 4 (6. 11.); commitovi MB 6.–7. 11. i TA 8. 11. |
+| 9. 11. 2026. (Discord); svi | Filtri i konkurentne rezervacije | LŠ povezuje filtre (datum, lokacija, vrsta, cijena, trajanje, broj osoba) s backendom. TA rješava konkurentne zahtjeve da se termin ne prebukira i dodaje provjere poslovne logike. MB pojednostavljuje pokretanje backenda iz naredbenog retka. DČ dodaje odjavu korisnika. AŽ ažurira opseg, funkcijske zahtjeve i obrasce uporabe. | Commitovi 9.–11. 11. |
+| 12. 11. 2026. (konzultacije nakon labosa); svi | Postavljanje aplikacije | Projekt se postavlja na Render. ID izrađuje Dockerfile za backend prebacuje URL baze u env varijablu, usmjerava API pozive klijenta prema backendu i dodaje CORS. AŽ usklađuje dokumentaciju (opseg, analiza zahtjeva, obrasci uporabe, dijagram razreda) s kodom. DČ počinje sučelje za administratora. | Grana `deplyoment/testing`; commitovi 13.–15. 11. |
 ## A.2 Plan rada
 
-**Cilj:** Prikazati planirani redoslijed rada i odgovornosti u timu. Prikažite projektne tjedne ili druga kratka razdoblja koja tim koristi, uključujući pripremu za formalne provjere.
-
-**Trenutačni plan:** [Poveznica na GitHub Projects ploču, Gantogram ili održavanu tablicu u nastavku. Navesti osobu zaduženu za ažurnost plana. Odaberite jedan glavni prikaz i navedite tko ga održava ažurnim.]
+**Trenutačni plan:** Glavni prikaz je tablica u nastavku. Za njezinu ažurnost zadužena je AŽ, koja je ažurira nakon tjednih sastanaka (ponedjeljkom na Discordu i četvrtkom nakon laboratorijskih vježbi).
 
 | Razdoblje/Tjedan | Glavni planirani rad | Odgovorni članovi | Poveznica na zadatke |
 | --- | --- | --- | --- |
-|  |  |  |  |
-
-Ako koristite tablicu, plan vodite na korisnoj tjednoj razini i ažurirajte ga kada se prioriteti promijene. Kratice članova tima definirajte  u A.1 i ovdje ih primjenjujte dosljedno; ako dva člana imaju iste inicijale, proširite kraticu. Plan nije dokaz da je planirani rad dovršen (to dokazuje kod i dokumentacija).
-
-<details>
-<summary><strong>Primjer plana rada</strong></summary>
-
-**Primjer — CrisisMap:** Plan rada obuhvaća razvoj prijava, karte i postavljanja aplikacije. Za svako razdoblje navedeni su glavni zadaci i odgovorni članovi.
-
-| Razdoblje | Glavni planirani rad | Odgovorni članovi | Poveznica na zadatke/opis |
-| --- | --- | --- | --- |
-| Projektni tjedan 6 | Obrazac za prijavu i provjera valjanosti lokacije | AK, LM | Zadataka #21 i #23. |
-| Projektni tjedan 7 | Povezivanje obrasca s API-jem za prijave | EP | Zadatak #25. |
-
-**Čitanje plana:** Kratice štede prostor u sažetom planu; njihove definicije s početka A.1 vrijede u cijelom ovom primjeru. Kada rad kasni, ažurirajte stvarni zadatak i očekivanje u planu; nemojte tvrditi da je nedovršena funkcionalnost završena samo zato što je predviđeni tjedan prošao.
-
-</details>
+| Tjedan 1 (12. – 18. 10.) | Postavljanje repozitorija prema predlošku, podjela uloga i odabir tehnologija | ID, svi | [PR #1](https://github.com/ivan-domljanovic/proinz-G11-3/pull/1) |
+| Tjedan 2 (19. – 25. 10.) | Dokumentacija do poglavlja 4 za predstavljanje na labosu 22. 10.; početna React aplikacija; Spring Boot backend, shema baze, entiteti i rezervacije | AŽ, LŠ (dokumentacija); DČ (frontend); TA, MB (backend) | [PR #6](https://github.com/ivan-domljanovic/proinz-G11-3/pull/6)–[PR #10](https://github.com/ivan-domljanovic/proinz-G11-3/pull/10); grane `feat/endpoints`, `feat/rezervacije` |
+| Tjedan 3 (26. 10. – 1. 11.) | Endpointi za termine, vodiče, resurse, atrakcije, dodatne usluge i recenzije; dohvat i otkazivanje rezervacija; prikaz i detalji izleta, prijava i korisnički izbornik; usklađivanje dokumentacije s kodom | TA, MB (backend); DČ, MK, LŠ (frontend); AŽ (dokumentacija) | Grana `feature/prijava`; commitovi 26. 10. – 1. 11. |
+| Tjedan 4 (2. – 8. 11.) | Rezervacije i „Moje rezervacije” na klijentu; pretraga i filtri; provjera ovlasti i dodjela uloga; dijagrami arhitekture (komponente, razredi, ER); prilagodba zahtjeva prema povratnim informacijama profesora | MK, LŠ (frontend); TA, MB (backend); AŽ (dokumentacija) | Grana `feature/pregled-rezervacije`; poglavlja 2 i 4 |
+| Tjedan 5 (9. – 15. 11.) | Filtri povezani s backendom; konkurentne rezervacije; odjava korisnika; Docker i priprema za Azure; usklađivanje dokumentacije s kodom | LŠ, DČ (frontend); TA (backend); ID (postavljanje); AŽ (dokumentacija) | Grana `deplyoment/testing` |
+| Tjedan 6 (16. – 20. 11.) | Priprema za predaju dokumentacije 20. 11.: dovršetak i završna provjera dokumentacije (poglavlja 1–4, README, Dodatak A); javno postavljanje aplikacije na Azure; sučelje za administratora | AŽ (dokumentacija); ID (postavljanje); DČ (frontend) | Grana `deplyoment/testing`; `docs/` |
 
 ## A.3 Aktivnosti i doprinosi članova
 
-**Cilj:** Prikazati koji su članovi radili na važnim projektnim aktivnostima i približan trud koji prijavljuju. Uz implementaciju uključite oblikovanje, dokumentaciju, integraciju, ispitivanje i postavljanje.
-
 | Aktivnost ili rezultat | Član | Prijavljeni sati | Reprezentativni rezultat ili poveznica |
 | --- | --- | --- | --- |
-|  |  |  |  |
-
-Koristite aktivnosti specifične za projekt umjesto obaveznog retka za svako poglavlje dokumentacije ili svaki UML dijagram. Tim treba dosljedno bilježiti sate i izbjegavati dvostruko brojanje zajedničkog rada; reprezentativni rezultat objašnjava što je prijavljeni trud proizveo. Sati su samoprijavljena procjena uloženog rada, a ne mjera kvalitete niti zamjena za pregled koda i artefakata.
-
-<details>
-<summary><strong>Primjer aktivnosti i rezultata rada</strong></summary>
-
-**Primjer — CrisisMap:** Tablica razlikuje implementaciju, integraciju i dokumentaciju te svaku aktivnost povezuje s rezultatom.
-
-| Aktivnost ili rezultat | Član | Prijavljeni sati | Reprezentativni rezultat ili poveznica |
-| --- | --- | --- | --- |
-| Ručni unos položaja na karti | AK | 8 | Zadatak #21; promjena klijentskog dijela. |
-| Provjera valjanosti i trajna pohrana prijave | LM | 10 | Zadatak #23; promjena pozadinskog sustava i ispitivanje. |
-| Integracija klijenta i API-ja te javno postavljanje | EP | 7 | Zadatak #25; konfiguracija u `render.yaml` i `dist/` |
-| Obrazac uporabe za podnošenje prijave i provjera odbijenog dopuštenja | NK | 5 | Završene izmjene UC-002 i ispitivanje ST-03. |
-
-**Trud i rezultat:** Završni stupac omogućuje raspravu o doprinosu bez tretiranja velikog broja sati kao dokaza isporuke. Tim može prijaviti stvarno dugotrajan, još neriješen problem integracije kao obavljen rad i iskreno opisati njegov ishod.
-
-</details>
+| Postavljanje repozitorija i strukture projekta prema predlošku (mape `backend/`, `src/`, konfiguracija, workflow) | ID | 1 | [PR #1](https://github.com/ivan-domljanovic/proinz-G11-3/pull/1); commitovi 12., 13. i 21. 10. |
+| Prva verzija funkcijskih i nefunkcijskih zahtjeva i aktera (2.1–2.4), pisana s LŠ prije prve prezentacije (Lucija ipak prešla na frontend) | AŽ | 6 | [PR #6](https://github.com/ivan-domljanovic/proinz-G11-3/pull/6), [PR #12](https://github.com/ivan-domljanovic/proinz-G11-3/pull/12), [PR #13](https://github.com/ivan-domljanovic/proinz-G11-3/pull/13); `docs/2-Analiza-zahtjeva.md`; pisano 15.–22. 10., commitovi 22. i 26. 10. |
+| Usklađivanje analize zahtjeva s implementacijom backenda: cijena, kapacitet, trajanje i mjesto polaska po terminu, resursi kao količina po terminu, vodič kao korisnik s ulogom, dodjela vodiča za administratora, obavijest o otkazivanju, točke interesa te kriteriji prihvaćanja prema ponašanju sustava | AŽ | 5 | `docs/2-Analiza-zahtjeva.md` (2.5, 2.6); commitovi 25. i 26. 10., 13., 17. i 19. 11. |
+| Opseg projekta (1) i obrasci uporabe UC-001 – UC-016 s dijagramom obrazaca uporabe (3) | AŽ | 7 | [PR #7](https://github.com/ivan-domljanovic/proinz-G11-3/pull/7) – [PR #9](https://github.com/ivan-domljanovic/proinz-G11-3/pull/9); `docs/1-Projekt.md`, `docs/3-Obrasci-uporabe.md`, `docs/puml/3-1-sustav-UC.puml`; commitovi 22., 23. i 26. 10., 11., 13. i 17.–19. 11. |
+| Dorada analize zahtjeva prema povratnim informacijama asistenta i profesora te kriterijima s predavanja: uloge i ovlasti kao funkcijski zahtjev, spajanje uloga organizatora i voditelja, uvođenje liste čekanja, recenzija izleta i vodiča te izmjene i otkazivanja rezervacije, jednoznačnost i provjerljivost zahtjeva | AŽ | 6 | `docs/2-Analiza-zahtjeva.md`; commitovi 6., 11., 16. i 17. 11. |
+| Arhitektura i oblikovanje (4): odluke, komponente, pravila i rizici; dijagram razreda, ER dijagram | AŽ | 3 | [PR #10](https://github.com/ivan-domljanovic/proinz-G11-3/pull/10), [PR #11](https://github.com/ivan-domljanovic/proinz-G11-3/pull/11); `docs/4-Arhitektura-i-oblikovanje.md`, `docs/puml/4-*.puml`; commitovi 22. 10., 6., 13. i 17.–19. 11. |
+| Prilagodba PlantUML workflowa (pokretanje na grani master), dopuna README-a i pregleda aktivnosti grupe | AŽ | 3 | `.github/workflows/generate-puml-diagrams.yaml`; `README.md`; `docs/A-Pregled-aktivnosti-grupe.md`; commitovi 22. i 26. 10., 19. 11. |
+| Spring Boot backend: inicijalizacija, shema baze, entiteti s probnim podacima, repozitoriji, DTO maperi, privremeni README | TA | 14 | Commitovi 21., 23. i 24. 10.; `backend/.../model`, `repository`, `mapper` |
+| Endpointi za izlete, resurse, termine i dodjelu vodiča, upravljanje resursima termina, atrakcije, dodatne usluge (CRUD), recenzije vodiča i izleta, filtriranje izleta u URL-u; validacija i rješavanje ciklusa ovisnosti; refaktoriranje DTO mapiranja; `.gitignore` | TA | 25 | Grana `feat/endpoints`; commitovi 24., 28., 30. i 31. 10. |
+| Registracija novih korisnika u bazu nakon Google prijave, preusmjeravanje na frontend nakon prijave, provjera ovlasti na backendu, `/api/me`, admin endpoint za dodjelu uloga, rješavanje konkurentnih rezervacija i provjere poslovne logike | TA | 10 | `SecurityConfig`, `AdminController`; commitovi 30. 10., 2., 8. i 10. 11. |
+| Tipovi podataka i baza, Maven wrapper, Lombok i MapStruct, servisi i maperi za dodatne usluge, korisnike i termine, zajednička obrada grešaka, struktura DTO-ova i servisa | MB | 10h | `GlobalExceptionHandler`, `ErrorResponse`; commitovi 23. i 24. 10. |
+| Rezervacije: kreiranje sa statusom „Zahtjev”, dohvat po ID-u i za prijavljenog korisnika, izmjena (broj mjesta, dodatne usluge) i otkazivanje; premještanje kapaciteta, cijene i mjesta polaska u Termin; povezivanje s korisnikom (`sub`, `AppOidcUser`); sučelje `MailService` | MB | 20h | Grana `feat/rezervacije`; `RezervacijaServiceImpl`, `RezervacijaController`; commitovi 24., 26. i 28. 10., 1. 11. |
+| Popravak otkazivanja rezervacije, probni podaci, spajanje grane `feature/pregled-rezervacije`, `/me` s ulogama korisnika, `PUT` → `POST`, nazivi metoda na engleski, maperi u kontroleru, pokretanje iz naredbenog retka | MB | 5h | Commitovi 6., 7. i 9. 11. |
+| Početna React aplikacija, početni prikaz izleta i dizajn, razdvajanje frontenda u komponente, stranica s opisom izleta i rute (`react-router`) | DČ | 20h | `App.jsx`, `DetaljiIzleta.jsx`; commitovi 20., 23., 26. i 31. 10. |
+| Stranica za Google prijavu, odjava korisnika, izgled gumba za prijavu i početak sučelja za administratora | DČ | 15h | Commitovi 2., 10. i 15. 11. |
+| Kartica za prijavu (zatvaranje klikom izvan nje), korisnički izbornik s odjavom i profilnom slikom, prikaz ovisan o statusu prijave, uklanjanje probnih podataka | MK | 3 | Grana `feature/prijava`; `KarticaPrijave.jsx`, `KorisnickiIzbornik.jsx`; commitovi 28. i 29. 10. |
+| Gumb za rezervaciju u pregledu izleta, kartica „Moje rezervacije”, gumb za otkazivanje, poruka neprijavljenom korisniku i prikaz zaglavlja prijavljenom korisniku | MK | 6 | Grana `feature/pregled-rezervacije`; `MojeRezervacije.jsx`, `PregledRezervacije.jsx`, `rezervacijeApi.js`; commitovi 5. 11. |
+| Zaglavlje kao zasebna komponenta s navigacijom, pretraga po nazivu, prozor za filtere i prikaz samo nadolazećih termina | LŠ | 5h | `Zaglavlje.jsx`, `PonudaIzleta.jsx`; commitovi 28. 10. i 5. 11. |
+| Filtri (datum od–do, lokacija, vrsta aktivnosti, cijena, trajanje, broj osoba) s radnom kopijom i slanjem backendu | LŠ | 7h | `izletiApi.js`, `useIzleti.js`; commitovi 9. 11. |
+| Priprema za postavljanje na Render: Dockerfile za backend, URL baze kao env varijabla, usmjeravanje API poziva klijenta prema backendu, CORS u `SecurityConfig` | ID | 6 | Grana `deplyoment/testing`; `backend/Dockerfile`, `frontend/src/config.js`; commitovi 14. i 15. 11. |
 
 ## A.4 Pregled promjena u repozitoriju
 
-**Cilj:** Prikazati kada su promjene napravljene u repozitoriju i tko ih je napravio, uz napomenu da sam broj zapisa promjena ne mjeri kvalitetu doprinosa.
+**Prikaz aktivnosti repozitorija:** [Contributors graf repozitorija](https://github.com/ivan-domljanovic/proinz-G11-3/graphs/contributors) i [pregled commitova na grani master](https://github.com/ivan-domljanovic/proinz-G11-3/commits/master). Razdoblje: od početka rada tima 12. 10. 2026. do predaje  20. 11. 2026. Graf prikazuje samo commitove na grani `master`.
 
-**Prikaz aktivnosti repozitorija:** [Ugradite ili povežite GitHubov prikaz `Contributors` i generirani graf za projektni repozitorij; navedite razdoblje koje obuhvaća.]
+Pri čitanju grafa treba uzeti u obzir sljedeće:
 
-Graf može pokazati kada su zapisi promjena napravljeni i tko ih je napravio, ali ne prikazuje sav rad na oblikovanju, ispitivanju, integraciji, pregledu ili dokumentaciji. Ako postoji uočljiv nesklad s tablicom aktivnosti, kratko ga objasnite; nemojte iz grafa izvoditi broj sati. Generirani prikaz neka bude vezan uz stvarni repozitorij umjesto da se ručno crta drugi graf.
-
+- **Predložak kolegija.** Repozitorij je nastao iz predloška, pa graf sadrži i commitove autora predloška (Vlado Sruk, listopad 2023. – listopad 2026.) te bota `github-actions`, koji automatski generira PlantUML dijagrame. Ti commitovi nisu rad tima.
+- **Dva imena za istog člana.** Dio članova commitao je i preko GitHubova sučelja i lokalno, pa se isti član može pojaviti pod dva imena: AŽ kao *zivkovicanita* i *Anita Živković*, ID kao *ivan-domljanovic*, *domljanovicivan* i *tebo-yes*.
+- **Rad izvan grane `master`.** Priprema za postavljanje na Azure (ID, grana `deplyoment/testing`) i dio rada na kartici prijave (MK, grana `feature/prijava`) još nisu spojeni u `master`, pa ih graf ne prikazuje.
+- **Veličina commitova nije ujednačena.** Dokumentacija (AŽ) je commitana u mnogo malih izmjena, često izravno kroz GitHubovo sučelje (npr. više commitova za postavljanje jednog dijagrama na pravo mjesto), dok backend (TA, MB) sadrži manje, ali puno opsežnijih commitova. Broj commitova zato nije usporediv između članova.
+- **Rad koji se ne vidi u commitovima.** Vođenje tima i koordinacija (ID), pisanje dokumentacije prije prvog commita 22. 10. (AŽ, LŠ), ručno ispitivanje aplikacije i pregled tuđeg koda nisu vidljivi u grafu, ali su navedeni u tablici aktivnosti A.3.
+- 
 ## A.5 Ključni inženjerski izazovi i rješenja
 
-**Cilj:** Dokumentirati stvarne tehničke i organizacijske prepreke s kojima se tim suočio, poduzete korektivne inženjerske korake te konačni ishod. Odaberite konkretne izazove umjesto općenite pohvale timskog rada.
-
 | Izazov | Poduzeta radnja | Ishod ili preostalo ograničenje |
 | --- | --- | --- |
-|  |  |  |
-
-<details>
-<summary><strong>Rješavanje nesklada formata lokacije</strong></summary>
-
-**Primjer — CrisisMap:**
-
-| Izazov | Poduzeta radnja | Ishod ili preostalo ograničenje |
-| --- | --- | --- |
-| Odabrani položaj na karti prikazivao se u klijentu, ali podnesena prijava nije zadržavala koordinate. | AK i EP usporedile su zahtjev preglednika s poljima lokacije koje očekuje API; AK je uskladila format zahtjeva, a LM je dodao provjeru valjanosti lokacije. | Nova prijava u ovom se scenariju može dohvatiti sa spremljenim položajem; tim povezuje odgovarajuću promjenu integracije i provjeru. |
-
-**Problem, odgovor i ishod:** Svaki se dio može provjeriti u projektu. Rečenica poput „imali smo poteškoće s integracijom i riješili ih timskim radom” ne bi čitatelju rekla što nije radilo ni kako je rješenje promijenjeno.
-
-</details>
-
----
-
->**Završna provjera:** Sastanci navode smislene ishode i odgovorne osobe; plan odražava namjeravani rad; tablica uloženog rada i generirani prikaz repozitorija odnose na ovaj vidljivi projekt; konkretni izazovi povezani su s radnjama i njihovim rezultatima. 
+| Kapacitet, cijena i mjesto polaska bili su modelirani na razini izleta, a isti se izlet nudi u više termina s različitim cijenama i kapacitetima, pa se popunjenost nije mogla pratiti po terminu. | MB je 24. 10. premjestio `kapacitet`, `cijena`, `mjestoPolaska` i `potrebanBrojVodica` iz entiteta `Izlet` u `Termin`; AŽ je uskladila dijagram razreda, ER dijagram i obrasce uporabe s novim modelom. | Rezervacija se veže na termin i kapacitet se provjerava po terminu. Model podataka u poglavlju 4 odgovara kodu. |
+| Dva istodobna zahtjeva za rezervaciju mogla su zajedno prekoračiti kapacitet termina, jer se slobodna mjesta provjeravala bez zaključavanja. | TA je 10. 11. dodao pesimistično zaključavanje termina (`@Lock(PESSIMISTIC_WRITE)` u `TerminRepository`) i označio metode za rezervaciju kao `@Transactional`, uz dodatne provjere poslovne logike u `RezervacijaServiceImpl` i `TerminServiceImpl`. | Termin se ne može prebukirati; rezervacija koja ne stane prelazi u status „Zahtjev” (lista čekanja). Ponašanje pod opterećenjem još nije automatski ispitano. |
+| Gumb za otkazivanje rezervacije na klijentu vraćao je grešku 500 (MK, 5. 11.). | MB je 6. 11. pronašao da se otkazivanje izvodilo izvan transakcije; metode za izmjenu i otkazivanje označene su `@Transactional`, a odgovori ujednačeni (`RezervacijaResponse`). | Otkazivanje s klijenta radi i oslobađa mjesta na terminu. |
+| Prijava preko Googlea vraćala je korisnika na backend umjesto na frontend, a novi korisnici nisu se spremali u bazu. | TA je 30. 10. dodao registraciju novog korisnika pri prvoj prijavi (`AppOidcUser`, polje `sub`), a 2. 11. preusmjeravanje na frontend nakon prijave; MB je rezervacije povezao s prijavljenim korisnikom preko `sub`. | Korisnik se nakon Google prijave vraća u aplikaciju i vidi svoje rezervacije. Prijava ovisi o dostupnosti Googleove usluge. |
+| Povratne informacije profesora: razdvajanje uloga i ovlasti bilo je navedeno kao nefunkcijski zahtjev, a uloge organizatora i voditelja agencije bile su nepotrebno razdvojene. | AŽ je 6. 11. uloge i ovlasti prebacila u funkcijske zahtjeve i spojila organizatora i voditelja agencije u jednu ulogu; TA je 8. 11. dodao provjeru ovlasti na backendu i admin endpoint za dodjelu uloga. | Zahtjevi, obrasci uporabe i kod koriste iste tri uloge (korisnik, organizator, administrator); ovlasti se provjeravaju na poslužitelju, a ne samo u sučelju. |

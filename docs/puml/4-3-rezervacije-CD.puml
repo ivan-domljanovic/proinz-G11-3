@@ -1,72 +1,129 @@
 @startuml 4-3-rezervacije-CD
-title Oblikovanje rezervacija - dijagram razreda
+title CLS-01 Oblikovanje rezervacija - dijagram razreda (specifikacijska razina, v1.1)
 skinparam shadowing false
-hide empty members
-
-class RezervacijaController {
-  +dohvatiSveKorisnikoveRezervacije() : List<RezervacijaResponse>
-  +dohvatiRezervaciju(id : Long) : RezervacijaResponse
-  +rezerviraj(request : RezervacijaRequest) : RezervacijaResponse
-  +azurirajRezervaciju(id : Long, request : RezervacijaRequest) : RezervacijaResponse
-  +otkaziRezervaciju(id : Long) : void
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #333333
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #555555
 }
-interface RezervacijaService {
+hide empty members
+hide circle
+skinparam nodesep 90
+
+' ===== Granica prema klijentu =====
+class RezervacijaController <<boundary>> {
+  +dohvatiSveKorisnikoveRezervacije(user : AppOidcUser) : List<RezervacijaResponse>
+  +dohvatiRezervaciju(id : Long, user : AppOidcUser) : RezervacijaResponse
+  +rezerviraj(request : RezervacijaRequest, user : AppOidcUser) : RezervacijaResponse
+  +azurirajRezervaciju(id : Long, request : RezervacijaRequest, user : AppOidcUser) : RezervacijaResponse
+  +otkaziRezervaciju(id : Long, user : AppOidcUser) : void
+}
+
+' ===== Ugovori servisa =====
+interface RezervacijaService <<interface>> {
   +rezerviraj(request : RezervacijaRequest, korisnikId : Long) : Rezervacija
   +azurirajRezervaciju(id : Long, request : RezervacijaRequest, korisnikId : Long) : Rezervacija
   +otkazi(id : Long, korisnikId : Long) : void
   +potvrdiZahtjeve(terminId : Long, brojMjesta : Integer) : void
+  +dohvatiRezervaciju(id : Long, korisnikId : Long) : Rezervacija
   +dohvatiSveKorisnikoveRezervacije(korisnikId : Long) : List<Rezervacija>
 }
-class RezervacijaServiceImpl
-interface TerminService {
+
+class RezervacijaServiceImpl <<control>>
+
+interface TerminService <<interface>> {
   +getTermin(id : Long) : Termin
   +dohvatiBrojSlobodnihMjesta(termin : Termin) : Integer
 }
-interface MailService {
-  +posaljiPotvrduRezervacije(r : Rezervacija) : void
-  +posaljiPotvrdeRezervacija(r : Collection<Rezervacija>) : void
-  +posaljiOtkazivanjeRezervacije(r : Rezervacija) : void
+
+interface KorisnikService <<interface>> {
+  +getKorisnik(id : Long) : Korisnik
 }
-interface RezervacijaRepository <<JpaRepository>> {
-  +findByKorisnik(k : Korisnik) : List<Rezervacija>
-  +potvrdi(r : Rezervacija) : void
+
+interface DodatnaUslugaService <<interface>> {
+  +getDodatnaUsluga(id : Long) : DodatnaUsluga
+}
+
+interface MailService <<interface>> {
+  +posaljiPotvrduRezervacije(rezervacija : Rezervacija) : void
+  +posaljiPotvrdeRezervacija(rezervacije : Collection<Rezervacija>) : void
+  +posaljiOtkazivanjeRezervacije(rezervacija : Rezervacija) : void
+}
+
+' ===== Pohrana =====
+interface RezervacijaRepository <<interface>> {
+  +findByKorisnik(korisnik : Korisnik) : List<Rezervacija>
   +dohvatiZahtjeveZaTermin(terminId : Long) : List<Rezervacija>
+  +potvrdi(rezervacija : Rezervacija) : void
 }
-interface TerminRepository <<JpaRepository>> {
+
+interface TerminRepository <<interface>> {
   +findByIdForUpdate(id : Long) : Optional<Termin>
-  +getNumberOfAvailableSpots(t : Termin) : Integer
+  +getNumberOfAvailableSpots(termin : Termin) : Integer
 }
-class Rezervacija <<Entity>> {
-  -id : Long
+
+' ===== Domenski razredi =====
+class Rezervacija <<entity>> {
+  -id : Long {id}
   -status : Status
   -brojMjesta : Integer
   -vrijemeRezervacije : LocalDateTime
 }
-class Termin <<Entity>> {
+
+class Termin <<entity>> {
+  -id : Long {id}
   -datumVrijeme : LocalDateTime
   -trajanjeMinuta : Integer
+  -mjestoPolaska : String
+  -cijena : Double
   -kapacitet : Integer
+  -potrebanBrojVodica : Integer
+  -/brojSlobodnihMjesta : Integer {readOnly}
+}
+
+class Korisnik <<entity>> {
+  -id : Long {id}
+  -ime : String
+  -prezime : String
+  -email : String
+}
+
+class DodatnaUsluga <<entity>> {
+  -id : Long {id}
+  -naziv : String
   -cijena : Double
 }
-class Korisnik <<Entity>>
-class DodatnaUsluga <<Entity>>
-enum Status {
+
+enum Status <<enumeration>> {
   ZAHTJEV
   POTVRDENO
   REALIZIRANO
   OTKAZANO
 }
 
-RezervacijaController --> RezervacijaService
-RezervacijaServiceImpl ..|> RezervacijaService
-RezervacijaServiceImpl --> TerminService
-RezervacijaServiceImpl --> TerminRepository
-RezervacijaServiceImpl --> MailService
-RezervacijaServiceImpl --> RezervacijaRepository
-RezervacijaRepository ..> Rezervacija
-TerminRepository ..> Termin
-Rezervacija --> "1" Termin
-Rezervacija --> "0..1" Korisnik
-Rezervacija --> "0..*" DodatnaUsluga
-Rezervacija --> Status
+' ===== Pridruživanje i realizacija sučelja =====
+RezervacijaController -down-> "rezervacijaService\n1" RezervacijaService
+RezervacijaServiceImpl .up.|> RezervacijaService
+
+' ===== Pridruživanja: suradnici (navigabilna, s ulogama) =====
+RezervacijaServiceImpl -left-> "terminService\n1" TerminService
+RezervacijaServiceImpl -right-> "mailService\n1" MailService
+RezervacijaServiceImpl -down-> "korisnikService\n1" KorisnikService
+RezervacijaServiceImpl -down-> "dodatnaUslugaService\n1" DodatnaUslugaService
+RezervacijaServiceImpl -down-> "rezervacijaRepository\n1" RezervacijaRepository
+RezervacijaServiceImpl -down-> "terminRepository\n1" TerminRepository
+
+' ===== Pridruživanja među domenskim razredima =====
+RezervacijaRepository -[hidden]down- Rezervacija
+Rezervacija "rezervacije\n0..*" -left- "termin\n1" Termin
+Rezervacija "rezervacije\n0..*" -right- "korisnik\n1" Korisnik
+Rezervacija "0..*" -down-> "dodatneUsluge\n0..*" DodatnaUsluga
+Status -[hidden]left- DodatnaUsluga
+
+note left of Termin
+  brojSlobodnihMjesta = kapacitet - zbroj brojMjesta
+  rezervacija sa statusom POTVRDENO ili REALIZIRANO;
+  rezervacije sa statusom ZAHTJEV ne zauzimaju mjesta (F-005, F-021)
+end note
 @enduml
