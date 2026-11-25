@@ -1,5 +1,5 @@
 import { Link, useSearchParams} from "react-router"
-const API_URL = import.meta.env.VITE_API_URL ?? "";
+import { API_URL } from "../config";
 
 export default function Prijava(){
     const [parametri] = useSearchParams();
@@ -19,7 +19,7 @@ export default function Prijava(){
                         Prijava nije uspjela. Pokušajte ponovo.
                     </p>
                 )}
-                <a href={`http://${API_URL}/oauth2/authorization/google`} className="gumb-google">
+                <a href={`${API_URL}/oauth2/authorization/google`} className="gumb-google">
                     Nastavi s Googlom
                     <span aria-hidden="true">→</span>
                 </a>
