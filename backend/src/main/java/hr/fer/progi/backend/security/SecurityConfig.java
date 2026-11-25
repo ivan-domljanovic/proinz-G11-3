@@ -21,6 +21,9 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    GoogleOidcUserService googleOidcUserService,
@@ -64,8 +67,8 @@ public class SecurityConfig {
                         .userInfoEndpoint(info -> info
                                 .oidcUserService(googleOidcUserService)
                         )
-                        .defaultSuccessUrl("http://localhost:5173", true)
-                        .failureUrl("http://localhost:5173/login")
+                        .defaultSuccessUrl(frontendUrl, true)
+                        .failureUrl(frontendUrl + "/login")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
